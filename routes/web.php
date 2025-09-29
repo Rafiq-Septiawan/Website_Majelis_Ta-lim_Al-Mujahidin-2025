@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\OtpController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;   // ✅ tambahin ini
+use Illuminate\Http\Request;           // ✅ tambahin ini
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,5 +35,14 @@ Route::prefix('otp')->group(function () {
     Route::post('/', [OtpController::class, 'verify'])->name('otp.verify');
     Route::get('/generate', [OtpController::class, 'generateOtp'])->name('otp.generate');
 });
+
+// ================= Logout =================
+Route::post('/logout', function (Request $request) {
+    Auth::logout(); 
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/login'); // ✅ arahkan ke halaman login
+})->name('logout');
 
 require __DIR__.'/auth.php';

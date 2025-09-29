@@ -10,6 +10,13 @@
         <!-- Navbar -->
       <div class="bg-primary px-4 py-2 flex items-center justify-between 
               mx-14 mt-8 rounded-xl shadow-lg relative z-50 ">
+
+        <!-- Overlay -->
+        <div id="overlay" 
+            class="fixed inset-0 bg-black bg-opacity-85 hidden z-40" 
+            onclick="toggleSidebar()">
+        </div>
+
         <!-- Hamburger -->
         <button onclick="toggleSidebar()" class="text-white text-3xl font-bold">&#9776;</button>
 
@@ -48,80 +55,108 @@
         </div>
     </div>
 
-<!-- Sidebar -->
-<div id="sidebar" 
-    class="fixed top-0 left-0 h-full w-64 bg-[#2C3E50] text-white transform -translate-x-full transition-transform duration-300 z-50">
+        <!-- Sidebar -->
+        <div id="sidebar" 
+            class="fixed top-0 left-0 h-full w-64 bg-[#2C3E50] text-white transform -translate-x-full transition-transform duration-300 z-50">
+        <!-- Header -->
+        <div class="px-6 pt-6 pb-10">
+            <a href="#" class="flex items-center gap-3 mt-[10px]">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    class="size-10 text-primary" fill="none" viewBox="0 0 24 24" 
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                    <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                    <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
+                </svg>
+                <span class="text-base font-medium">ADMIN</span>
+            </a>
+            <hr class="mt-2 border-gray-400/50">
+        </div>
 
-    <!-- Header -->
-    <div class="p-6 border-b border-gray-500">
-        <a href="#" class="flex items-center gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" 
-                class="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" 
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-            </svg>
-            <span class="text-lg font-bold">Admin</span>
-        </a>
+        <!-- Menu -->
+        <nav class="mt-4">
+            <ul class="space-y-1">
+                <!-- Dashboard -->
+                <li>
+                    <a href="{{ url('/admin/dashboard') }}"
+                        class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/>
+                        <rect width="7" height="9" x="14" y="12" rx="1"/>
+                        <rect width="7" height="5" x="3" y="16" rx="1"/>
+                        </svg>
+                        <span>DASHBOARD</span>
+                    </a>
+                    <hr class="border-gray-400/50">
+                </li>
+
+                <!-- Profil -->
+                <li>
+                    <a href="/profile"
+                        class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg>
+                        <span>PROFIL</span>
+                    </a>
+                    <hr class="border-gray-400/50">
+                </li>
+
+                <!-- Data Santri -->
+                <li>
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                        <span>DATA SANTRI</span>
+                    </a>
+                    <hr class="border-gray-400/50">
+                </li>
+
+                <!-- Input Pembayaran -->
+                <li>
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote-arrow-down-icon lucide-banknote-arrow-down"><path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="m16 19 3 3 3-3"/><path d="M18 12h.01"/>
+                        <path d="M19 16v6"/><path d="M6 12h.01"/><circle cx="12" cy="12" r="2"/>
+                        </svg>
+                        <span>INPUT PEMBAYARAN</span>
+                    </a>
+                    <hr class="border-gray-400/50">
+                </li>
+
+                <!-- Laporan -->
+                <li>
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-minus-icon lucide-clipboard-minus"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14h6"/>
+                        </svg>
+                        <span>LAPORAN</span>
+                    </a>
+                    <hr class="border-gray-400/50">
+                </li>
+            </ul>
+        </nav>
+
+             <!-- Tombol Logout -->
+            <div class="absolute bottom-6 w-full px-4">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" 
+                        class="flex items-center gap-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition w-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M18 12H9m9 0-3-3m3 3-3 3" />
+                        </svg>
+                        <span class="font-semibold text-sm">KELUAR</span>
+                    </button>
+                </form>
+                    <footer class="text-center text-zinc-400 text-xs mt-10 -mb-[10px]">
+                        © 2025 | Majelis Ta’lim Al-Mujahidin
+                    </footer>
+            </div>
     </div>
-
-    <!-- Menu -->
-    <nav class="mt-4">
-        <ul class="space-y-1">
-            <!-- Dashboard -->
-            <li>
-                <a href="#"
-                    class="flex items-center gap-3 px-4 py-2 hover:bg-white hover:text-[#2C3E50] transition rounded-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.954a10 10 0 0 1 6.222 17.829a1 1 0 0 1 -.622 .217h-11.2a1 1 0 0 1 -.622 -.217a10 10 0 0 1 6.222 -17.829m4.207 5.839a1 1 0 0 0 -1.414 0l-2.276 2.274a2.003 2.003 0 0 0 -2.514 1.815l-.003 .118a2 2 0 1 0 3.933 -.517l2.274 -2.276a1 1 0 0 0 0 -1.414" />
-                    </svg>
-                    <span class="font-semibold text-sm">Dashboard</span>
-                </a>
-            </li>
-
-            <!-- Profil -->
-            <li>
-                <a href="#"
-                    class="flex items-center gap-3 px-4 py-2 hover:bg-white hover:text-[#2C3E50] transition rounded-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                    </svg>
-                    <span class="font-semibold text-sm">Profil</span>
-                </a>
-            </li>
-
-            <!-- Data Santri -->
-            <li>
-                <a href="#"
-                    class="flex items-center gap-3 px-4 py-2 hover:bg-white hover:text-[#2C3E50] transition rounded-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                    </svg>
-                    <span class="font-semibold text-sm">Data Santri</span>
-                </a>
-            </li>
-
-            <!-- Input Pembayaran -->
-            <li>
-                <a href="#"
-                    class="flex items-center gap-3 px-4 py-2 hover:bg-white hover:text-[#2C3E50] transition rounded-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path d="M12 19h-6a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v4.5" />
-                        <path d="M3 10h18" />
-                        <path d="M16 19h6" />
-                        <path d="M19 16l3 3l-3 3" />
-                        <path d="M7.005 15h.005" />
-                        <path d="M11 15h2" />
-                    </svg>
-                    <span class="font-semibold text-sm">Input Pembayaran</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
 
 
   <!-- Container Putih Utama -->
