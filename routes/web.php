@@ -1,21 +1,38 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SantriController;
 use App\Http\Controllers\Auth\OtpController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;   // ✅ tambahin ini
-use Illuminate\Http\Request;           // ✅ tambahin ini
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request; 
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// ================= Dashboard =================
+// ================= HALAMAN ADMIN =================
 
 // Dashboard Admin
-Route::get('/admin/dashboard', function () {
-    return view('dashboard.admin');
-})->middleware(['auth', 'verified'])->name('admin.dashboard');
+Route::prefix('admin')->middleware(['auth', 'verified'])->name('admin.')->group(function () {
+    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
+    Route::get('/laporan', fn() => view('admin.laporan'))->name('laporan');
+    Route::get('/profil', fn() => view('admin.profil'))->name('profil');
+});
+
+// Fungsi CRUD Santri //
+Route::prefix('admin')->group(function () {
+    Route::resource('santri', \App\Http\Controllers\SantriController::class);
+});
+
+Route::prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    });
+
+    // route CRUD santri
+    Route::resource('santri', SantriController::class);
+});
 
 // Dashboard Santri
 Route::get('/santri/dashboard', function () {
@@ -42,7 +59,7 @@ Route::post('/logout', function (Request $request) {
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    return redirect('/login'); // ✅ arahkan ke halaman login
+    return redirect('/login');
 })->name('logout');
 
 require __DIR__.'/auth.php';
