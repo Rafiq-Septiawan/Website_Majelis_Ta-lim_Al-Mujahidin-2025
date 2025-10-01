@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAPORAN KEUANGAN</title>
+    <title>PROFIL ADMIN</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
@@ -75,7 +75,7 @@
             <hr class="mt-2 border-gray-400/50">
         </div>
 
-                <!-- Menu -->
+                    <!-- Menu -->
                     <nav class="mt-4">
                         <ul class="space-y-1">
                             <!-- Dashboard -->
@@ -190,7 +190,7 @@
                              2.25 0 1 1-4.5 0 2.25 
                              2.25 0 0 1 4.5 0Z" />
                 </svg>
-                LAPORAN KEUANGAN
+                PROFIL PENGGUNA
             </h1>
 
 <!-- Overlay -->

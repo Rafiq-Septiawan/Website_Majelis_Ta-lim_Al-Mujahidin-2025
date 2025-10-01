@@ -1,4 +1,3 @@
-// filepath: c:\laragon\www\majelis_talim\vite.config.js
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 

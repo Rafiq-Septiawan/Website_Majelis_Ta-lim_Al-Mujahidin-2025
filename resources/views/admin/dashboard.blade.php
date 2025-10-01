@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin</title>
+    <title>DASHBOARD ADMIN</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
@@ -34,18 +34,31 @@
         </div>
 
         <!-- Right: Icons -->
-        <div class="flex items-center space-x-4 text-white">
+        <div class="flex items-center space-x-4 text-white">     
             <!-- Notifikasi -->
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-9">
-                <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1 8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248A9.72 9.72 0 0 0 19.266 2.5Z" />
-                <path fill-rule="evenodd" d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0 24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205 8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1a2.25 2.25 0 1 1-4.5 0Z" clip-rule="evenodd" />
+            <a href="{{ route('admin.notifications') }}" class="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 24 24" 
+                    fill="currentColor" 
+                    class="size-9">
+                    <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 
+                            9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248
+                            A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1
+                            8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248
+                            A9.72 9.72 0 0 0 19.266 2.5Z" />
+                    <path fill-rule="evenodd" 
+                        d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75
+                            a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206
+                            c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0
+                            24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205
+                            8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18
+                            c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1
+                            a2.25 2.25 0 1 1-4.5 0Z" 
+                        clip-rule="evenodd" />
                 </svg>
 
-            </button>
-
             <!-- User -->
-                <a href="/profile" class="hover:text-gray-300">
+                <a href="{{ route('admin.profile.index') }}" class="hover:text-gray-300">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
                         fill="currentColor" class="size-9">
                         <path fill-rule="evenodd" 
@@ -59,87 +72,87 @@
         <!-- Sidebar -->
         <div id="sidebar" 
             class="fixed top-0 left-0 h-full w-64 bg-[#2C3E50] text-white transform -translate-x-full transition-transform duration-300 z-50">
-        <!-- Header -->
-        <div class="px-6 pt-6 pb-10">
-            <a href="#" class="flex items-center gap-3 mt-[10px]">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    class="size-10 text-primary" fill="none" viewBox="0 0 24 24" 
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                    <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                    <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-                </svg>
-                <span class="text-base font-medium">ADMIN</span>
-            </a>
-            <hr class="mt-2 border-gray-400/50">
-        </div>
+                    <!-- Header -->
+                    <div class="px-6 pt-6 pb-10">
+                        <a href="#" class="flex items-center gap-3 mt-[10px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                class="size-10 text-primary" fill="none" viewBox="0 0 24 24" 
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                                <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
+                            </svg>
+                            <span class="text-base font-medium">ADMIN</span>
+                        </a>
+                        <hr class="mt-2 border-gray-400/50">
+                    </div>
+                    
+                    <!-- Menu -->
+                    <nav class="mt-4">
+                        <ul class="space-y-1">
+                            <!-- Dashboard -->
+                            <li>
+                                <a href="{{ url('/admin/dashboard') }}"
+                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/>
+                                    <rect width="7" height="9" x="14" y="12" rx="1"/>
+                                    <rect width="7" height="5" x="3" y="16" rx="1"/>
+                                    </svg>
+                                    <span>DASHBOARD</span>
+                                </a>
+                                <hr class="border-gray-400/50">
+                            </li>
 
-        <!-- Menu -->
-        <nav class="mt-4">
-            <ul class="space-y-1">
-                <!-- Dashboard -->
-                <li>
-                    <a href="{{ url('/admin/dashboard') }}"
-                        class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/>
-                        <rect width="7" height="9" x="14" y="12" rx="1"/>
-                        <rect width="7" height="5" x="3" y="16" rx="1"/>
-                        </svg>
-                        <span>DASHBOARD</span>
-                    </a>
-                    <hr class="border-gray-400/50">
-                </li>
+                            <!-- Profil -->
+                            <li>
+                                <a href="{{ route('admin.profile.index') }}"
+                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                    </svg>
+                                    <span>PROFIL</span>
+                                </a>
+                                <hr class="border-gray-400/50">
+                            </li>
 
-                <!-- Profil -->
-                <li>
-                    <a href="/profile"
-                        class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                        </svg>
-                        <span>PROFIL</span>
-                    </a>
-                    <hr class="border-gray-400/50">
-                </li>
+                            <!-- Data Santri -->
+                            <li>
+                                <a href="{{ route('admin.santri.index') }}"
+                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>
+                                    </svg>
+                                    <span>DATA SANTRI</span>
+                                </a>
+                                <hr class="border-gray-400/50">
+                            </li>
 
-                <!-- Data Santri -->
-                <li>
-                    <a href="{{ route('santri.index') }}"
-                        class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>
-                        </svg>
-                        <span>DATA SANTRI</span>
-                    </a>
-                    <hr class="border-gray-400/50">
-                </li>
+                            <!-- Input Pembayaran -->
+                            <li>
+                                <a href="{{ route('admin.pembayaran.input') }}"
+                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote-arrow-down-icon lucide-banknote-arrow-down"><path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="m16 19 3 3 3-3"/><path d="M18 12h.01"/>
+                                    <path d="M19 16v6"/><path d="M6 12h.01"/><circle cx="12" cy="12" r="2"/>
+                                    </svg>
+                                    <span>INPUT PEMBAYARAN</span>
+                                </a>
+                                <hr class="border-gray-400/50">
+                            </li>
 
-                <!-- Input Pembayaran -->
-                <li>
-                    <a href="#"
-                        class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote-arrow-down-icon lucide-banknote-arrow-down"><path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="m16 19 3 3 3-3"/><path d="M18 12h.01"/>
-                        <path d="M19 16v6"/><path d="M6 12h.01"/><circle cx="12" cy="12" r="2"/>
-                        </svg>
-                        <span>INPUT PEMBAYARAN</span>
-                    </a>
-                    <hr class="border-gray-400/50">
-                </li>
-
-                <!-- Laporan -->
-                <li>
-                    <a href="#"
-                        class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-minus-icon lucide-clipboard-minus"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
-                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14h6"/>
-                        </svg>
-                        <span>LAPORAN</span>
-                    </a>
-                    <hr class="border-gray-400/50">
-                </li>
-            </ul>
-        </nav>
+                            <!-- Laporan -->
+                            <li>
+                                <a href="{{ route('admin.laporan') }}"
+                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-minus-icon lucide-clipboard-minus"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14h6"/>
+                                    </svg>
+                                    <span>LAPORAN</span>
+                                </a>
+                                <hr class="border-gray-400/50">
+                            </li>
+                        </ul>
+                    </nav>
 
              <!-- Tombol Logout -->
             <div class="absolute bottom-6 w-full px-4">
@@ -161,7 +174,7 @@
 
 
   <!-- Container Putih Utama -->
-  <div class="bg-white rounded-2xl shadow-lg p-4 mx-6 relative z-40 -mb-[20px]  mb-[20px] -mt-[80px]">
+  <div class="bg-white rounded-2xl shadow-lg p-4 mx-6 relative z-40 -mb-[20px] mb-[20px] -mt-[70px]">
       <h1 class="font-bold text-xl text-stone-950 ml-[20px] mb-[10px] mt-[90px]">Selamat Datang, Admin</h1>
     <!-- Konten -->
     <div class="p-4 bg-white rounded-2xl p-2">

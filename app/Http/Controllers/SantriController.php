@@ -40,7 +40,7 @@ class SantriController extends Controller
 
         Santri::create($request->all());
 
-        return redirect()->route('santri.index')->with('success', 'Data santri berhasil ditambahkan.');
+        return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil ditambahkan.');
     }
 
     /**
@@ -67,7 +67,7 @@ class SantriController extends Controller
 
         $santri->update($request->all());
 
-        return redirect()->route('santri.index')->with('success', 'Data santri berhasil diperbarui.');
+        return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil diperbarui.');
     }
 
     /**

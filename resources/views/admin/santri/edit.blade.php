@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TAMBAH DATA SANTRI</title>
+    <title>EDIT DATA SANTRI</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
@@ -184,67 +184,72 @@
                              0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0
                              2.25 2.25 0 0 1 4.5 0Z"/>
                 </svg>
-                FORM TAMBAH DATA SANTRI
+                FORM EDIT DATA SANTRI
             </h1>
 
-            <!-- Form -->
-            <form action="{{ route('admin.santri.store') }}" method="POST" class="border rounded-lg p-6">
+            <form action="{{ route('admin.santri.update', $santri->id) }}" method="POST" class="border rounded-lg p-6">
                 @csrf
+                @method('PUT')
                 <div class="grid grid-cols-2 gap-6">
 
                     <!-- Nama Lengkap -->
                     <div>
                         <label class="block font-bold text-x mb-1">NAMA LENGKAP</label>
-                        <input type="text" name="nama" value="{{ old('nama') }}" placeholder="Nama lengkap.." 
-                               class="w-full border rounded px-3 py-2 focus:ring focus:ring-primary">
+                        <input type="text" name="nama" 
+                            value="{{ old('nama', $santri->nama) }}" 
+                            class="w-full border rounded px-3 py-2 focus:ring focus:ring-primary">
                     </div>
 
                     <!-- Nama Wali -->
                     <div>
                         <label class="block font-bold text-x mb-1">NAMA WALI SANTRI</label>
-                        <input type="text" name="wali" placeholder="Nama wali santri.." 
-                               class="w-full border rounded px-3 py-2 focus:ring focus:ring-primary">
+                        <input type="text" name="wali" 
+                            value="{{ old('wali', $santri->wali) }}" 
+                            class="w-full border rounded px-3 py-2 focus:ring focus:ring-primary">
                     </div>
 
                     <!-- Jenis Kelamin -->
                     <div>
                         <label class="block font-bold text-x mb-1">JENIS KELAMIN</label>
                         <select name="jenis_kelamin" class="w-full border rounded px-3 py-2 focus:ring focus:ring-primary">
-                            <option value="L">Laki-laki</option>
-                            <option value="P">Perempuan</option>
+                            <option value="L" {{ old('jenis_kelamin', $santri->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                            <option value="P" {{ old('jenis_kelamin', $santri->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan</option>
                         </select>
                     </div>
 
                     <!-- Nomor Telepon -->
                     <div>
                         <label class="block font-bold text-x mb-1">NOMOR TELEPON</label>
-                        <input type="text" name="telepon" placeholder="Nomor Telepon.." 
-                               class="w-full border rounded px-3 py-2 focus:ring focus:ring-primary">
+                        <input type="text" name="telepon" 
+                            value="{{ old('telepon', $santri->telepon) }}" 
+                            class="w-full border rounded px-3 py-2 focus:ring focus:ring-primary">
                     </div>
 
                     <!-- Tanggal Lahir -->
                     <div>
                         <label class="block font-bold text-x mb-1">TANGGAL LAHIR</label>
                         <input type="date" name="tanggal_lahir" 
-                                 class="w-full border rounded px-3 py-2 focus:ring focus:ring-primary">
+                            value="{{ old('tanggal_lahir', $santri->tanggal_lahir) }}" 
+                            class="w-full border rounded px-3 py-2 focus:ring focus:ring-primary">
                     </div>
 
                     <!-- Tombol Simpan -->
                     <div class="flex items-end">
                         <button type="submit" 
                                 class="px-6 py-2 bg-primary text-white font-bold rounded-[10px] hover:bg-green-600">
-                            SIMPAN
+                            UPDATE
                         </button>
                     </div>
 
                     <!-- Alamat -->
                     <div class="col-span-2">
                         <label class="block font-bold text-x mb-1">ALAMAT</label>
-                        <textarea name="alamat" rows="3" placeholder="Alamat.." 
-                                  class="w-full border rounded px-3 py-2 focus:ring focus:ring-primary"></textarea>
+                        <textarea name="alamat" rows="3" 
+                                class="w-full border rounded px-3 py-2 focus:ring focus:ring-primary">{{ old('alamat', $santri->alamat) }}</textarea>
                     </div>
                 </div>
             </form>
+
             <footer class="text-zinc-400 mt-5">© 2025 | Majelis Ta’lim Al-Mujahidin</footer>
         </div>
     </div>

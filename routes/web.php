@@ -7,39 +7,41 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request; 
 
+// HALAMAN UTAMA
 Route::get('/', function () {
     return view('welcome');
 });
 
 // ================= HALAMAN ADMIN =================
-
-// Dashboard Admin
 Route::prefix('admin')->middleware(['auth', 'verified'])->name('admin.')->group(function () {
+
+    // Dashboard
     Route::get('/dashboard', fn() => view('admin.dashboard'))->name('dashboard');
-    Route::get('/laporan', fn() => view('admin.laporan'))->name('laporan');
-    Route::get('/profil', fn() => view('admin.profil'))->name('profil');
-});
 
-// Fungsi CRUD Santri //
-Route::prefix('admin')->group(function () {
-    Route::resource('santri', \App\Http\Controllers\SantriController::class);
-});
+    // Profil Admin
+    Route::get('/profile', fn() => view('admin.profile.index'))->name('profile.index');
+    Route::get('/profile/edit', fn() => view('admin.profile.edit'))->name('profile.edit');
 
-Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    });
-
-    // route CRUD santri
+    // CRUD Santri
     Route::resource('santri', SantriController::class);
+
+    // Pembayaran
+    Route::get('/pembayaran/input', fn() => view('admin.pembayaran.input'))->name('pembayaran.input');
+
+    // Laporan
+    Route::get('/laporan', fn() => view('admin.laporan'))->name('laporan');
+
+    // Notifikasi
+    Route::get('/notifications', fn() => view('admin.notifications'))->name('notifications');
 });
 
-// Dashboard Santri
+
+// ================= DASHBOARD SANTRI =================
 Route::get('/santri/dashboard', function () {
-    return view('dashboard.santri');
+    return view('santri.dashboard');
 })->middleware(['auth', 'verified'])->name('santri.dashboard');
 
-// ================= Profile =================
+// ================= PROFILE =================
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -53,13 +55,13 @@ Route::prefix('otp')->group(function () {
     Route::get('/generate', [OtpController::class, 'generateOtp'])->name('otp.generate');
 });
 
-// ================= Logout =================
+// ================= LOGOUT =================
 Route::post('/logout', function (Request $request) {
     Auth::logout(); 
     $request->session()->invalidate();
     $request->session()->regenerateToken();
-
     return redirect('/login');
 })->name('logout');
 
+// Auth routes (login/register)
 require __DIR__.'/auth.php';

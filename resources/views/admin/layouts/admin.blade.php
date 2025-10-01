@@ -3,29 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>@yield('title', 'Dashboard Admin')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100">
-
-    <div class="flex">
-        {{-- Sidebar --}}
-        <aside class="w-64 bg-gray-800 text-white h-screen p-4">
-            <h2 class="text-xl font-bold mb-4">Admin Menu</h2>
-            <ul>
-                <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li><a href="{{ route('admin.santri') }}">Data Santri</a></li>
-                <li><a href="{{ route('admin.laporan') }}">Laporan</a></li>
-                <li><a href="{{ route('admin.profil') }}">Profil</a></li>
-            </ul>
-        </aside>
-
-        {{-- Konten Halaman --}}
-        <main class="flex-1 p-6">
-            @yield('content')
-            
-        </main>
+<body class="bg-primary">
+    <!-- Container utama -->
+    <div class="pt-8 px-6">
+        @yield('content')
     </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="toggleSidebar()"></div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("overlay");
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+    </script>
 
 </body>
 </html>
