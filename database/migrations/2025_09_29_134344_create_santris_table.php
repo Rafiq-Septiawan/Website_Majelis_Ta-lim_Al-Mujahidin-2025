@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('santris', function (Blueprint $table) {
             $table->id(); // ini otomatis jadi 'no' (primary key)
             $table->string('nama');
-            $table->enum('jenis_kelamin', ['L', 'P']); // L = laki, P = perempuan
+            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
             $table->date('tanggal_lahir');
             $table->string('wali');
             $table->string('alamat');

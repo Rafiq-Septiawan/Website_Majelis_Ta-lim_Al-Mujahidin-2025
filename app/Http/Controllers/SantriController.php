@@ -8,16 +8,17 @@ use Illuminate\Http\Request;
 class SantriController extends Controller
 {
     /**
-     * Tampilkan semua data santri
+     * 🔹 Tampilkan semua data santri
      */
     public function index()
     {
         $santris = Santri::all();
+        $santris = Santri::orderBy('nama', 'asc')->paginate(10);
         return view('admin.santri.index', compact('santris'));
     }
 
     /**
-     * Form tambah santri
+     * 🔹 Form tambah santri
      */
     public function create()
     {
@@ -25,7 +26,7 @@ class SantriController extends Controller
     }
 
     /**
-     * Simpan data santri baru
+     * 🔹 Simpan data santri baru
      */
     public function store(Request $request)
     {
@@ -40,11 +41,21 @@ class SantriController extends Controller
 
         Santri::create($request->all());
 
-        return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil ditambahkan.');
+        // Jika request datang dari AJAX
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data santri berhasil disimpan!'
+            ], 200);
+        }
+
+        // Jika dari form biasa
+        return redirect()->route('admin.santri.index')
+                         ->with('success', 'Data santri berhasil ditambahkan.');
     }
 
     /**
-     * Form edit santri
+     * 🔹 Form edit santri
      */
     public function edit(Santri $santri)
     {
@@ -52,7 +63,7 @@ class SantriController extends Controller
     }
 
     /**
-     * Update data santri
+     * 🔹 Update data santri
      */
     public function update(Request $request, Santri $santri)
     {
@@ -67,15 +78,50 @@ class SantriController extends Controller
 
         $santri->update($request->all());
 
-        return redirect()->route('admin.santri.index')->with('success', 'Data santri berhasil diperbarui.');
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data santri berhasil diperbarui!'
+            ], 200);
+        }
+
+        return redirect()->route('admin.santri.index')
+                         ->with('success', 'Data santri berhasil diperbarui.');
     }
 
     /**
-     * Hapus data santri
+     * 🔹 Hapus data santri
      */
-    public function destroy(Santri $santri)
+    public function destroy(Request $request, $id)
     {
+        $santri = Santri::find($id);
+
+        if (!$santri) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data santri tidak ditemukan!'
+            ], 404);
+        }
+
         $santri->delete();
-        return redirect()->route('santri.index')->with('success', 'Data santri berhasil dihapus.');
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data santri berhasil dihapus!'
+            ]);
+        }
+
+        return redirect()->route('admin.santri.index')
+                        ->with('success', 'Data santri berhasil dihapus.');
+    }
+
+        /**
+     * 🔍 AJAX: Cari santri berdasarkan nama (live search)
+     */
+    public function search(Request $request) {
+        $keyword = $request->nama_santri;
+        $santris = Santri::where('nama', 'like', "%{$keyword}%")->get();
+        return response()->json($santris);
     }
 }

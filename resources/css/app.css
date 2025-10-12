@@ -2,3 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+#cropModal img {
+  max-height: 400px;
+  width: auto;
+  object-fit: contain;
+}
+.cropper-view-box,
+.cropper-face {
+  border-radius: 50%;
+}
+
+.form-select {
+  background-position: right 0.5rem center;
+
+  
+}

@@ -1,185 +1,13 @@
 @extends('admin.layouts.admin')
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Data Santri | Majelis Ta’lim Al-Mujahidin</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
 
-<body class="bg-primary">
-    <!-- Navbar -->
-    <div class="bg-primary px-4 py-2 flex items-center justify-between mx-14 mt-8 rounded-xl shadow-lg relative z-50 ">
-        <!-- Overlay -->
-        <div id="overlay" class="fixed inset-0 bg-black bg-opacity-85 hidden z-40" onclick="toggleSidebar()"></div>
+@section('title', 'Data Santri | Majelis Ta’lim Al-Mujahidin')
 
-        <!-- Hamburger -->
-        <button onclick="toggleSidebar()" class="text-white text-3xl font-bold">&#9776;</button>
+@section('content')
 
-        <!-- Search Bar -->
-        <div class="flex items-left bg-white px-3 py-2 rounded-lg w-1/2">
-            <input type="text" placeholder="Cari..." class="w-full outline-none text-gray-700">
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
-        </div>
-
-        <!-- Right: Icons -->
-        <div class="flex items-center space-x-4 text-white">
-            <!-- Notifikasi -->
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-9">
-                    <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1 8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248A9.72 9.72 0 0 0 19.266 2.5Z" />
-                    <path fill-rule="evenodd" d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0 24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205 8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1a2.25 2.25 0 1 1-4.5 0Z" clip-rule="evenodd" />
-                </svg>
-            </button>
-
-            <!-- User -->
-            <a href="{{ route('admin.profile.index') }}" class="hover:text-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                    fill="currentColor" class="size-9">
-                    <path fill-rule="evenodd"
-                        d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-                        clip-rule="evenodd" />
-                </svg>
-            </a>
-        </div>
-    </div>
-
-        <!-- Sidebar -->
-        <div id="sidebar" 
-        class="fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-[#2C3E50] to-[#34495E] 
-        text-white transform -translate-x-full transition-all duration-300 ease-in-out z-50 shadow-2xl rounded-r-2xl">
-
-        <!-- Header -->
-        <div class="px-6 pt-6 pb-6 border-b border-white/10">
-            <a href="{{ route('admin.profile.index') }}" class="flex items-center gap-3 mt-[10px]">
-            <!-- Foto Profil -->
-            <img 
-                src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('images/default-avatar.png') }}" 
-                alt="Foto Profil" 
-                class="w-12 h-12 rounded-full border-2 border-white object-cover shadow-md"
-            />
-            <div class="flex flex-col">
-                <span class="text-sm text-gray-300">ADMIN</span>
-                <span class="text-base font-semibold">{{ Auth::user()->name ?? 'Admin' }}</span>
-            </div>
-        </a>
-        </div>
-
-        <!-- Menu -->
-        <nav class="mt-4 px-2">
-            <ul class="space-y-1">
-                <li>
-                    <a href="{{ url('/admin/dashboard') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-emerald-500/10 hover:text-emerald-400 transition group">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
-                            <rect width="7" height="9" x="3" y="3" rx="1"/>
-                            <rect width="7" height="5" x="14" y="3" rx="1"/>
-                            <rect width="7" height="9" x="14" y="12" rx="1"/>
-                            <rect width="7" height="5" x="3" y="16" rx="1"/>
-                        </svg>
-                        <span class="font-medium text-sm tracking-wider">Dashboard</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('admin.profile.index') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-emerald-500/10 hover:text-emerald-400 transition group">
-                        <svg xmlns="http://www.w3.org/2000/svg" 
-                            class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition" 
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20a7.5 7.5 0 0 1 15 0" />
-                        </svg>
-                        <span class="font-medium text-sm tracking-wider">Profil</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('admin.santri.index') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-emerald-500/10 hover:text-emerald-400 transition group">
-                        <svg xmlns="http://www.w3.org/2000/svg" 
-                            class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition" 
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6A2 2 0 0 1 18.45 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2A2 2 0 0 0 12.4 6H18a2 2 0 0 1 2 2v2"/>
-                        </svg>
-                        <span class="font-medium text-sm tracking-wider">Data Santri</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('admin.pembayaran.input') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-emerald-500/10 hover:text-emerald-400 transition group">
-                        <svg xmlns="http://www.w3.org/2000/svg" 
-                            class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition" 
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/>
-                            <path d="m16 19 3 3 3-3"/>
-                            <circle cx="12" cy="12" r="2"/>
-                        </svg>
-                        <span class="font-medium text-sm tracking-wider">Input Pembayaran</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('admin.laporan') }}"
-                        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-emerald-500/10 hover:text-emerald-400 transition group">
-                        <svg xmlns="http://www.w3.org/2000/svg" 
-                            class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition" 
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
-                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-                            <path d="M9 14h6"/>
-                        </svg>
-                        <span class="font-medium text-sm tracking-wider">Laporan</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Logout -->
-        <div class="mt-auto w-full px-4 pb-6 absolute bottom-0 left-0">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" 
-                    class="flex items-center justify-center gap-2 px-2 py-2 w-full bg-red-600 hover:bg-red-700 rounded-md font-semibold text-sm transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" 
-                            d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M18 12H9m9 0-3-3m3 3-3 3" />
-                    </svg>
-                    KELUAR
-                </button>
-            </form>
-
-            <footer class="text-center text-gray-400 text-xs mt-4">
-                © 2025 | Majelis Ta'lim Al-Mujahidin
-            </footer>
-        </div>
-        </div>
-
-        <!-- Script toggle -->
-        <script>
-        function toggleSidebar() {
-        const sidebar = document.getElementById("sidebar");
-        const overlay = document.getElementById("overlay");
-
-        sidebar.classList.toggle("-translate-x-full");
-        overlay.classList.toggle("hidden");
-        }
-        </script>
-
-    <!-- Container Utama -->
-    <div class="bg-white rounded-2xl shadow-lg p-4 mx-6 relative z-40 -mb-[10px] -mt-[70px]">
+    <!-- Konten -->
         <div class="p-6 bg-white rounded-2xl flex-1 flex flex-col">
 
-            <!-- Header + Tombol -->
+            <!-- Judul Halaman -->
             <div class="flex items-center justify-between mt-[60px] mb-2">
                 <h1 class="text-2xl font-bold flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
@@ -226,7 +54,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
-                    </div>
+                        </div>
 
                         <!-- Tombol Tambah -->
                         <a href="{{ route('admin.santri.create') }}"
@@ -374,7 +202,6 @@
                 @endif
             </div>
         </div>
-        <footer class="text-zinc-400 text-xs ml-4 mt-[px] mb-[10px]">© 2025 | Majelis Ta’lim Al-Mujahidin</footer>
     </div>
 
     <!-- Script pencarian -->
@@ -479,5 +306,4 @@
         td:last-child, th:last-child { border-right: none; }
     </style>
 
-</body>
-</html>
+@endsection

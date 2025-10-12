@@ -50,7 +50,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-4 font-semibold text-sm text-zinc-950 text-center mt-auto">
+    <footer class="py-4 font-regular text-sm text-white text-center mt-auto">
         &copy; {{ date('Y') }} Majelis Ta'lim Al-Mujahidin
     </footer>
 </body>

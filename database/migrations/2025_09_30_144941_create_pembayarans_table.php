@@ -8,23 +8,24 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_santri');
+            $table->string('bulan');
+            $table->integer('jumlah_bayar');
+            $table->date('tanggal_bayar');
+            $table->string('status')->default('belum lunas');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('pembayarans');
     }

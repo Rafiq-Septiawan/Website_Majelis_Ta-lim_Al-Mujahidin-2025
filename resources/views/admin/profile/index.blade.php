@@ -1,208 +1,374 @@
 @extends('admin.layouts.admin')
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROFIL ADMIN</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-</head>
-<body class="bg-primary">
-    <!-- Navbar -->
-      <div class="bg-primary px-4 py-2 flex items-center justify-between 
-              mx-14 mt-8 rounded-xl shadow-lg relative z-50 ">
+@section("title", "Profil | Majelis Ta'lim Al-Mujahidin")
 
-        <!-- Overlay -->
-        <div id="overlay" 
-            class="fixed inset-0 bg-black bg-opacity-85 hidden z-40" 
-            onclick="toggleSidebar()">
-        </div>
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.css">
+<style>
+    #cropModal { z-index: 9999 !important; }
+    #cropModal img { max-height: 400px; width: auto; object-fit: contain; }
+    .cropper-view-box, .cropper-face { border-radius: 50%; }
+</style>
+@endpush
 
-        <!-- Hamburger -->
-        <button onclick="toggleSidebar()" class="text-white text-3xl font-bold">&#9776;</button>
+@section('content')
+<div class="flex justify-between items-center mb-4 mt-[75px] mx-[20px]">
+    <div>
+        <h2 class="text-2xl font-bold text-gray-800">Profil Pengguna</h2>
+        <p class="text-gray-500">Kelola informasi akun dan pengaturan profil Anda</p>
+    </div>
+    <!--   Tombol Kembali ke Dashboard --> 
+    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-1 bg-primary hover:bg-teal-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke-width="2" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+        </svg>
+        Kembali
+    </a>
+</div>
 
-        <!-- Search Bar -->
-        <div class="flex items-left bg-white px-3 py-2 rounded-lg w-1/2">
-            <input type="text" placeholder="Cari..." class="w-full outline-none text-gray-700">
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
-        </div>
+<!-- Form Informasi Profil -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="bg-white shadow-sm rounded-lg p-4 ml-[15px] border border-gray-200">
+        <h3 class="text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.2" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 
+                    20.118a7.5 7.5 0 0 1 14.998 0A17.933 
+                    17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+            </svg>
+            Informasi Profil
+        </h3>
 
-        <!-- Right: Icons -->
-        <div class="flex items-center space-x-4 text-white">
-            <!-- Notifikasi -->
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-9">
-                <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1 8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248A9.72 9.72 0 0 0 19.266 2.5Z" />
-                <path fill-rule="evenodd" d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0 24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205 8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1a2.25 2.25 0 1 1-4.5 0Z" clip-rule="evenodd" />
-                </svg>
-
-            </button>
-
-            <!-- User -->
-                <a href="/profile" class="hover:text-gray-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
-                        fill="currentColor" class="size-9">
-                        <path fill-rule="evenodd" 
-                            d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" 
-                            clip-rule="evenodd" />
-                    </svg>
-                </a>
+        <form id="profileForm" enctype="multipart/form-data" class="space-y-3">
+            @csrf
+            <!-- Foto Profil -->
+            <div class="flex flex-col items-center mb-4">
+                <img id="avatarPreview"
+                    src="{{ $admin->avatar ? asset('storage/' . $admin->avatar) : asset('images/default-avatar.png') }}"
+                    class="w-20 h-20 rounded-full border-2 border-primary shadow-sm">
+                <button type="button" onclick="document.getElementById('avatarInput').click()"
+                    class="mt-2 text-xs text-primary hover:underline">Ubah Foto Profil</button>
+                <input type="file" id="avatarInput" name="avatar" accept="image/*" class="hidden">
             </div>
-        </div>
 
-        <!-- Sidebar -->
-        <div id="sidebar" 
-            class="fixed top-0 left-0 h-full w-64 bg-[#2C3E50] text-white transform -translate-x-full transition-transform duration-300 z-50">
-        <!-- Header -->
-        <div class="px-6 pt-6 pb-10">
-            <a href="#" class="flex items-center gap-3 mt-[10px]">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    class="size-10 text-primary" fill="none" viewBox="0 0 24 24" 
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                    <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                    <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-                </svg>
-                <span class="text-base font-medium">ADMIN</span>
-            </a>
-            <hr class="mt-2 border-gray-400/50">
-        </div>
-
-                    <!-- Menu -->
-                    <nav class="mt-4">
-                        <ul class="space-y-1">
-                            <!-- Dashboard -->
-                            <li>
-                                <a href="{{ url('/admin/dashboard') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/>
-                                    <rect width="7" height="9" x="14" y="12" rx="1"/>
-                                    <rect width="7" height="5" x="3" y="16" rx="1"/>
-                                    </svg>
-                                    <span>DASHBOARD</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-
-                            <!-- Profil -->
-                            <li>
-                                <a href="{{ route('admin.profile.index') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                    </svg>
-                                    <span>PROFIL</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-
-                            <!-- Data Santri -->
-                            <li>
-                                <a href="{{ route('admin.santri.index') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>
-                                    </svg>
-                                    <span>DATA SANTRI</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-
-                            <!-- Input Pembayaran -->
-                            <li>
-                                <a href="{{ route('admin.pembayaran.input') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote-arrow-down-icon lucide-banknote-arrow-down"><path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="m16 19 3 3 3-3"/><path d="M18 12h.01"/>
-                                    <path d="M19 16v6"/><path d="M6 12h.01"/><circle cx="12" cy="12" r="2"/>
-                                    </svg>
-                                    <span>INPUT PEMBAYARAN</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-
-                            <!-- Laporan -->
-                            <li>
-                                <a href="{{ route('admin.laporan') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-minus-icon lucide-clipboard-minus"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
-                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14h6"/>
-                                    </svg>
-                                    <span>LAPORAN</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-                        </ul>
-                    </nav>
-
-             <!-- Tombol Logout -->
-            <div class="absolute bottom-6 w-full px-4">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" 
-                        class="flex items-center gap-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition w-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M18 12H9m9 0-3-3m3 3-3 3" />
-                        </svg>
-                        <span class="font-semibold text-sm">KELUAR</span>
-                    </button>
-                </form>
-                    <footer class="text-center text-zinc-400 text-xs mt-10 -mb-[10px]">
-                        © 2025 | Majelis Ta’lim Al-Mujahidin
-                    </footer>
+            <div>
+                <label class="text-xs font-medium text-gray-600">Nama Lengkap</label>
+                <input type="text" name="name" value="{{ $admin->name }}"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30">
             </div>
+            <div>
+                <label class="text-xs font-medium text-gray-600">No Telepon</label>
+                <input type="text" name="phone" value="{{ $admin->phone ?? '' }}"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30">
+            </div>
+            <div>
+                <label class="text-xs font-medium text-gray-600">Email</label>
+                <input type="email" name="email" value="{{ $admin->email }}"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30">
+            </div>
+            <div>
+                <label class="text-xs font-medium text-gray-600">Alamat</label>
+                <textarea name="address"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30">{{ $admin->address ?? '' }}</textarea>
+            </div>
+            <div class="text-right mt-3">
+                <button type="submit"
+                    class="bg-primary text-white px-4 py-1.5 text-sm rounded-md hover:bg-teal-700/80 transition">
+                    Simpan
+                </button>
+            </div>
+        </form>
     </div>
 
-<!-- Container Putih Utama -->
-<div class="bg-white rounded-2xl shadow-lg p-4 mx-6 relative z-40 -mt-[70px] min-h-screen flex flex-col">
-    <!-- Konten -->
-    <div class="p-6 bg-white rounded-2xl flex-1 flex flex-col">
-        
-        <!-- Header + Search + Tombol -->
-        <div class="flex items-center justify-between mt-[65px] mb-4">
-            <h1 class="text-2xl font-bold flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
-                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
-                     class="size-9">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M18 18.72a9.094 9.094 0 0 0 3.741-.479
-                             3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0
-                             .225-.012.447-.037.666A11.944 11.944 0 0 1 
-                             12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 
-                             6.062 0 0 1 6 18.719m12 0a5.971 5.971 
-                             0 0 0-.941-3.197m0 0A5.995 5.995 
-                             0 0 0 12 12.75a5.995 5.995 0 0 
-                             0-5.058 2.772m0 0a3 3 0 0 
-                             0-4.681 2.72 8.986 8.986 0 0 
-                             0 3.74.477m.94-3.197a5.971 
-                             5.971 0 0 0-.94 3.197M15 
-                             6.75a3 3 0 1 1-6 0 3 3 
-                             0 0 1 6 0Zm6 3a2.25 2.25 
-                             0 1 1-4.5 0 2.25 2.25 
-                             0 0 1 4.5 0Zm-13.5 0a2.25 
-                             2.25 0 1 1-4.5 0 2.25 
-                             2.25 0 0 1 4.5 0Z" />
-                </svg>
-                PROFIL PENGGUNA
-            </h1>
+    <!-- Form Update Password -->
+    <div class="bg-white shadow-sm rounded-lg p-4 mr-[15px] border border-gray-200">
+        <h3 class="text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.2" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 
+                    1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 
+                    17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 
+                    .43-1.563A6 6 0 1 1 21.75 8.25Z"/>
+            </svg>
+            Update Password
+        </h3>
 
-<!-- Overlay -->
-<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="toggleSidebar()"></div>
+        <form id="passwordForm" class="space-y-3 relative">
+            @csrf
+            <div class="relative">
+                <label class="text-xs font-medium text-gray-600">Password Saat Ini</label>
+                <input type="password" id="current_password" name="current_password"
+                    placeholder="Masukkan password saat ini"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30 pr-8">
+                <button type="button" onclick="togglePassword('current_password', this)"
+                    class="absolute right-2 top-8 text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.2"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 
+                            7.51 7.36 4.5 12 4.5c4.637 0 8.573 3.007 
+                            9.963 7.178.07.207.07.431 0 
+                            .639C20.577 16.49 16.64 19.5 
+                            12 19.5c-4.637 0-8.573-3.007-9.963-7.178z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="relative">
+                <label class="text-xs font-medium text-gray-600">Password Baru</label>
+                <input type="password" id="new_password" name="new_password"
+                    placeholder="Masukkan password baru"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30 pr-8">
+                <button type="button" onclick="togglePassword('new_password', this)"
+                    class="absolute right-2 top-8 text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.2"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 
+                            7.51 7.36 4.5 12 4.5c4.637 0 8.573 3.007 
+                            9.963 7.178.07.207.07.431 0 
+                            .639C20.577 16.49 16.64 19.5 
+                            12 19.5c-4.637 0-8.573-3.007-9.963-7.178z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="relative">
+                <label class="text-xs font-medium text-gray-600">Konfirmasi Password Baru</label>
+                <input type="password" id="new_password_confirmation" name="new_password_confirmation"
+                    placeholder="Konfirmasi password baru"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30 pr-8">
+                <button type="button" onclick="togglePassword('new_password_confirmation', this)"
+                    class="absolute right-2 top-8 text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.2"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 
+                            7.51 7.36 4.5 12 4.5c4.637 0 8.573 3.007 
+                            9.963 7.178.07.207.07.431 0 
+                            .639C20.577 16.49 16.64 19.5 
+                            12 19.5c-4.637 0-8.573-3.007-9.963-7.178z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex justify-between mt-3">
+                <button type="reset"
+                    class="bg-gray-300 text-gray-800 text-sm px-4 py-1.5 rounded-md hover:bg-gray-400 transition">Batal</button>
+                <button type="submit"
+                    class="bg-primary text-white text-sm px-4 py-1.5 rounded-md hover:bg-teal-700/80 transition">Ubah</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Crop Foto -->
+<div id="cropModal" class="fixed inset-0 bg-black/70 flex justify-center items-center hidden overflow-auto"
+     style="z-index: 99999;">
+    <div class="bg-white p-4 rounded-lg shadow-lg w-[350px] sm:w-[400px] md:w-[450px]">
+        <h3 class="text-center font-semibold mb-2 text-gray-800">Atur Pemotongan Foto</h3>
+        <div class="flex justify-center">
+            <img id="cropImage" class="max-w-full rounded-md">
+        </div>
+        <div class="flex justify-between mt-4">
+            <button id="cancelCrop" class="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500 transition">Batal</button>
+            <button id="saveCrop" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">Simpan</button>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
 
 <script>
-    function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("overlay");
+document.addEventListener("DOMContentLoaded", () => {
 
-    sidebar.classList.toggle("-translate-x-full");
-    overlay.classList.toggle("hidden");}
+    // Toggle Password Visibility (GLOBAL FUNCTION)
+    window.togglePassword = function(inputId, button) {
+        const input = document.getElementById(inputId);
+        
+        const eyeIcon = `
+            <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-4 h-4'>
+                <path stroke-linecap='round' stroke-linejoin='round'
+                    d='M2.036 12.322a1.012 1.012 0 010-.639
+                    C3.423 7.51 7.36 4.5 12 4.5
+                    c4.637 0 8.573 3.007 9.963 7.178
+                    .07.207.07.431 0 .639
+                    C20.577 16.49 16.64 19.5 12 19.5
+                    c-4.637 0-8.573-3.007-9.963-7.178z' />
+                <path stroke-linecap='round' stroke-linejoin='round'
+                    d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' />
+            </svg>
+        `;
+
+        const eyeSlashIcon = `
+            <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-4 h-4'>
+                <path stroke-linecap='round' stroke-linejoin='round'
+                    d='M3.98 8.223A10.477 10.477 0 001.5 12
+                    c1.676 4.257 6.03 7.5 10.5 7.5
+                    1.886 0 3.676-.435 5.25-1.207M6.228 6.228
+                    A10.45 10.45 0 0112 4.5
+                    c4.47 0 8.824 3.243 10.5 7.5
+                    a10.523 10.523 0 01-4.17 5.318M6.228 6.228
+                    L3 3m3.228 3.228l12.544 12.544
+                    M9.88 9.88a3 3 0 104.24 4.24' />
+            </svg>
+        `;
+
+        if (input.type === "password") {
+            input.type = "text";
+            button.innerHTML = eyeSlashIcon;
+        } else {
+            input.type = "password";
+            button.innerHTML = eyeIcon;
+        }
+    };
+
+    // SCRIPT CROP FOTO
+    let cropper;
+    const avatarInput = document.getElementById("avatarInput");
+    const avatarPreview = document.getElementById("avatarPreview");
+    const cropModal = document.getElementById("cropModal");
+    const cropImage = document.getElementById("cropImage");
+    let oldAvatar = avatarPreview.src;
+
+    avatarInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                cropImage.src = event.target.result;
+                cropModal.classList.remove("hidden");
+
+                if (cropper) cropper.destroy();
+                cropper = new Cropper(cropImage, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.getElementById("cancelCrop").addEventListener("click", () => {
+        cropModal.classList.add("hidden");
+        avatarPreview.src = oldAvatar;
+        avatarInput.value = "";
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
+    });
+
+    document.getElementById("saveCrop").addEventListener("click", () => {
+        if (cropper) {
+            const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+            canvas.toBlob((blob) => {
+                const file = new File([blob], "avatar.jpg", { type: "image/jpeg" });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                avatarInput.files = dataTransfer.files;
+                avatarPreview.src = canvas.toDataURL();
+                oldAvatar = avatarPreview.src;
+
+                cropper.destroy();
+                cropper = null;
+                cropModal.classList.add("hidden");
+            });
+        }
+    });
+
+    // SCRIPT UPDATE PROFIL
+    const profileForm = document.getElementById("profileForm");
+
+    profileForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(profileForm);
+
+        fetch("{{ route('admin.profile.update') }}", {
+            method: "POST",
+            headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Profil berhasil diperbarui!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: data.message || "Terjadi kesalahan!",
+                });
+            }
+        })
+        .catch(err => {
+            console.error("Error saat update profil:", err);
+            Swal.fire({
+                icon: "error",
+                title: "Gagal mengirim data ke server!"
+            });
+        });
+    });
+
+    // SCRIPT UPDATE PASSWORD
+    const passwordForm = document.getElementById("passwordForm");
+
+    passwordForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(passwordForm);
+
+        fetch("{{ route('admin.profile.password') }}", {
+            method: "POST",
+            headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: data.message || "Password berhasil diperbarui!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                passwordForm.reset();
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: data.message || "Gagal memperbarui password!"
+                });
+            }
+        })
+        .catch(err => {
+            console.error("Error saat update password:", err);
+            Swal.fire({
+                icon: "error",
+                title: "Terjadi kesalahan koneksi!"
+            });
+        });
+    });
+
+});
 </script>
-</body>
-</html>
+@endpush

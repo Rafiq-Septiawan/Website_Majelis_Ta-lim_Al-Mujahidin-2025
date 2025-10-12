@@ -1,13 +1,15 @@
+@extends('admin.layouts.admin')
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DASHBOARD SANTRI</title>
+    <title>LAPORAN KEUANGAN</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 </head>
 <body class="bg-primary">
-        <!-- Navbar -->
+    <!-- Navbar -->
       <div class="bg-primary px-4 py-2 flex items-center justify-between 
               mx-14 mt-8 rounded-xl shadow-lg relative z-50 ">
 
@@ -33,31 +35,18 @@
         </div>
 
         <!-- Right: Icons -->
-        <div class="flex items-center space-x-4 text-white">     
+        <div class="flex items-center space-x-4 text-white">
             <!-- Notifikasi -->
-            <a href="{{ route('admin.notifications') }}" class="relative">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    viewBox="0 0 24 24" 
-                    fill="currentColor" 
-                    class="size-9">
-                    <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 
-                            9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248
-                            A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1
-                            8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248
-                            A9.72 9.72 0 0 0 19.266 2.5Z" />
-                    <path fill-rule="evenodd" 
-                        d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75
-                            a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206
-                            c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0
-                            24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205
-                            8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18
-                            c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1
-                            a2.25 2.25 0 1 1-4.5 0Z" 
-                        clip-rule="evenodd" />
+            <button>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-9">
+                <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1 8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248A9.72 9.72 0 0 0 19.266 2.5Z" />
+                <path fill-rule="evenodd" d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0 24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205 8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1a2.25 2.25 0 1 1-4.5 0Z" clip-rule="evenodd" />
                 </svg>
 
+            </button>
+
             <!-- User -->
-                <a href="{{ route('admin.profile.index') }}" class="hover:text-gray-300">
+                <a href="/profile" class="hover:text-gray-300">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
                         fill="currentColor" class="size-9">
                         <path fill-rule="evenodd" 
@@ -65,12 +54,12 @@
                             clip-rule="evenodd" />
                     </svg>
                 </a>
+            </div>
         </div>
-    </div>
 
         <!-- Sidebar -->
         <div id="sidebar" 
-            class="fixed top-0 left-0 h-full w-64 bg-[#008080] text-white transform -translate-x-full transition-transform duration-300 z-50">
+            class="fixed top-0 left-0 h-full w-64 bg-[#2C3E50] text-white transform -translate-x-full transition-transform duration-300 z-50">
                     <!-- Header -->
                     <div class="px-6 pt-6 pb-10">
                         <a href="#" class="flex items-center gap-3 mt-[10px]">
@@ -161,79 +150,48 @@
     </div>
 
 <!-- Container Putih Utama -->
-  <div class="bg-white rounded-2xl shadow-lg p-4 mx-6 relative z-40 -mb-[20px] mb-[20px] -mt-[70px]">
-
+<div class="bg-white rounded-2xl shadow-lg p-4 mx-6 relative z-40 -mt-[70px] min-h-screen flex flex-col">
     <!-- Konten -->
-    <div class="p-4 bg-white rounded-2xl p-2">
-        <h1 class="font-bold text-2xl text-stone-950 mb-4 mt-[65px]">Dashboard Wali Santri</h1>
-        <p class="text-gray-200 text-zinc-400 mb-6 -mt-[10px]">Kelola pembayaran dan lihat riwayat transaksi</p>
+    <div class="p-6 bg-white rounded-2xl flex-1 flex flex-col">
+        
+        <!-- Header + Search + Tombol -->
+        <div class="flex items-center justify-between mt-[65px] mb-4">
+            <h1 class="text-2xl font-bold flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
+                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
+                     class="size-9">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M18 18.72a9.094 9.094 0 0 0 3.741-.479
+                             3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0
+                             .225-.012.447-.037.666A11.944 11.944 0 0 1 
+                             12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 
+                             6.062 0 0 1 6 18.719m12 0a5.971 5.971 
+                             0 0 0-.941-3.197m0 0A5.995 5.995 
+                             0 0 0 12 12.75a5.995 5.995 0 0 
+                             0-5.058 2.772m0 0a3 3 0 0 
+                             0-4.681 2.72 8.986 8.986 0 0 
+                             0 3.74.477m.94-3.197a5.971 
+                             5.971 0 0 0-.94 3.197M15 
+                             6.75a3 3 0 1 1-6 0 3 3 
+                             0 0 1 6 0Zm6 3a2.25 2.25 
+                             0 1 1-4.5 0 2.25 2.25 
+                             0 0 1 4.5 0Zm-13.5 0a2.25 
+                             2.25 0 1 1-4.5 0 2.25 
+                             2.25 0 0 1 4.5 0Z" />
+                </svg>
+                LAPORAN KEUANGAN
+            </h1>
 
-        <!-- Statistik -->
-        <div class="grid grid-cols-3 gap-4 mb-6">
-            <!-- Total Dibayar -->
-            <div class="bg-gray-200 rounded-lg p-4 flex flex-col justify-between">
-                <p class="text-sm font-medium">Total Dibayar</p>
-                <h2 class="text-xl font-bold text-green-700">Rp 1.000.000</h2>
-                <span class="text-xs text-gray-600">2 Pembayaran</span>
-            </div>
+<!-- Overlay -->
+<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="toggleSidebar()"></div>
 
-            <!-- Belum Bayar -->
-            <div class="bg-gray-200 rounded-lg p-4 flex flex-col justify-between">
-                <p class="text-sm font-medium">Belum Bayar</p>
-                <h2 class="text-xl font-bold text-red-600">Rp 2.000.000</h2>
-                <span class="text-xs text-gray-600">2 Tagihan</span>
-            </div>
+<script>
+    function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
 
-            <!-- Tombol Pembayaran -->
-            <div class="bg-gray-200 rounded-lg p-4 flex flex-col justify-center items-center">
-                <p class="text-sm font-medium">Pembayaran</p>
-                <button class="bg-teal-500 text-white px-6 py-2 mt-2 rounded-lg font-semibold hover:bg-teal-600">
-                    Bayar
-                </button>
-            </div>
-        </div>
-
-        <!-- Riwayat Pembayaran -->
-        <div class="bg-gray-200 rounded-lg p-6 mb-6">
-            <h3 class="font-semibold mb-6">Riwayat Pembayaran</h3>
-            <ul class="space-y-4 text-sm">
-                <li class="flex justify-between items-center">
-                    <div>
-                        <p class="font-medium">Januari 2025</p>
-                        <p class="text-xs text-gray-600">Jatuh tempo: 10/01/2025</p>
-                        <p class="text-xs text-gray-600">Dibayar: 8/1/2024 via Transfer Bank</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="font-bold">Rp 50.000</p>
-                        <span class="text-green-600 font-medium">Lunas</span>
-                    </div>
-                </li>
-
-                <li class="flex justify-between items-center">
-                    <div>
-                        <p class="font-medium">Februari 2025</p>
-                        <p class="text-xs text-gray-600">Jatuh tempo: 12/02/2025</p>
-                        <p class="text-xs text-gray-600">Dibayar: 12/2/2025 via Cash</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="font-bold">Rp 50.000</p>
-                        <span class="text-green-600 font-medium">Lunas</span>
-                    </div>
-                </li>
-
-                <li class="flex justify-between items-center">
-                    <div>
-                        <p class="font-medium">April 2025</p>
-                        <p class="text-xs text-gray-600">Jatuh tempo: 10/04/2025</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="font-bold">Rp 50.000</p>
-                        <span class="text-orange-600 font-medium">Menunggu</span>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <footer class="text-zinc-400">© 2025 | Majelis Ta’lim Al-Mujahidin</footer>
-    </div>
+    sidebar.classList.toggle("-translate-x-full");
+    overlay.classList.toggle("hidden");}
+</script>
 </body>
 </html>

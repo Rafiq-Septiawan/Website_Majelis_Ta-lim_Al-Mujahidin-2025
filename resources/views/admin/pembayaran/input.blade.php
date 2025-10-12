@@ -1,208 +1,343 @@
 @extends('admin.layouts.admin')
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INPUT PEMBAYARAN</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-</head>
-<body class="bg-primary">
-    <!-- Navbar -->
-      <div class="bg-primary px-4 py-2 flex items-center justify-between 
-              mx-14 mt-8 rounded-xl shadow-lg relative z-50 ">
+@section("title", "Input Pembayaran | Majelis Ta'lim Al-Mujahidin")
 
-        <!-- Overlay -->
-        <div id="overlay" 
-            class="fixed inset-0 bg-black bg-opacity-85 hidden z-40" 
-            onclick="toggleSidebar()">
-        </div>
+@push('styles')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endpush
 
-        <!-- Hamburger -->
-        <button onclick="toggleSidebar()" class="text-white text-3xl font-bold">&#9776;</button>
-
-        <!-- Search Bar -->
-        <div class="flex items-left bg-white px-3 py-2 rounded-lg w-1/2">
-            <input type="text" placeholder="Cari..." class="w-full outline-none text-gray-700">
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
-        </div>
-
-        <!-- Right: Icons -->
-        <div class="flex items-center space-x-4 text-white">
-            <!-- Notifikasi -->
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-9">
-                <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1 8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248A9.72 9.72 0 0 0 19.266 2.5Z" />
-                <path fill-rule="evenodd" d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0 24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205 8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1a2.25 2.25 0 1 1-4.5 0Z" clip-rule="evenodd" />
-                </svg>
-
-            </button>
-
-            <!-- User -->
-                <a href="/profile" class="hover:text-gray-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
-                        fill="currentColor" class="size-9">
-                        <path fill-rule="evenodd" 
-                            d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" 
-                            clip-rule="evenodd" />
-                    </svg>
-                </a>
-            </div>
-        </div>
-
-        <!-- Sidebar -->
-        <div id="sidebar" 
-            class="fixed top-0 left-0 h-full w-64 bg-[#2C3E50] text-white transform -translate-x-full transition-transform duration-300 z-50">
-        <!-- Header -->
-        <div class="px-6 pt-6 pb-10">
-            <a href="#" class="flex items-center gap-3 mt-[10px]">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    class="size-10 text-primary" fill="none" viewBox="0 0 24 24" 
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                    <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                    <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-                </svg>
-                <span class="text-base font-medium">ADMIN</span>
-            </a>
-            <hr class="mt-2 border-gray-400/50">
-        </div>
-
-                    <!-- Menu -->
-                    <nav class="mt-4">
-                        <ul class="space-y-1">
-                            <!-- Dashboard -->
-                            <li>
-                                <a href="{{ url('/admin/dashboard') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/>
-                                    <rect width="7" height="9" x="14" y="12" rx="1"/>
-                                    <rect width="7" height="5" x="3" y="16" rx="1"/>
-                                    </svg>
-                                    <span>DASHBOARD</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-
-                            <!-- Profil -->
-                            <li>
-                                <a href="{{ route('admin.profile.index') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                    </svg>
-                                    <span>PROFIL</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-
-                            <!-- Data Santri -->
-                            <li>
-                                <a href="{{ route('admin.santri.index') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open-icon lucide-folder-open"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>
-                                    </svg>
-                                    <span>DATA SANTRI</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-
-                            <!-- Input Pembayaran -->
-                            <li>
-                                <a href="{{ route('admin.pembayaran.input') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote-arrow-down-icon lucide-banknote-arrow-down"><path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="m16 19 3 3 3-3"/><path d="M18 12h.01"/>
-                                    <path d="M19 16v6"/><path d="M6 12h.01"/><circle cx="12" cy="12" r="2"/>
-                                    </svg>
-                                    <span>INPUT PEMBAYARAN</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-
-                            <!-- Laporan -->
-                            <li>
-                                <a href="{{ route('admin.laporan') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-minus-icon lucide-clipboard-minus"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
-                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14h6"/>
-                                    </svg>
-                                    <span>LAPORAN</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-                        </ul>
-                    </nav>
-
-             <!-- Tombol Logout -->
-            <div class="absolute bottom-6 w-full px-4">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" 
-                        class="flex items-center gap-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition w-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M18 12H9m9 0-3-3m3 3-3 3" />
-                        </svg>
-                        <span class="font-semibold text-sm">KELUAR</span>
-                    </button>
-                </form>
-                    <footer class="text-center text-zinc-400 text-xs mt-10 -mb-[10px]">
-                        © 2025 | Majelis Ta’lim Al-Mujahidin
-                    </footer>
-            </div>
-    </div>
-
-<!-- Container Putih Utama -->
-<div class="bg-white rounded-2xl shadow-lg p-4 mx-6 relative z-40 -mt-[70px] min-h-screen flex flex-col">
+@section('content')
     <!-- Konten -->
-    <div class="p-6 bg-white rounded-2xl flex-1 flex flex-col">
-        
-        <!-- Header + Search + Tombol -->
-        <div class="flex items-center justify-between mt-[65px] mb-4">
+    <div class="p-5 bg-white rounded-2xl">
+        <!-- Judul Halaman -->
+        <div class="flex items-center justify-between mt-[60px] mb-6">
             <h1 class="text-2xl font-bold flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
-                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
-                     class="size-9">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M18 18.72a9.094 9.094 0 0 0 3.741-.479
-                             3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0
-                             .225-.012.447-.037.666A11.944 11.944 0 0 1 
-                             12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 
-                             6.062 0 0 1 6 18.719m12 0a5.971 5.971 
-                             0 0 0-.941-3.197m0 0A5.995 5.995 
-                             0 0 0 12 12.75a5.995 5.995 0 0 
-                             0-5.058 2.772m0 0a3 3 0 0 
-                             0-4.681 2.72 8.986 8.986 0 0 
-                             0 3.74.477m.94-3.197a5.971 
-                             5.971 0 0 0-.94 3.197M15 
-                             6.75a3 3 0 1 1-6 0 3 3 
-                             0 0 1 6 0Zm6 3a2.25 2.25 
-                             0 1 1-4.5 0 2.25 2.25 
-                             0 0 1 4.5 0Zm-13.5 0a2.25 
-                             2.25 0 1 1-4.5 0 2.25 
-                             2.25 0 0 1 4.5 0Z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-9 text-gray-800 group-hover:scale-110 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="m16 19 3 3 3-3"/><circle cx="12" cy="12" r="2"/>
                 </svg>
                 INPUT PEMBAYARAN
             </h1>
+            <button onclick="window.history.back()" class="flex items-center bg-primary hover:bg-teal-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+                </svg>
+                Kembali
+            </button>
+        </div>
 
-<!-- Overlay -->
-<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="toggleSidebar()"></div>
+        <!-- Dua Kolom: Cari Santri & Form Pembayaran (Versi Compact) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
+            <!-- Cari Data Santri -->
+            <div class="bg-gray-100 rounded-lg p-5 -ml-4 shadow-inner">
+                <h2 class="text-base font-bold mb-3 text-gray-700 text-center">CARI SANTRI</h2>
+                <div class="flex flex-col gap-2">
+                    <label for="nama_santri" class="font-medium text-gray-700 text-sm">Nama Santri</label>
+                    <div class="flex items-center bg-white rounded-md shadow-sm relative">
+                        <input type="text" id="nama_santri" name="nama_santri" placeholder="Masukkan Nama Santri" autocomplete="off"
+                            class="w-full p-1.5 rounded-l-md border border-gray-300 text-sm focus:outline-none focus:ring-emerald-400">
+                        <button id="btnCari" class="bg-primary hover:bg-teal-700 text-white font-semibold px-3 py-1.5 rounded-r-md text-sm transition">
+                            CARI
+                        </button>
+                        <div id="searchResults" class="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 hidden z-50 max-h-52 overflow-y-auto"></div>
+                    </div>
+                </div>
 
+                <!-- Informasi Santri yang Dipilih -->
+                <div id="santriInfo" class="mt-4 hidden">
+                    <div class="bg-white from-gray-50 to-gray-100 rounded-lg p-3 shadow-md border-l-4 border-primary text-sm">
+                        <h3 class="font-semibold text-emerald-700 mb-2">Data Santri Terpilih:</h3>
+                        <div class="space-y-1">
+                            <p><span class="font-medium">Nama:</span> <span id="infoNama"></span></p>
+                            <p><span class="font-medium">Jenis Kelamin:</span> <span id="infoJK"></span></p>
+                            <p><span class="font-medium">Tanggal Lahir:</span> <span id="infoTglLahir"></span></p>
+                            <p><span class="font-medium">Wali:</span> <span id="infoWali"></span></p>
+                            <p><span class="font-medium">Alamat:</span> <span id="infoAlamat"></span></p>
+                            <p><span class="font-medium">Telepon:</span> <span id="infoTelepon"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Input Pembayaran -->
+            <div class="bg-gray-100 rounded-lg p-5 -mr-4 shadow-inner">
+                <h2 class="text-base font-bold mb-3 text-gray-700 text-center">FORM INPUT PEMBAYARAN</h2>
+
+                <form id="formPembayaran" action="{{ route('admin.pembayaran.store') }}" method="POST" class="flex flex-col gap-3 text-sm">
+                    @csrf
+                    <input type="hidden" id="santri_id" name="santri_id">
+                    <input type="hidden" id="nominal_hidden" name="nominal">
+                    <input type="hidden" id="tanggal" name="tanggal">
+
+                    <div>
+                        <label for="nama_santri_display" class="font-medium text-gray-700">Nama Santri</label>
+                        <input type="text" id="nama_santri_display" name="nama_santri" readonly
+                            placeholder="Pilih santri terlebih dahulu"
+                            class="w-full mt-1 p-1.5 rounded-md border border-gray-300 bg-gray-50 text-gray-600 text-sm">
+                    </div>
+
+                    <div>
+                        <label for="nominal_display" class="font-medium text-gray-700">Nominal Pembayaran</label>
+                        <div class="relative mt-1">
+                            <span class="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 font-semibold text-sm">Rp</span>
+                            <input type="text" id="nominal_display" placeholder="0"
+                                class="w-full pl-8 pr-2 py-1.5 rounded-md border border-gray-300 focus:outline-none focus:ring-emerald-400 text-gray-800 font-medium text-sm">
+                        </div>
+                        <p id="nominal_warning" 
+                            class="text-xs text-red-500 mt-1 min-h-[16px] opacity-0 transition-opacity duration-200">
+                            Minimal pembayaran Rp 50.000
+                        </p>
+                    </div>
+
+                    <div>
+                        <label for="bulan" class="font-medium text-gray-700">Bulan Pembayaran</label>
+                        <input type="month" id="bulan" name="bulan"
+                            class="w-full mt-1 mb-6 p-1.5 rounded-md border border-gray-300 focus:outline-none focus:ring-emerald-400 text-sm" required>
+                    </div>
+
+                    <button type="submit" class="bg-primary hover:bg-teal-700 text-white font-semibold py-2 rounded-md shadow-md hover:shadow-lg transition text-center text-sm">
+                        SIMPAN
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
 <script>
-    function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("overlay");
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // Alert Success/Error dari Laravel
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                showConfirmButton: true,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#14b8a6',
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        @endif
 
-    sidebar.classList.toggle("-translate-x-full");
-    overlay.classList.toggle("hidden");}
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#ef4444',
+            });
+        @endif
+
+        // Format Rupiah
+        function formatRupiah(angka) {
+            return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function unformatRupiah(rupiah) {
+            return parseInt(rupiah.replace(/\./g, '')) || 0;
+        }
+
+        // Input Nominal dengan Format Rupiah + Validasi Minimal
+        const nominalDisplay = document.getElementById('nominal_display');
+        const nominalHidden = document.getElementById('nominal_hidden');
+        const warningText = document.getElementById('nominal_warning');
+
+        nominalDisplay.addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, ''); // hanya angka
+
+            if (value) {
+                const angka = parseInt(value);
+
+                // Validasi minimal Rp 50.000
+                if (angka < 50000) {
+                    warningText.classList.add('opacity-100');
+                    warningText.classList.remove('opacity-0');
+                } else {
+                    warningText.classList.add('opacity-0');
+                    warningText.classList.remove('opacity-100');
+                }
+
+                e.target.value = formatRupiah(value);
+                nominalHidden.value = angka;
+            } else {
+                e.target.value = '';
+                nominalHidden.value = '';
+                warningText.classList.add('opacity-0');
+                warningText.classList.remove('opacity-100');
+            }
+        });
+
+        // AJAX Search Santri
+        const inputNamaSantri = document.getElementById('nama_santri');
+        const searchResults = document.getElementById('searchResults');
+        const santriInfo = document.getElementById('santriInfo');
+        const btnCari = document.getElementById('btnCari');
+
+        let selectedSantri = null;
+
+        // Live search saat mengetik
+        inputNamaSantri.addEventListener('input', function() {
+            const keyword = this.value.trim();
+            
+            // Jika search bar kosong atau kurang dari 2 karakter, sembunyikan semua
+            if (keyword.length < 1) { // UBAH JADI 1 HURUF
+                searchResults.classList.add('hidden');
+                santriInfo.classList.add('hidden');
+                
+                // Reset form pembayaran jika search bar dikosongkan
+                if (keyword.length === 0) {
+                    document.getElementById('santri_id').value = '';
+                    document.getElementById('nama_santri_display').value = '';
+                    selectedSantri = null;
+                }
+                return;
+            }
+
+            // Fetch data santri
+            fetch(`{{ route('admin.santri.search') }}?nama_santri=${encodeURIComponent(keyword)}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    let html = '<ul class="divide-y divide-gray-200">';
+                    data.forEach(santri => {
+                        html += `
+                            <li class="p-3 hover:bg-emerald-50 cursor-pointer transition" onclick='selectSantri(${JSON.stringify(santri)})'>
+                                <div class="font-semibold text-gray-800">${santri.nama}</div>
+                                <div class="text-xs text-gray-500">Wali: ${santri.wali} | ${santri.jenis_kelamin}</div>
+                            </li>
+                        `;
+                    });
+                    html += '</ul>';
+                    searchResults.innerHTML = html;
+                    searchResults.classList.remove('hidden');
+                } else {
+                    searchResults.innerHTML = '<div class="p-3 text-center text-gray-500">Tidak ada data ditemukan</div>';
+                    searchResults.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                searchResults.innerHTML = '<div class="p-3 text-center text-red-500">Terjadi kesalahan</div>';
+                searchResults.classList.remove('hidden');
+            });
+        });
+
+        // Pilih santri dari hasil pencarian (HARUS GLOBAL)
+        window.selectSantri = function(santri) {
+            selectedSantri = santri;
+            
+            // Isi form
+            document.getElementById('santri_id').value = santri.id;
+            document.getElementById('nama_santri_display').value = santri.nama;
+            document.getElementById('nama_santri').value = santri.nama;
+            
+            // Tampilkan info santri
+            document.getElementById('infoNama').textContent = santri.nama;
+            document.getElementById('infoJK').textContent = santri.jenis_kelamin;
+            document.getElementById('infoTglLahir').textContent = santri.tanggal_lahir;
+            document.getElementById('infoWali').textContent = santri.wali;
+            document.getElementById('infoAlamat').textContent = santri.alamat;
+            document.getElementById('infoTelepon').textContent = santri.telepon;
+            
+            santriInfo.classList.remove('hidden');
+            searchResults.classList.add('hidden');
+        };
+
+        // Sembunyikan dropdown saat klik di luar
+        document.addEventListener('click', function(e) {
+            if (!searchResults.contains(e.target) && e.target !== inputNamaSantri) {
+                searchResults.classList.add('hidden');
+            }
+        });
+
+        // Set tanggal hari ini sebagai default
+        document.getElementById('tanggal').value = new Date().toISOString().split('T')[0];
+
+        // Handle form submit dengan validasi
+        document.getElementById('formPembayaran').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const namaSantri = document.getElementById('nama_santri_display').value;
+            const nominal = nominalHidden.value;
+            const bulan = document.getElementById('bulan').value;
+
+            // Validasi
+            if (!namaSantri) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Perhatian!',
+                    text: 'Silakan pilih santri terlebih dahulu',
+                    confirmButtonColor: '#f59e0b',
+                });
+                return;
+            }
+
+            if (!nominal || parseInt(nominal) < 50000) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Perhatian!',
+                    text: 'Nominal pembayaran minimal Rp 50.000',
+                    confirmButtonColor: '#f59e0b',
+                });
+                return;
+            }
+
+            if (!bulan) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Perhatian!',
+                    text: 'Silakan pilih bulan pembayaran',
+                    confirmButtonColor: '#f59e0b',
+                });
+                return;
+            }
+
+            // Konfirmasi sebelum simpan
+            Swal.fire({
+                title: 'Konfirmasi Pembayaran',
+                html: `
+                    <div class="text-left">
+                        <p><strong>Nama Santri:</strong> ${namaSantri}</p>
+                        <p><strong>Nominal:</strong> Rp ${formatRupiah(nominal)}</p>
+                        <p><strong>Bulan:</strong> ${bulan}</p>
+                    </div>
+                    <br>
+                    <p>Apakah data sudah benar?</p>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#14b8a6',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Simpan!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Tampilkan loading
+                    Swal.fire({
+                        title: 'Menyimpan Data...',
+                        text: 'Mohon tunggu sebentar',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        showConfirmButton: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    
+                    // Submit form
+                    e.target.submit();
+                }
+            });
+        });
+    });
 </script>
-</body>
-</html>
+@endpush
