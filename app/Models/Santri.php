@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Santri extends Model
 {
+    public function pembayaran() {
+       return $this->hasMany(Pembayaran::class);
+    }
+
     use HasFactory;
 
-    // nama tabel (opsional, karena defaultnya plural dari model = santris)
     protected $table = 'santris';
 
-    // field yang boleh diisi (mass assignment)
     protected $fillable = [
         'nama',
         'jenis_kelamin',

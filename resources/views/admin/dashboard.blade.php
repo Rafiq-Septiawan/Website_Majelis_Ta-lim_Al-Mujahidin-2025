@@ -6,8 +6,12 @@
 
     <!-- Konten -->
     <div class="p-4 bg-white rounded-2xl p-2">
-        <h1 class="font-bold text-2xl text-stone-950 mb-6 mt-[65px]">Selamat Datang, Admin</h1>
-
+        <h1 class="flex item-center justify-between font-bold text-2xl text-stone-950 mb-8 mt-[65px] gap-2">Selamat Datang, Admin
+            <div id="clock"
+                class="bg-primary text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
+                <!-- jam real-time bakal muncul di sini -->
+            </div>
+        </h1>
     <!-- Statistik -->
     <div class="grid grid-cols-4 gap-8 mb-8">
         <!-- Total Santri -->
@@ -269,7 +273,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
                 if ((data.pembayaranTerbaru ?? []).length === 0) {
                     elPembayaranList.innerHTML = `
-                        <div class="text-center py-12">
+                        <div class="text-center fle item-center mt-[120px]">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto text-gray-300 mb-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
                             </svg>
@@ -287,11 +291,11 @@ document.addEventListener("DOMContentLoaded", function() {
                         <div class="bg-white rounded-lg p-4 flex justify-between items-center border-2 border-gray-100 hover:border-rose-400 hover:shadow-md transition">
                             <div class="flex-1">
                                 <p class="font-bold text-gray-800 text-base">${s.nama}</p>
-                                <p class="text-sm text-gray-600 mt-1">
-                                    <span class="font-medium">Wali:</span> ${s.wali}
+                                <p class="text-sm text-gray-900 mt-1">
+                                    <span class="font-bold">Wali:</span> ${s.wali}
                                 </p>
-                                <p class="text-xs text-gray-500 mt-0.5">
-                                    📞 ${s.telepon}
+                                <p class="text-sm text-gray-900 mt-0.5">
+                                    <span class="font-bold">Telepon: </span>${s.telepon}
                                 </p>
                             </div>
                             <div class="text-right ml-4">
@@ -321,7 +325,28 @@ document.addEventListener("DOMContentLoaded", function() {
 
     updateDashboard();
     setInterval(updateDashboard, 5000);
-});
+
+        // script jam //
+        function updateClock() {
+        const clock = document.getElementById("clock");
+        const now = new Date();
+
+        const hari = now.toLocaleDateString('id-ID', { weekday: 'long' });
+        const tanggal = now.getDate();
+        const bulan = now.toLocaleDateString('id-ID', { month: 'long' });
+        const tahun = now.getFullYear();
+
+        const jam = String(now.getHours()).padStart(2, '0');
+        const menit = String(now.getMinutes()).padStart(2, '0');
+        const detik = String(now.getSeconds()).padStart(2, '0');
+
+        const waktuLengkap = `${hari}, ${tanggal} ${bulan} ${tahun} • ${jam}:${menit}:${detik}`;
+        clock.textContent = waktuLengkap;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+    });
 </script>
 
     <style>

@@ -12,31 +12,25 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // ✅ Total santri
         $totalSantri = Santri::count();
 
-        // ✅ Santri yang sudah lunas (pernah bayar dengan status lunas)
         $sudahLunas = Pembayaran::where('status', 'lunas')
             ->distinct('santri_id')
             ->count('santri_id');
 
-        // ✅ Santri yang BELUM PERNAH BAYAR SAMA SEKALI
         $idSantriSudahBayar = Pembayaran::pluck('santri_id')->unique();
         $jumlahBelumBayar = Santri::whereNotIn('id', $idSantriSudahBayar)->count();
 
-        // ✅ Total pembayaran bulan ini
         $totalBulanIni = Pembayaran::whereMonth('tanggal_bayar', now()->month)
             ->whereYear('tanggal_bayar', now()->year)
             ->sum('jumlah_bayar');
 
-        // ✅ Pembayaran terbaru (5 terakhir) - PENTING: select semua kolom yang dibutuhkan
         $pembayaranTerbaru = Pembayaran::select('id', 'santri_id', 'nama_santri', 'bulan', 'jumlah_bayar', 'tanggal_bayar', 'status')
             ->orderBy('tanggal_bayar', 'desc')
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
 
-        // ✅ Santri yang belum pernah bayar (5 orang pertama)
         $santriBelumBayar = Santri::whereNotIn('id', $idSantriSudahBayar)
             ->take(5)
             ->get();
@@ -53,7 +47,6 @@ class DashboardController extends Controller
 
     public function getData()
     {
-        // ✅ API untuk realtime update dashboard
         $idSantriSudahBayar = Pembayaran::pluck('santri_id')->unique();
 
         return response()->json([

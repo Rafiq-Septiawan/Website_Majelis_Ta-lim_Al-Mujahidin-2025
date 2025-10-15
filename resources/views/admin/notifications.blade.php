@@ -1,86 +1,104 @@
 @extends('admin.layouts.admin')
 
-@section('title', 'Notifikasi | Majelis Ta’lim Al-Mujahidin')
+@section('title', 'Notifikasi | Majelis Ta\'lim Al-Mujahidin')
 
 @section('content')
-
-    <!-- Konten -->
-    <div class="p-6 bg-white rounded-2xl flex-1 flex flex-col">
-        
-    <!-- HEADER -->
-    <div class="mb-6">
-      <h2 class="text-2xl font-bold text-gray-800">Notifikasi</h2>
-      <p class="text-gray-500">Informasi terbaru dari aktivitas santri dan pembayaran.</p>
-    </div>
-
-    <!-- KARTU STATISTIK -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      <div class="bg-white p-5 rounded-xl shadow-md">
-        <h3 class="text-gray-500 text-sm mb-2">Total Santri</h3>
-        <p class="text-3xl font-bold text-green-700">120</p>
-        <span class="text-xs text-gray-400">2 santri baru minggu ini</span>
-      </div>
-
-      <div class="bg-white p-5 rounded-xl shadow-md">
-        <h3 class="text-gray-500 text-sm mb-2">Pembayaran Selesai</h3>
-        <p class="text-3xl font-bold text-green-700">86</p>
-        <span class="text-xs text-gray-400">+5 hari ini</span>
-      </div>
-
-      <div class="bg-white p-5 rounded-xl shadow-md">
-        <h3 class="text-gray-500 text-sm mb-2">Menunggu Konfirmasi</h3>
-        <p class="text-3xl font-bold text-green-700">12</p>
-        <span class="text-xs text-gray-400">Butuh pengecekan</span>
-      </div>
-
-      <div class="bg-white p-5 rounded-xl shadow-md">
-        <h3 class="text-gray-500 text-sm mb-2">Notifikasi Baru</h3>
-        <p class="text-3xl font-bold text-green-700">4</p>
-        <span class="text-xs text-gray-400">Diterima 1 jam lalu</span>
-      </div>
-    </div>
-
-    <!-- DAFTAR NOTIFIKASI -->
-    <div class="bg-white p-6 rounded-xl shadow-md">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">Riwayat Notifikasi</h3>
-      <ul class="divide-y divide-gray-200">
-        <li class="py-3 flex justify-between">
-          <div>
-            <p class="font-medium text-gray-800">Santri <span class="text-green-700">Ahmad Fauzi</span> telah melakukan pembayaran.</p>
-            <p class="text-sm text-gray-500">5 menit yang lalu</p>
-          </div>
-          <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">Pembayaran</span>
-        </li>
-
-        <li class="py-3 flex justify-between">
-          <div>
-            <p class="font-medium text-gray-800">Santri <span class="text-green-700">Siti Rahma</span> telah mengunggah bukti pembayaran.</p>
-            <p class="text-sm text-gray-500">1 jam yang lalu</p>
-          </div>
-          <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">Menunggu</span>
-        </li>
-
-        <li class="py-3 flex justify-between">
-          <div>
-            <p class="font-medium text-gray-800">Santri <span class="text-green-700">Rizky Ananda</span> belum melakukan pembayaran bulan ini.</p>
-            <p class="text-sm text-gray-500">Kemarin</p>
-          </div>
-          <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">Tertunda</span>
-        </li>
-      </ul>
-    </div>
+<div class="min-h-[80vh] p-6 mt-[50px]">
+  <div class="flex items-center justify-between">
+    <h2 class="text-3xl font-bold">NOTIFIKASI</h2>
+    <button onclick="window.history.back()" 
+            class="flex items-center bg-primary hover:bg-teal-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+      </svg>
+      Kembali
+    </button>
   </div>
 
-<!-- Overlay -->
-<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="toggleSidebar()"></div>
+  <p class="text-sm text-gray-500 mb-6">Sistem Informasi Pembayaran Majelis Ta'lim Al-Mujahidin</p>
 
+  {{-- Container notifikasi --}}
+  <div id="notificationList" 
+       class="space-y-4 text-gray-800 transition-all duration-200 flex flex-col min-h-[60vh]">
+    <p class="text-gray-400 text-sm flex items-center gap-2">Memuat notifikasi...</p>
+  </div>
+</div>
+
+{{-- SCRIPT --}}
 <script>
-    function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("overlay");
+document.addEventListener('DOMContentLoaded', function() {
+    fetchNotifications();
 
-    sidebar.classList.toggle("-translate-x-full");
-    overlay.classList.toggle("hidden");}
+    // refresh setiap 5 detik (realtime sederhana)
+    setInterval(fetchNotifications, 5000);
+});
+
+function fetchNotifications() {
+    fetch("{{ route('admin.notifications.fetch') }}")
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById('notificationList');
+            container.innerHTML = '';
+
+            let total = 0;
+
+            // Notifikasi pembayaran
+            if (data.pembayaran && data.pembayaran.length > 0) {
+                total += data.pembayaran.length;
+                data.pembayaran.forEach(item => {
+                    container.innerHTML += `
+                        <div class="bg-green-100 p-4 rounded-lg border-l-4 border-green-500 hover:shadow-md transition">
+                            <p class="font-medium text-primary">Pembayaran SPP Bulan ${item.bulan}</p>
+                            <p class="text-sm text-gray-600 font-bold">
+                                ${item.nama_santri} 
+                                <span class="text-gray-500 font-medium">telah melakukan pembayaran sebesar</span> 
+                                <span class="font-bold">Rp ${parseInt(item.jumlah_bayar).toLocaleString('id-ID')}</span>.
+                            </p>
+                            <p class="text-xs text-gray-500 mt-1">${timeAgo(item.updated_at)}</p>
+                        </div>
+                    `;
+                });
+            }
+
+            // Notifikasi santri baru
+            if (data.santriBaru && data.santriBaru.length > 0) {
+                total += data.santriBaru.length;
+                data.santriBaru.forEach(s => {
+                    container.innerHTML += `
+                        <div class="bg-blue-100 p-4 rounded-lg border-l-4 border-blue-500 hover:shadow-md transition">
+                            <p class="font-semibold text-blue-800">Registrasi Santri Baru</p>
+                            <p class="text-sm text-gray-700 font-extrabold">
+                                ${s.name} <span class="font-medium">telah terdaftar sebagai santri baru untuk tahun ajaran 2024/2025.</span>
+                            </p>
+                            <p class="text-xs text-gray-500 mt-1">${timeAgo(s.created_at)}</p>
+                        </div>
+                    `;
+                });
+            }
+
+            // Kalau kosong
+            if (total === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center text-center text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mb-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405M19.595 15.595A2.5 2.5 0 0018 14.5h-1m0 0a3.5 3.5 0 01-7 0m7 0V9.5a3.5 3.5 0 10-7 0v5m-4 3h18"/>
+                        </svg>
+                        <p class="text-sm font-medium">Belum ada notifikasi terbaru.</p>
+                    </div>
+                `;
+            }
+        })
+        .catch(err => console.error('Gagal mengambil data:', err));
+}
+
+function timeAgo(datetime) {
+    const now = new Date();
+    const then = new Date(datetime);
+    const diff = Math.floor((now - then) / 1000);
+    if (diff < 60) return 'Baru saja';
+    if (diff < 3600) return `${Math.floor(diff / 60)} menit yang lalu`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)} jam yang lalu`;
+    return `${Math.floor(diff / 86400)} hari yang lalu`;
+}
 </script>
-
 @endsection

@@ -17,7 +17,6 @@ class PembayaranController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validasi input
             $request->validate([
                 'santri_id' => 'required|exists:santris,id',
                 'nama_santri' => 'required',
@@ -30,7 +29,6 @@ class PembayaranController extends Controller
             $tanggal = now()->format('Y-m-d');
             $jumlahBulan = floor($nominal / 50000);
 
-            // Daftar bulan Indonesia
             $bulanIndo = [
                 1 => 'Januari', 2 => 'Februari', 3 => 'Maret',
                 4 => 'April', 5 => 'Mei', 6 => 'Juni',
@@ -38,11 +36,9 @@ class PembayaranController extends Controller
                 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
             ];
 
-            // Parse bulan awal
             list($tahun, $bulan) = explode('-', $bulanAwal);
             $indexBulan = (int) $bulan;
 
-            // Simpan pembayaran untuk beberapa bulan
             for ($i = 0; $i < $jumlahBulan; $i++) {
                 $bulanIndex = (($indexBulan + $i - 1) % 12) + 1;
                 $bulanBayar = $bulanIndo[$bulanIndex];
@@ -70,4 +66,14 @@ class PembayaranController extends Controller
     {
         return view('admin.pembayaran.input');
     }
+
+    public function laporan()
+    {
+        $santriSudahBayar = Pembayaran::pluck('santri_id')->toArray();
+
+        $santriBelumBayar = Santri::whereNotIn('id', $santriSudahBayar)->get();
+
+        return view('admin.pembayaran.laporan', compact('santriBelumBayar'));
+    }
+
 }

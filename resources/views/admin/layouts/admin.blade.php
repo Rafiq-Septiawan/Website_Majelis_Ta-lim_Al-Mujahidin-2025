@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard Admin')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    {{-- Stack untuk styles dari halaman child --}}
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     @stack('styles')
 </head>
 
-<body class="bg-primary min-h-screen">
-    {{-- Navbar dan Sidebar --}}
+<body class="bg-primary-gradient min-h-screen font-poppins text-gray-900 antialiased">
     @include('admin.layouts.navbar')
     @include('admin.layouts.sidebar')
 
@@ -27,7 +27,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gradient-to-br from-teal-700 via-teal-600 to-emerald-600 text-white py-12 mt-12 shadow-2xl relative overflow-hidden">
+    <footer class="bg-primary-gradient text-white py-12 mt-12 shadow-2xl relative overflow-hidden">
         <div class="absolute inset-0 opacity-10">
             <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
             <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/3 translate-y-1/3"></div>
@@ -70,7 +70,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 flex-shrink-0">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
                             </svg>
-                            <span>089502704706</span>
+                            <span>085281881608</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 flex-shrink-0">
@@ -106,7 +106,7 @@
                             </svg>
                         </a>
 
-                        <a href="https://wa.me/6289502704706" target="_blank" 
+                        <a href="https://wa.me/6285281881608" target="_blank" 
                         class="bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-lg transition transform hover:scale-110 hover:-translate-y-1 shadow-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6">
                                 <path d="M12.003 2C6.478 2 2 6.477 2 12c0 1.858.506 3.602 1.389 5.102L2 22l5.016-1.363A9.951 9.951 0 0 0 12.003 22C17.528 22 22 17.523 22 12S17.528 2 12.003 2zm0 18a7.945 7.945 0 0 1-4.065-1.108l-.29-.172-2.978.809.819-2.909-.188-.298A7.933 7.933 0 0 1 4 12a8.001 8.001 0 1 1 8.003 8zM8.29 7.636l-.478-.01c-.15 0-.388.055-.592.277-.204.223-.78.762-.78 1.858s.799 2.152.91 2.3c.112.149 1.54 2.458 3.797 3.345 1.875.736 2.254.589 2.66.553.406-.037 1.31-.535 1.495-1.05.185-.516.185-.958.13-1.05-.056-.093-.204-.149-.426-.261-.222-.111-1.31-.64-1.512-.712-.202-.074-.351-.112-.498.111-.149.223-.574.712-.704.859-.13.148-.26.166-.482.056-.222-.111-.937-.346-1.785-1.104-.66-.586-1.105-1.308-1.235-1.531-.13-.222-.014-.342.098-.453.1-.1.223-.26.334-.389.112-.13.149-.223.223-.371.074-.148.037-.278-.018-.39-.056-.111-.498-1.203-.681-1.648z" />

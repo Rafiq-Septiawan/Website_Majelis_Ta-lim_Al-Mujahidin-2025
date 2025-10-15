@@ -1,7 +1,14 @@
 <x-guest-layout>
     @section('title', "Verifikasi OTP")
-        <h2 class="text-center text-xl font-bold mb-4">VERIFIKASI OTP</h2>
-        <p class="text-center text-gray-600 mb-6">Masukkan kode OTP yang telah dikirim ke email</p>
+ 
+        <div class="flex flex-col items-center mb-6">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo Majelis Ta'lim"
+                 class="w-[80px] h-[80px] mb-4 drop-shadow-md">
+            <h2 class="text-2xl font-semibold text-gray-800 text-center tracking-wide">Verifikasi OTP</h2>
+            <p class="text-sm text-gray-500 mt-1 text-center">
+                Masukkan kode OTP yang telah dikirim ke email
+            </p>
+        </div>
 
         @if(session('status'))
             <div class="mb-4 text-green-600 text-sm text-center">
@@ -36,11 +43,17 @@
             <a href="{{ route('otp.generate') }}" class="text-blue-700">Kirim Ulang</a>
         </div>
 
-        <div class="mb-8">
-            <a href="{{ route('password.request') }}" class="flex items-center text-sm text-gray-600">
-                ← Kembali Ke Lupa Password
+                <!-- Link Kembali -->
+            <a href="{{ route('login') }}" 
+            class="absolute top-4 left-4 flex items-center text-xs text-gray-600 hover:text-teal-600">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    fill="none" viewBox="0 0 24 24" 
+                    stroke-width="1.5" stroke="currentColor" 
+                    class="w-4 h-4 mr-1">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+                Kembali 
             </a>
-        </div>
         <div class="text-center text-zinc-500 text-xs mt-4">
         © 2025 | Majelis Ta’lim Al-Mujahidin
     </div>

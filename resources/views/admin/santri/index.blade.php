@@ -6,77 +6,54 @@
 
     <!-- Konten -->
         <div class="p-6 bg-white rounded-2xl flex-1 flex flex-col">
-
-            <!-- Judul Halaman -->
-            <div class="flex items-center justify-between mt-[60px] mb-2">
-                <h1 class="text-2xl font-bold flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
-                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
-                     class="size-9">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M18 18.72a9.094 9.094 0 0 0 3.741-.479
-                             3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0
-                             .225-.012.447-.037.666A11.944 11.944 0 0 1 
-                             12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 
-                             6.062 0 0 1 6 18.719m12 0a5.971 5.971 
-                             0 0 0-.941-3.197m0 0A5.995 5.995 
-                             0 0 0 12 12.75a5.995 5.995 0 0 
-                             0-5.058 2.772m0 0a3 3 0 0 
-                             0-4.681 2.72 8.986 8.986 0 0 
-                             0 3.74.477m.94-3.197a5.971 
-                             5.971 0 0 0-.94 3.197M15 
-                             6.75a3 3 0 1 1-6 0 3 3 
-                             0 0 1 6 0Zm6 3a2.25 2.25 
-                             0 1 1-4.5 0 2.25 2.25 
-                             0 0 1 4.5 0Zm-13.5 0a2.25 
-                             2.25 0 1 1-4.5 0 2.25 
-                             2.25 0 0 1 4.5 0Z" />
-                    </svg>
-                    DATA SANTRI
-                </h1>
-
-                    <!-- Search Bar & Tombol Tambah -->
-                    <div class="flex flex-col sm:flex-row items-center justify-between gap-2">
-                        <div class="relative flex items-center flex-1 max-w-sm">
-                        <input 
-                            type="text"  
-                            id="searchInput"
-                            placeholder="Cari santri..."
-                            onkeyup="searchTable()"
-                            class="w-full pl-9 pr-4 py-1.5 text-sm rounded-md border border-gray-200 
-                                bg-gradient-to-r from-gray-50 to-white text-gray-700 
-                                placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400/60 focus:border-teal-500
-                                transition-all duration-200 ease-in-out shadow-sm focus:shadow-md
-                                focus:translate-y-[-1px]">
-                        <svg xmlns="http://www.w3.org/2000/svg" 
-                            class="absolute left-2.5 h-4 w-4 text-gray-400 pointer-events-none transition-all duration-200" 
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <div class="flex flex-col sm:flex-row items-center justify-between mt-[60px] mb-4 gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="bg-gradient-to-br from-teal-500 to-emerald-600 p-4 rounded-2xl shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-white">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
                         </svg>
-                        </div>
+                    </div>
 
-                        <!-- Tombol Tambah -->
-                        <a href="{{ route('admin.santri.create') }}"
-                            class="flex items-center bg-primary hover:bg-teal-700 text-white text-sm font-medium 
-                                px-4 py-1.5 rounded-md shadow-sm hover:shadow-md transition duration-150">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
-                                stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>
-                            Tambah
-                        </a>
-                        <!-- Tombol kembali -->
-                        <button onclick="window.history.back()"
-                            class="flex items-center bg-primary hover:bg-teal-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
-                            </svg>
-                            Kembali
-                        </button>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800">DATA SANTRI</h1>
+                        <p class="text-sm text-gray-600 mt-1">Santri yang terdaftar pada website ini</p>
                     </div>
                 </div>
+
+                <!-- Kanan: Search + Tombol Tambah -->
+                <div class="flex flex-col sm:flex-row items-center justify-end gap-3 w-full sm:w-auto">
+                    <form id="searchForm" method="GET" action="{{ route('admin.santri.index') }}" class="w-full sm:w-auto">
+                        <div class="relative flex items-center flex-1 max-w-sm">
+                            <input 
+                                type="text"  
+                                name="search"
+                                id="searchInput"
+                                placeholder="Cari santri..."
+                                class="w-full pl-9 pr-4 py-1.5 text-sm rounded-md border border-gray-200 
+                                    bg-gradient-to-r from-gray-50 to-white text-gray-700 
+                                    placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400/60 focus:border-teal-500
+                                    transition-all duration-200 ease-in-out shadow-sm focus:shadow-md
+                                    focus:translate-y-[-1px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                class="absolute left-2.5 h-4 w-4 text-gray-400 pointer-events-none transition-all duration-200" 
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                    </form>
+
+                    <a href="{{ route('admin.santri.create') }}"
+                        class="flex items-center bg-primary hover:bg-teal-700 text-white text-sm font-medium 
+                            px-4 py-1.5 rounded-md shadow-sm hover:shadow-md transition duration-150">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                            stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        Tambah
+                    </a>
+                </div>
+            </div>
             
             <!-- Tabel -->
             <div class="overflow-x-auto rounded-xl shadow-md mt-6">
@@ -97,13 +74,13 @@
                     <tbody>
                         @forelse($santris as $no => $s)
                         <tr class="hover:bg-gray-50 even:bg-gray-50/40 border-b border-gray-200">
-                            <td class="px-2 py-1 text-center text-gray-700 font-medium">{{ $no+1 }}</td>
-                            <td class="px-2 py-1 text-gray-800 font-semibold">{{ $s->nama }}</td>
+                            <td class="px-2 py-1 text-center text-gray-700 font-medium">{{ $santris->firstItem() + $no }}</td>
+                            <td class="px-2 py-1 text-gray-800 font-semibold text-center">{{ $s->nama }}</td>
                             <td class="px-2 py-1 text-center">{{ $s->jenis_kelamin }}</td>
-                            <td class="px-2 py-1 text-gray-600">{{ \Carbon\Carbon::parse($s->tanggal_lahir)->format('d/m/Y') }}</td>
-                            <td class="px-2 py-1 text-gray-700">{{ $s->wali }}</td>
-                            <td class="px-2 py-1 text-gray-700">{{ $s->alamat }}</td>
-                            <td class="px-2 py-1 text-gray-700">{{ $s->telepon }}</td>
+                            <td class="px-2 py-1 text-gray-600 text-center">{{ \Carbon\Carbon::parse($s->tanggal_lahir)->format('d/m/Y') }}</td>
+                            <td class="px-2 py-1 text-gray-700 text-center">{{ $s->wali }}</td>
+                            <td class="px-2 py-1 text-gray-700 text-center">{{ $s->alamat }}</td>
+                            <td class="px-2 py-1 text-gray-700 text-center">{{ $s->telepon }}</td>
 
                             <!-- Tombol Aksi -->
                             <td class="px-1 py-1 text-center">
@@ -158,7 +135,7 @@
                 </table>
             <!-- Pagination -->
             @if ($santris->hasPages())
-                <div class="mt-4 mb-4 flex justify-end pr-6">
+                <div class="mt-4 mb-4 flex justify-end pr-8">
                     <nav role="navigation" aria-label="Pagination Navigation" class="flex items-center space-x-2">
                         {{-- Tombol Previous --}}
                         @if ($santris->onFirstPage())
@@ -206,22 +183,77 @@
 
     <!-- Script pencarian -->
     <script>
-    function searchTable() {
-        const input = document.getElementById("searchInput");
-        const filter = input.value.toLowerCase();
-        const table = document.getElementById("dataSantri");
-        const tr = table.getElementsByTagName("tr");
+        const searchInput = document.getElementById('searchInput');
+        const tableBody = document.querySelector('#dataSantri tbody');
 
-        for (let i = 1; i < tr.length; i++) { // mulai dari 1 biar skip header
-            const row = tr[i];
-            const text = row.textContent.toLowerCase();
-            if (text.includes(filter)) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
+        let typingTimer;
+        const typingDelay = 250; // ngetik 1 huruf langsung cek cepat
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => liveSearch(this.value), typingDelay);
+        });
+
+        async function liveSearch(keyword) {
+            if (keyword.length < 1) {
+                // kalau input kosong, reload tabel awal (tanpa search)
+                window.location.href = "{{ route('admin.santri.index') }}";
+                return;
+            }
+
+            try {
+                const response = await fetch("{{ route('admin.santri.search') }}?nama_santri=" + encodeURIComponent(keyword));
+                const santris = await response.json();
+
+                // kosongin isi tabel lama
+                tableBody.innerHTML = '';
+
+                if (santris.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="text-center py-6 text-gray-500 italic">Tidak ditemukan.</td>
+                        </tr>`;
+                    return;
+                }
+
+                santris.forEach((s, index) => {
+                    const row = `
+                        <tr class="hover:bg-gray-50 even:bg-gray-50/40 border-b border-gray-200">
+                            <td class="px-2 py-1 text-center font-medium">${s.id}</td>
+                            <td class="px-2 py-1 font-semibold text-gray-800">${s.nama}</td>
+                            <td class="px-2 py-1 text-center">${s.jenis_kelamin ?? '-'}</td>
+                            <td class="px-2 py-1 text-gray-600">${s.tanggal_lahir ?? '-'}</td>
+                            <td class="px-2 py-1 text-gray-700">${s.wali ?? '-'}</td>
+                            <td class="px-2 py-1 text-gray-700">${s.alamat ?? '-'}</td>
+                            <td class="px-2 py-1 text-gray-700">${s.telepon ?? '-'}</td>
+                            <td class="px-1 py-1 text-center">
+                                <div class="flex justify-center gap-2">
+                                    <a href="/admin/santri/${s.id}/edit" 
+                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs transition">Edit</a>
+                                    <form action="/admin/santri/${s.id}" method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-md text-xs transition">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>`;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+
+            } catch (error) {
+                console.error(error);
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center py-6 text-red-500 italic">
+                            Gagal memuat hasil pencarian.
+                        </td>
+                    </tr>`;
             }
         }
-    }
     </script>
 
     <!-- Script SweetAlert2 untuk konfirmasi hapus -->

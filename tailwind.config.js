@@ -7,11 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#1ABC9C', // hijau tosca muda
-        secondary: '#00624eff', // hijau daun
-        fontFamily: {
-        poppins: ['Poppins', 'sans-serif', 'bold', 'extrabold'],
+        primary: '#0d9488',
       },
+      backgroundImage: {
+        'primary-gradient': 'linear-gradient(to bottom right, #0f766e, #0d9488)',
+      },
+      fontFamily: {
+        jakarta: ['"Plus Jakarta Sans"', 'sans-serif', 'semibold', 'bold', 'extrabold'],
+        nunito: ['"Nunito Sans"', 'sans-serif'],
       },
     },
   },

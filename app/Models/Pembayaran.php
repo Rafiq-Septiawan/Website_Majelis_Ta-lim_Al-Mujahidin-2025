@@ -10,7 +10,7 @@ class Pembayaran extends Model
     use HasFactory;
 
     protected $fillable = [
-        'santri_id',      // ✅ tambahkan ini
+        'santri_id',
         'nama_santri',
         'bulan',
         'jumlah_bayar',
@@ -18,7 +18,6 @@ class Pembayaran extends Model
         'status',
     ];
 
-    // ✅ Relasi ke Santri
     public function santri()
     {
         return $this->belongsTo(Santri::class, 'santri_id');

@@ -7,27 +7,29 @@ use Illuminate\Http\Request;
 
 class SantriController extends Controller
 {
-    /**
-     * 🔹 Tampilkan semua data santri
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $santris = Santri::all();
-        $santris = Santri::orderBy('nama', 'asc')->paginate(10);
+        $search = $request->input('search');
+        $query = Santri::query();
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                  ->orWhere('wali', 'like', "%{$search}%")
+                  ->orWhere('telepon', 'like', "%{$search}%")
+                  ->orWhere('alamat', 'like', "%{$search}%");
+            });
+        }
+
+        $santris = $query->orderBy('nama', 'asc')->paginate(10);
         return view('admin.santri.index', compact('santris'));
     }
 
-    /**
-     * 🔹 Form tambah santri
-     */
     public function create()
     {
         return view('admin.santri.create');
     }
 
-    /**
-     * 🔹 Simpan data santri baru
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -39,32 +41,36 @@ class SantriController extends Controller
             'telepon'       => 'required',
         ]);
 
-        Santri::create($request->all());
+        // Sesuaikan nilai jenis kelamin
+        $gender = $request->jenis_kelamin; // langsung ambil dari form
 
-        // Jika request datang dari AJAX
+        Santri::create([
+            'nama'          => $request->nama,
+            'jenis_kelamin' => $gender,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'wali'          => $request->wali,
+            'alamat'        => $request->alamat,
+            'telepon'       => $request->telepon,
+        ]);
+
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Data santri berhasil disimpan!'
-            ], 200);
+            ]);
         }
 
-        // Jika dari form biasa
         return redirect()->route('admin.santri.index')
                          ->with('success', 'Data santri berhasil ditambahkan.');
     }
 
-    /**
-     * 🔹 Form edit santri
-     */
     public function edit(Santri $santri)
     {
+        // Konversi ke bentuk teks agar cocok dengan form edit
+        $santri->jenis_kelamin = $santri->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan';
         return view('admin.santri.edit', compact('santri'));
     }
 
-    /**
-     * 🔹 Update data santri
-     */
     public function update(Request $request, Santri $santri)
     {
         $request->validate([
@@ -76,22 +82,36 @@ class SantriController extends Controller
             'telepon'       => 'required',
         ]);
 
-        $santri->update($request->all());
+        // Konversi nilai dari form ke format database
+        $genderInput = $request->jenis_kelamin;
+        if ($genderInput === 'Laki-laki' || $genderInput === 'L') {
+            $gender = 'Laki-laki';
+        } elseif ($genderInput === 'Perempuan' || $genderInput === 'P') {
+            $gender = 'Perempuan';
+        } else {
+            $gender = null;
+        }
+
+        $santri->update([
+            'nama'          => $request->nama,
+            'jenis_kelamin' => $gender,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'wali'          => $request->wali,
+            'alamat'        => $request->alamat,
+            'telepon'       => $request->telepon,
+        ]);
 
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Data santri berhasil diperbarui!'
-            ], 200);
+            ]);
         }
 
         return redirect()->route('admin.santri.index')
                          ->with('success', 'Data santri berhasil diperbarui.');
     }
 
-    /**
-     * 🔹 Hapus data santri
-     */
     public function destroy(Request $request, $id)
     {
         $santri = Santri::find($id);
@@ -116,12 +136,35 @@ class SantriController extends Controller
                         ->with('success', 'Data santri berhasil dihapus.');
     }
 
-        /**
-     * 🔍 AJAX: Cari santri berdasarkan nama (live search)
-     */
-    public function search(Request $request) {
-        $keyword = $request->nama_santri;
-        $santris = Santri::where('nama', 'like', "%{$keyword}%")->get();
+    public function search(Request $request)
+    {
+        $keyword = $request->input('nama_santri');
+
+        if (!$keyword) {
+            return response()->json([]);
+        }
+
+        \Carbon\Carbon::setLocale('id');
+        $santris = Santri::where('nama', 'like', "%{$keyword}%")
+            ->select('id', 'nama', 'jenis_kelamin', 'tanggal_lahir', 'wali', 'alamat', 'telepon')
+            ->orderBy('nama', 'asc')
+            ->limit(10)
+            ->get();
+
+        $santris = $santris->map(function ($santri) {
+            if (!empty($santri->tanggal_lahir)) {
+                try {
+                    $santri->tanggal_lahir = \Carbon\Carbon::parse($santri->tanggal_lahir)
+                        ->translatedFormat('d F Y');
+                } catch (\Exception $e) {
+                    
+                }
+            } else {
+                $santri->tanggal_lahir = null;
+            }
+            return $santri;
+        })->values();
+
         return response()->json($santris);
     }
 }

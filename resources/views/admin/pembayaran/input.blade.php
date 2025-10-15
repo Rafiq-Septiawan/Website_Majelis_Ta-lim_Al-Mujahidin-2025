@@ -4,6 +4,9 @@
 
 @push('styles')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endpush
 
@@ -12,19 +15,26 @@
     <div class="p-5 bg-white rounded-2xl">
         <!-- Judul Halaman -->
         <div class="flex items-center justify-between mt-[60px] mb-6">
-            <h1 class="text-2xl font-bold flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-9 text-gray-800 group-hover:scale-110 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="m16 19 3 3 3-3"/><circle cx="12" cy="12" r="2"/>
-                </svg>
-                INPUT PEMBAYARAN
-            </h1>
-            <button onclick="window.history.back()" class="flex items-center bg-primary hover:bg-teal-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="bg-gradient-to-br from-teal-500 to-emerald-600 p-4 rounded-2xl shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">INPUT PEMBAYARAN</h1>
+                    <p class="text-sm text-gray-600 mt-1">Input pembayaran santri</p>
+                </div>
+            </div>
+            <button 
+                onclick="goBack()" 
+                class="flex items-center bg-primary hover:bg-teal-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
                 </svg>
                 Kembali
             </button>
-        </div>
+         </div>
 
         <!-- Dua Kolom: Cari Santri & Form Pembayaran (Versi Compact) -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
@@ -106,6 +116,14 @@
 
 @push('scripts')
 <script>
+    function goBack() {
+    // hapus state biar alert ga muncul dua kali
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+    window.history.back();
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         
         // Alert Success/Error dari Laravel
@@ -119,15 +137,10 @@
                 confirmButtonColor: '#14b8a6',
                 timer: 3000,
                 timerProgressBar: true,
-            });
-        @endif
-
-        @if(session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal!',
-                text: '{{ session('error') }}',
-                confirmButtonColor: '#ef4444',
+            }).then(() => {
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
             });
         @endif
 
@@ -182,8 +195,8 @@
         inputNamaSantri.addEventListener('input', function() {
             const keyword = this.value.trim();
             
-            // Jika search bar kosong atau kurang dari 2 karakter, sembunyikan semua
-            if (keyword.length < 1) { // UBAH JADI 1 HURUF
+            // Jika search bar kosong, sembunyikan semua
+            if (keyword.length < 1) {
                 searchResults.classList.add('hidden');
                 santriInfo.classList.add('hidden');
                 
@@ -197,14 +210,21 @@
             }
 
             // Fetch data santri
-            fetch(`{{ route('admin.santri.search') }}?nama_santri=${encodeURIComponent(keyword)}`, {
+            fetch(`/admin/santri/search?nama_santri=${encodeURIComponent(keyword)}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Data diterima:', data); // Debug
+                
                 if (data.length > 0) {
                     let html = '<ul class="divide-y divide-gray-200">';
                     data.forEach(santri => {
@@ -225,7 +245,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                searchResults.innerHTML = '<div class="p-3 text-center text-red-500">Terjadi kesalahan</div>';
+                searchResults.innerHTML = '<div class="p-3 text-center text-red-500">Terjadi kesalahan: ' + error.message + '</div>';
                 searchResults.classList.remove('hidden');
             });
         });
@@ -239,6 +259,15 @@
             document.getElementById('nama_santri_display').value = santri.nama;
             document.getElementById('nama_santri').value = santri.nama;
             
+            // Format tanggal lahir jadi "14 Oktober 2025"
+                let tglLahir = santri.tanggal_lahir;
+                const parsedDate = new Date(tglLahir + "T00:00:00");
+                const formatted = parsedDate.toLocaleDateString("id-ID", {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric"
+                });
+
             // Tampilkan info santri
             document.getElementById('infoNama').textContent = santri.nama;
             document.getElementById('infoJK').textContent = santri.jenis_kelamin;
@@ -307,7 +336,11 @@
                     <div class="text-left">
                         <p><strong>Nama Santri:</strong> ${namaSantri}</p>
                         <p><strong>Nominal:</strong> Rp ${formatRupiah(nominal)}</p>
-                        <p><strong>Bulan:</strong> ${bulan}</p>
+                        <p><strong>Tanggal:</strong> ${new Date(bulan).toLocaleDateString("id-ID", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric"
+                        })}</p>
                     </div>
                     <br>
                     <p>Apakah data sudah benar?</p>

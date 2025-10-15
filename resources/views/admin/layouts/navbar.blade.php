@@ -1,29 +1,36 @@
 <div class="bg-primary px-4 py-2 flex items-center justify-between 
               mx-14 mt-8 rounded-xl shadow-lg relative z-50 ">
 
-        <!-- Overlay -->
-        <div id="overlay" 
-            class="fixed inset-0 bg-black bg-opacity-85 hidden z-40" 
-            onclick="toggleSidebar()">
-        </div>
+    <!-- Overlay -->
+    <div id="overlay" 
+        class="fixed inset-0 bg-black bg-opacity-85 hidden z-40" 
+        onclick="toggleSidebar()">
+    </div>
 
-        <!-- Hamburger -->
-        <button onclick="toggleSidebar()" class="text-white text-3xl font-bold">&#9776;</button>
+    <!-- Hamburger -->
+    <button onclick="toggleSidebar()" class="text-white text-3xl font-bold">&#9776;</button>
 
-        <!-- Search Bar -->
-        <div class="flex items-left bg-white px-3 py-2 rounded-lg w-1/2">
-            <input type="text" placeholder="Cari..." class="w-full outline-none text-gray-700">
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
-        </div>
+    <!-- Search Bar -->
+    <div class="relative flex items-left left-[40px] bg-white px-3 py-2 rounded-lg w-1/2">
+        <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Cari..." 
+            class="w-full outline-none text-gray-700"
+            onkeyup="filterResults()"
+        >
+        <button>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </button>
+    </div>
 
-        <!-- Right: Icons -->
-        <div class="flex items-center space-x-4 text-white">     
+    <!-- Right: Icons -->
+    <div class="flex items-center space-x-4 text-white">     
+        <a href="{{ route('admin.notifications') }}" class="relative">
             <!-- Notifikasi -->
             <a href="{{ route('admin.notifications') }}" class="relative">
                 <svg xmlns="http://www.w3.org/2000/svg" 
@@ -46,7 +53,9 @@
                         clip-rule="evenodd" />
                 </svg>
 
-            <!-- User -->
+        </a>
+
+        <!-- User -->
                 <a href="{{ route('admin.profile.index') }}" class="hover:text-gray-300">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
                         fill="currentColor" class="size-9">
@@ -55,5 +64,6 @@
                             clip-rule="evenodd" />
                     </svg>
                 </a>
+            </div>
         </div>
-    </div>
+
