@@ -26,7 +26,7 @@ class LaporanController extends Controller
         $totalTunggakan = max(0, $expectedThisMonth - $totalBulanIni);
 
         // Santri yang BELUM bayar bulan ini (termasuk yang belum pernah bayar)
-        $santriBelumBayar = Santri::whereDoesntHave('pembayaran', function($q) {
+        $santriBelumBayar = Santri::whereDoesntHave('pembayarans', function($q) {
             $q->whereMonth('tanggal_bayar', Carbon::now()->month)
             ->whereYear('tanggal_bayar', Carbon::now()->year);
         })

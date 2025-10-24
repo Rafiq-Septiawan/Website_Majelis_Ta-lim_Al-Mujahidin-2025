@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Santri;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class SantriController extends Controller
 {
@@ -41,8 +43,7 @@ class SantriController extends Controller
             'telepon'       => 'required',
         ]);
 
-        // Sesuaikan nilai jenis kelamin
-        $gender = $request->jenis_kelamin; // langsung ambil dari form
+        $gender = $request->jenis_kelamin;
 
         Santri::create([
             'nama'          => $request->nama,
@@ -66,7 +67,6 @@ class SantriController extends Controller
 
     public function edit(Santri $santri)
     {
-        // Konversi ke bentuk teks agar cocok dengan form edit
         $santri->jenis_kelamin = $santri->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan';
         return view('admin.santri.edit', compact('santri'));
     }
@@ -92,6 +92,7 @@ class SantriController extends Controller
             $gender = null;
         }
 
+        // Update data santri
         $santri->update([
             'nama'          => $request->nama,
             'jenis_kelamin' => $gender,
@@ -101,6 +102,25 @@ class SantriController extends Controller
             'telepon'       => $request->telepon,
         ]);
 
+        if ($santri->user_id && $santri->user) {
+            $santri->user->update([
+                'name'    => $request->nama,
+                'phone'   => $request->telepon,
+                'address' => $request->alamat,
+            ]);
+        }
+
+        DB::table('pembayarans')
+            ->where('santri_id', $santri->id)
+            ->update(['nama_santri' => $request->nama]);
+
+        if (Schema::hasColumn('tagihans', 'nama_santri')) {
+            DB::table('tagihans')
+                ->where('user_id', $santri->user_id)
+                ->update(['nama_santri' => $request->nama]);
+        }
+
+        // Respons
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
@@ -109,7 +129,7 @@ class SantriController extends Controller
         }
 
         return redirect()->route('admin.santri.index')
-                         ->with('success', 'Data santri berhasil diperbarui.');
+                        ->with('success', 'Data santri berhasil diperbarui dan tersinkron ke semua tabel.');
     }
 
     public function destroy(Request $request, $id)

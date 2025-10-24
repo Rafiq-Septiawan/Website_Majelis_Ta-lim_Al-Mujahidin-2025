@@ -23,7 +23,7 @@
                 </div>
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800">INPUT PEMBAYARAN</h1>
-                    <p class="text-sm text-gray-600 mt-1">Input pembayaran santri</p>
+                    <p class="text-sm text-gray-600 mt-1">Catat pembayaran santri dengan cepat dan akurat</p>
                 </div>
             </div>
             <button 
@@ -78,7 +78,8 @@
                     <input type="hidden" id="santri_id" name="santri_id">
                     <input type="hidden" id="nominal_hidden" name="nominal">
                     <input type="hidden" id="tanggal" name="tanggal">
-
+                    <input type="hidden" name="metode_bayar" value="Tunai">
+                    <input type="hidden" name="status" value="Lunas">
                     <div>
                         <label for="nama_santri_display" class="font-medium text-gray-700">Nama Santri</label>
                         <input type="text" id="nama_santri_display" name="nama_santri" readonly
@@ -117,7 +118,6 @@
 @push('scripts')
 <script>
     function goBack() {
-    // hapus state biar alert ga muncul dua kali
     if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
     }
@@ -125,8 +125,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        
-        // Alert Success/Error dari Laravel
+
         @if(session('success'))
             Swal.fire({
                 icon: 'success',
@@ -135,12 +134,32 @@
                 showConfirmButton: true,
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#14b8a6',
-                timer: 3000,
-                timerProgressBar: true,
             }).then(() => {
                 if (window.history.replaceState) {
                     window.history.replaceState(null, null, window.location.href);
                 }
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                showConfirmButton: true,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#dc2626',
+            });
+        @endif
+
+        @if(session('info'))
+            Swal.fire({
+                icon: 'info',
+                title: 'Perhatian!',
+                text: '{{ session('info') }}',
+                showConfirmButton: true,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#f59e0b',
             });
         @endif
 

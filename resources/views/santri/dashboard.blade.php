@@ -1,239 +1,261 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DASHBOARD SANTRI</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-primary">
-        <!-- Navbar -->
-      <div class="bg-primary px-4 py-2 flex items-center justify-between 
-              mx-14 mt-8 rounded-xl shadow-lg relative z-50 ">
+@extends('santri.layouts.santri')
 
-        <!-- Overlay -->
-        <div id="overlay" 
-            class="fixed inset-0 bg-black bg-opacity-85 hidden z-40" 
-            onclick="toggleSidebar()">
-        </div>
+@section('title', 'Dashboard Wali Santri | Majelis Ta\'lim Al-Mujahidin')
 
-        <!-- Hamburger -->
-        <button onclick="toggleSidebar()" class="text-white text-3xl font-bold">&#9776;</button>
+@section('content')
 
-        <!-- Search Bar -->
-        <div class="flex items-left bg-white px-3 py-2 rounded-lg w-1/2">
-            <input type="text" placeholder="Cari..." class="w-full outline-none text-gray-700">
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
-        </div>
+    <div class="p-6 min-h-screen mt-12">
 
-        <!-- Right: Icons -->
-        <div class="flex items-center space-x-4 text-white">     
-            <!-- Notifikasi -->
-            <a href="{{ route('admin.notifications') }}" class="relative">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    viewBox="0 0 24 24" 
-                    fill="currentColor" 
-                    class="size-9">
-                    <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 
-                            9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248
-                            A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1
-                            8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248
-                            A9.72 9.72 0 0 0 19.266 2.5Z" />
-                    <path fill-rule="evenodd" 
-                        d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75
-                            a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206
-                            c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0
-                            24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205
-                            8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18
-                            c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1
-                            a2.25 2.25 0 1 1-4.5 0Z" 
-                        clip-rule="evenodd" />
-                </svg>
-
-            <!-- User -->
-                <a href="{{ route('admin.profile.index') }}" class="hover:text-gray-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
-                        fill="currentColor" class="size-9">
-                        <path fill-rule="evenodd" 
-                            d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" 
-                            clip-rule="evenodd" />
+        <!-- Header Section -->
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-4">
+                <div class="bg-gradient-to-br from-teal-500 to-emerald-600 p-4 rounded-2xl shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="w-10 h-10 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
                     </svg>
-                </a>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">DASHBOARD SANTRI</h1>
+                    <p class="text-sm text-gray-600 mt-1">Pantau pembayaran, aktivitas, dan riwayat transaksi santri</p>
+                </div>
+            </div>
+
+            <div id="clock"
+                class="bg-primary text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
+            </div>
         </div>
-    </div>
 
-        <!-- Sidebar -->
-        <div id="sidebar" 
-            class="fixed top-0 left-0 h-full w-64 bg-[#008080] text-white transform -translate-x-full transition-transform duration-300 z-50">
-                    <!-- Header -->
-                    <div class="px-6 pt-6 pb-10">
-                        <a href="#" class="flex items-center gap-3 mt-[10px]">
-                            <svg xmlns="http://www.w3.org/2000/svg" 
-                                class="size-10 text-primary" fill="none" viewBox="0 0 24 24" 
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                                <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                                <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-                            </svg>
-                            <span class="text-base font-medium">WALI SANTRI</span>
-                        </a>
-                        <hr class="mt-2 border-gray-400/50">
-                    </div>
-                    
-                    <!-- Menu -->
-                    <nav class="mt-4">
-                        <ul class="space-y-1">
-                            <!-- Dashboard -->
-                            <li>
-                                <a href="{{ url('/santri/dashboard') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/>
-                                    <rect width="7" height="9" x="14" y="12" rx="1"/>
-                                    <rect width="7" height="5" x="3" y="16" rx="1"/>
-                                    </svg>
-                                    <span>DASHBOARD</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
+        <!-- Statistik Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-8">
 
-                            <!-- Profil -->
-                            <li>
-                                <a href="{{ route('santri.profile.index') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                    </svg>
-                                    <span>PROFIL</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
+            <!-- Total Tagihan Aktif -->
+            <div
+                class="bg-gradient-to-r from-red-600 to-rose-400 text-white p-6 py-4 rounded-xl shadow-md flex items-center justify-between transform hover:scale-105 transition-all duration-300">
+                <div>
+                    <h4 class="text-lg font-semibold">Total Tagihan Aktif</h4>
+                    <p class="text-2xl font-bold mt-1">Rp {{ number_format($totalTagihanAktif ?? 0, 0, ',', '.') }}</p>
 
-                            <!-- Pembayaran -->
-                            <li>
-                                <a href="{{ route('santri.pembayaran.input') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote-arrow-down-icon lucide-banknote-arrow-down"><path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="m16 19 3 3 3-3"/><path d="M18 12h.01"/>
-                                    <path d="M19 16v6"/><path d="M6 12h.01"/><circle cx="12" cy="12" r="2"/>
-                                    </svg>
-                                    <span>PEMBAYARAN</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
+                    <p class="text-sm text-white/80 mt-1">
+                        {{ $jumlahTagihanBelumLunas ?? 0 }} tagihan belum lunas
+                    </p>
+                </div>
 
-                            <!-- Laporan -->
-                            <li>
-                                <a href="{{ route('santri.laporan') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-minus-icon lucide-clipboard-minus"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
-                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14h6"/>
-                                    </svg>
-                                    <span>LAPORAN</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-                        </ul>
-                    </nav>
+                <!-- ICON -->
+                <div class="bg-white/20 p-3 rounded-full shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-9 h-9 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 9v3.75M9.75 21h4.5A2.25 2.25 0 0 0 16.5 18.75v-1.5A2.25 2.25 0 0 0 14.25 15h-4.5A2.25 2.25 0 0 0 7.5 17.25v1.5A2.25 2.25 0 0 0 9.75 21Zm0-12V4.5a2.25 2.25 0 1 1 4.5 0V9" />
+                    </svg>
+                </div>
+            </div>
 
-             <!-- Tombol Logout -->
-            <div class="absolute bottom-6 w-full px-4">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" 
-                        class="flex items-center gap-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition w-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M18 12H9m9 0-3-3m3 3-3 3" />
+            <!-- Total Pembayaran Selesai -->
+            <div
+                class="bg-gradient-to-r from-emerald-600 to-lime-400 text-white p-6 py-4 rounded-xl shadow-md flex items-center justify-between transform hover:scale-105 transition-all duration-300">
+                <div>
+                    <h4 class="text-lg font-semibold">Total Pembayaran Selesai</h4>
+                    <p class="text-2xl font-bold mt-1">Rp {{ number_format($totalDibayar ?? 0, 0, ',', '.') }}</p>
+                    <p class="text-sm text-white/80 mt-1">
+                        {{ $jumlahPembayaranSelesai ?? 0 }} transaksi selesai
+                    </p>
+                </div>
+
+                <!-- ICON -->
+                <div class="bg-white/20 p-3 rounded-full shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-9 h-9 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0a9 9 0 0 1 18 0Z" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Tagihan Terdekat -->
+            <div
+                class="bg-gradient-to-r from-sky-600 to-cyan-400 text-white p-6 py-4 rounded-xl shadow-md flex items-center justify-between transform hover:scale-105 transition-all duration-300 relative">
+                <div>
+                    <h4 class="text-lg font-semibold">Tagihan Terdekat</h4>
+                    <p class="text-base mt-1 font-medium">
+                        {{ $tagihanTerdekat->bulan ?? '—' }} {{ $tagihanTerdekat->tahun ?? '' }}
+                    </p>
+                    <p class="text-sm text-white/80 mt-1">
+                        Jatuh tempo:
+                        {{ isset($tagihanTerdekat->jatuh_tempo) ? \Carbon\Carbon::parse($tagihanTerdekat->jatuh_tempo)->format('d/m/Y') : '-' }}
+                    </p>
+                </div>
+
+                <!-- ICON + BUTTON -->
+                <div class="flex flex-col items-center">
+                    <div class="bg-white/20 p-3 rounded-full shadow-md mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-8 h-8 text-white">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0a9 9 0 0 1 18 0Z" />
                         </svg>
-                        <span class="font-semibold text-sm">KELUAR</span>
-                    </button>
-                </form>
-                    <footer class="text-center text-zinc-400 text-xs mt-10 -mb-[10px]">
-                        © 2025 | Majelis Ta’lim Al-Mujahidin
-                    </footer>
-            </div>
-    </div>
-
-<!-- Container Putih Utama -->
-  <div class="bg-white rounded-2xl shadow-lg p-4 mx-6 relative z-40 -mb-[20px] mb-[20px] -mt-[70px]">
-
-    <!-- Konten -->
-    <div class="p-4 bg-white rounded-2xl p-2">
-        <h1 class="font-bold text-2xl text-stone-950 mb-4 mt-[65px]">Dashboard Wali Santri</h1>
-        <p class="text-gray-200 text-zinc-400 mb-6 -mt-[10px]">Kelola pembayaran dan lihat riwayat transaksi</p>
-
-        <!-- Statistik -->
-        <div class="grid grid-cols-3 gap-4 mb-6">
-            <!-- Total Dibayar -->
-            <div class="bg-gray-200 rounded-lg p-4 flex flex-col justify-between">
-                <p class="text-sm font-medium">Total Dibayar</p>
-                <h2 class="text-xl font-bold text-green-700">Rp 1.000.000</h2>
-                <span class="text-xs text-gray-600">2 Pembayaran</span>
-            </div>
-
-            <!-- Belum Bayar -->
-            <div class="bg-gray-200 rounded-lg p-4 flex flex-col justify-between">
-                <p class="text-sm font-medium">Belum Bayar</p>
-                <h2 class="text-xl font-bold text-red-600">Rp 2.000.000</h2>
-                <span class="text-xs text-gray-600">2 Tagihan</span>
-            </div>
-
-            <!-- Tombol Pembayaran -->
-            <div class="bg-gray-200 rounded-lg p-4 flex flex-col justify-center items-center">
-                <p class="text-sm font-medium">Pembayaran</p>
-                <button class="bg-teal-500 text-white px-6 py-2 mt-2 rounded-lg font-semibold hover:bg-teal-600">
-                    Bayar
-                </button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Riwayat Pembayaran -->
-        <div class="bg-gray-200 rounded-lg p-6 mb-6">
-            <h3 class="font-semibold mb-6">Riwayat Pembayaran</h3>
-            <ul class="space-y-4 text-sm">
-                <li class="flex justify-between items-center">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <div class="flex items-center justify-between mb-6 pb-4 border-b-2 border-teal-100">
+                <div class="flex items-center gap-4">
+                    <div class="bg-gradient-to-br from-teal-500 to-emerald-500 p-3 rounded-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" class="w-7 h-7 text-white">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                    </div>
                     <div>
-                        <p class="font-medium">Januari 2025</p>
-                        <p class="text-xs text-gray-600">Jatuh tempo: 10/01/2025</p>
-                        <p class="text-xs text-gray-600">Dibayar: 8/1/2024 via Transfer Bank</p>
+                        <h3 class="text-2xl font-bold text-gray-800">Riwayat Pembayaran</h3>
+                        <p class="text-sm text-gray-600">Detail transaksi pembayaran santri</p>
                     </div>
-                    <div class="text-right">
-                        <p class="font-bold">Rp 50.000</p>
-                        <span class="text-green-600 font-medium">Lunas</span>
-                    </div>
-                </li>
+                </div>
+            </div>
 
-                <li class="flex justify-between items-center">
-                    <div>
-                        <p class="font-medium">Februari 2025</p>
-                        <p class="text-xs text-gray-600">Jatuh tempo: 12/02/2025</p>
-                        <p class="text-xs text-gray-600">Dibayar: 12/2/2025 via Cash</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="font-bold">Rp 50.000</p>
-                        <span class="text-green-600 font-medium">Lunas</span>
-                    </div>
-                </li>
+            <!-- List Riwayat -->
+            <div class="space-y-4">
+                @forelse($riwayatPembayaran ?? [] as $index => $pembayaran)
+                    <div
+                        class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-5 border-l-4 
+                            {{ ($pembayaran->status ?? 'Lunas') == 'Lunas' ? 'border-emerald-500' : (($pembayaran->status ?? '') == 'Menunggu' ? 'border-orange-500' : 'border-red-500') }} 
+                            hover:shadow-lg transition-all">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div
+                                        class="bg-teal-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">
+                                        {{ $index + 1 }}
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-800 text-lg">
+                                            {{ $pembayaran->bulan ?? 'Januari' }} {{ $pembayaran->tahun ?? '2025' }}
+                                        </p>
+                                        <p class="text-xs text-gray-500">
+                                            Jatuh tempo:
+                                            {{ $pembayaran->jatuh_tempo ? \Carbon\Carbon::parse($pembayaran->jatuh_tempo)->format('d/m/Y') : '-' }}
+                                        </p>
+                                    </div>
+                                </div>
 
-                <li class="flex justify-between items-center">
-                    <div>
-                        <p class="font-medium">April 2025</p>
-                        <p class="text-xs text-gray-600">Jatuh tempo: 10/04/2025</p>
+                                @if (($pembayaran->status ?? 'Lunas') == 'Lunas')
+                                    <div class="ml-13 mt-2 flex items-center gap-2 text-sm text-gray-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="2" stroke="currentColor" class="w-4 h-4 text-emerald-600">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                        </svg>
+                                        <span>Dibayar:
+                                            {{ $pembayaran->tanggal_bayar ? \Carbon\Carbon::parse($pembayaran->tanggal_bayar)->format('d/m/Y') : '-' }}</span>
+                                        <span class="text-gray-400">•</span>
+                                        <span>{{ $pembayaran->metode_bayar ?? 'Transfer Bank' }}</span>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="text-right">
+                                <p class="font-bold text-2xl text-gray-800 mb-2">
+                                    Rp {{ number_format($pembayaran->nominal ?? 50000, 0, ',', '.') }}
+                                </p>
+                                @if (strtolower($pembayaran->status) == 'lunas')
+                                    <span class="inline-block px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-bold border-2 border-emerald-300">
+                                        ✓ Lunas
+                                    </span>
+                                @elseif(strtolower($pembayaran->status) == 'menunggu')
+                                    <span class="inline-block px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-sm font-bold border-2 border-orange-300">
+                                        ⏳ Menunggu
+                                    </span>
+                                @else
+                                    <span class="inline-block px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-bold border-2 border-red-300">
+                                        ✗ Belum Bayar
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-right">
-                        <p class="font-bold">Rp 50.000</p>
-                        <span class="text-orange-600 font-medium">Menunggu</span>
+                @empty
+                    <!-- Empty State -->
+                    <div
+                        class="text-center py-16 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border-2 border-dashed border-gray-300">
+                        <div class="flex flex-col items-center">
+                            <div class="bg-gray-200 p-6 rounded-full mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-gray-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H6.911a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661Z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-700 mb-2">Belum Ada Riwayat Pembayaran</h3>
+                            <p class="text-gray-500 mb-6 max-w-md">
+                                Saat ini belum ada data pembayaran yang tercatat. <br>
+                                Silakan lakukan pembayaran pertama Anda.
+                            </p>
+                            <button onclick="window.location.href='{{ route('santri.pembayaran.index') }}'"
+                                class="bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                                <div class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    Mulai Pembayaran
+                                </div>
+                            </button>
+                        </div>
                     </div>
-                </li>
-            </ul>
+                @endforelse
+            </div>
+
+            <!-- Pagination if needed -->
+            @if (isset($riwayatPembayaran) && method_exists($riwayatPembayaran, 'links'))
+                <div class="mt-8 flex justify-center">
+                    {{ $riwayatPembayaran->links() }}
+                </div>
+            @endif
         </div>
-        <footer class="text-zinc-400">© 2025 | Majelis Ta’lim Al-Mujahidin</footer>
     </div>
-</body>
-</html>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Update Clock
+            function updateClock() {
+                const clock = document.getElementById("clock");
+                const now = new Date();
+
+                const hari = now.toLocaleDateString('id-ID', {
+                    weekday: 'long'
+                });
+                const tanggal = now.getDate();
+                const bulan = now.toLocaleDateString('id-ID', {
+                    month: 'long'
+                });
+                const tahun = now.getFullYear();
+
+                const jam = String(now.getHours()).padStart(2, '0');
+                const menit = String(now.getMinutes()).padStart(2, '0');
+                const detik = String(now.getSeconds()).padStart(2, '0');
+
+                const waktuLengkap = `${hari}, ${tanggal} ${bulan} ${tahun} • ${jam}:${menit}:${detik}`;
+                clock.textContent = waktuLengkap;
+            }
+
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            // Smooth scroll for buttons
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+        });
+    </script>
+@endsection

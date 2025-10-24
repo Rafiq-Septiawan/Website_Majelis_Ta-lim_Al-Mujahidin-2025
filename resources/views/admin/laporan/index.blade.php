@@ -15,7 +15,7 @@
             </div>
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">LAPORAN KEUANGAN</h1>
-                <p class="text-sm text-gray-600 mt-1">Analisis Pembayaran dan Keuangan Santri</p>
+                <p class="text-sm text-gray-600 mt-1">Pantau dan analisis seluruh transaksi serta keuangan santri</p>
             </div>
         </div>
 

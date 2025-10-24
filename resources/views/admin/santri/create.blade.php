@@ -17,7 +17,7 @@
                     </div>
                     <div>
                         <h1 class="text-3xl font-bold text-gray-800">TAMBAH DATA SANTRI</h1>
-                        <p class="text-sm text-gray-600 mt-1">Input data santri yang baru mendaftar</p>
+                        <p class="text-sm text-gray-600 mt-1">Masukkan data santri baru yang telah mendaftar</p>
                     </div>
                 </div>
 

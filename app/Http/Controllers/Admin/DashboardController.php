@@ -14,20 +14,36 @@ class DashboardController extends Controller
     {
         $totalSantri = Santri::count();
 
-        $sudahLunas = Pembayaran::where('status', 'lunas')
+        // ✅ Status pakai string 'Lunas'
+        $sudahLunas = Pembayaran::where('status', 'Lunas')
             ->distinct('santri_id')
             ->count('santri_id');
 
-        $idSantriSudahBayar = Pembayaran::pluck('santri_id')->unique();
+        // Ambil ID santri yang sudah bayar (status Lunas)
+        $idSantriSudahBayar = Pembayaran::where('status', 'Lunas')
+            ->pluck('santri_id')
+            ->unique();
+
         $jumlahBelumBayar = Santri::whereNotIn('id', $idSantriSudahBayar)->count();
 
         $totalBulanIni = Pembayaran::whereMonth('tanggal_bayar', now()->month)
             ->whereYear('tanggal_bayar', now()->year)
+            ->where('status', 'Lunas')
             ->sum('jumlah_bayar');
 
-        $pembayaranTerbaru = Pembayaran::select('id', 'santri_id', 'nama_santri', 'bulan', 'jumlah_bayar', 'tanggal_bayar', 'status')
-            ->orderBy('tanggal_bayar', 'desc')
-            ->orderBy('created_at', 'desc')
+        $pembayaranTerbaru = Pembayaran::join('santris', 'pembayarans.santri_id', '=', 'santris.id')
+            ->select(
+                'pembayarans.id',
+                'pembayarans.santri_id',
+                'santris.nama as nama_santri',
+                'pembayarans.bulan',
+                'pembayarans.jumlah_bayar',
+                'pembayarans.tanggal_bayar',
+                'pembayarans.status'
+            )
+            ->where('pembayarans.status', 'Lunas')
+            ->orderBy('pembayarans.tanggal_bayar', 'desc')
+            ->orderBy('pembayarans.created_at', 'desc')
             ->take(5)
             ->get();
 
@@ -47,22 +63,37 @@ class DashboardController extends Controller
 
     public function getData()
     {
-        $idSantriSudahBayar = Pembayaran::pluck('santri_id')->unique();
+        $idSantriSudahBayar = Pembayaran::where('status', 'Lunas')
+            ->pluck('santri_id')
+            ->unique();
 
         return response()->json([
             'totalSantri' => Santri::count(),
-            'sudahLunas' => Pembayaran::where('status', 'lunas')
+            'sudahLunas' => Pembayaran::where('status', 'Lunas')
                 ->distinct('santri_id')
                 ->count('santri_id'),
             'belumBayar' => Santri::whereNotIn('id', $idSantriSudahBayar)->count(),
             'bulanIni' => Pembayaran::whereMonth('tanggal_bayar', now()->month)
                 ->whereYear('tanggal_bayar', now()->year)
+                ->where('status', 'Lunas')
                 ->sum('jumlah_bayar'),
-            'pembayaranTerbaru' => Pembayaran::select('id', 'santri_id', 'nama_santri', 'bulan', 'jumlah_bayar', 'tanggal_bayar', 'status')
-                ->orderBy('tanggal_bayar', 'desc')
-                ->orderBy('created_at', 'desc')
+
+            'pembayaranTerbaru' => Pembayaran::join('santris', 'pembayarans.santri_id', '=', 'santris.id')
+                ->select(
+                    'pembayarans.id',
+                    'pembayarans.santri_id',
+                    'santris.nama as nama_santri',
+                    'pembayarans.bulan',
+                    'pembayarans.jumlah_bayar',
+                    'pembayarans.tanggal_bayar',
+                    'pembayarans.status'
+                )
+                ->where('pembayarans.status', 'Lunas')
+                ->orderBy('pembayarans.tanggal_bayar', 'desc')
+                ->orderBy('pembayarans.created_at', 'desc')
                 ->take(5)
                 ->get(),
+
             'santriBelumBayar' => Santri::whereNotIn('id', $idSantriSudahBayar)
                 ->select('id', 'nama', 'wali', 'telepon')
                 ->get(),

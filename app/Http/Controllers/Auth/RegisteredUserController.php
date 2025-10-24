@@ -11,17 +11,11 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Show the registration view.
-     */
     public function create()
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle new user registration.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -38,12 +32,36 @@ class RegisteredUserController extends Controller
             'role'     => $request->role,
         ]);
 
-        event(new Registered($user));
+        // Auto buat atau hubungkan data santri
+        if ($request->role === 'santri') {
+            // cari data santri yang namanya sama dan BELUM punya user_id
+            $santri = \App\Models\Santri::where('nama', $request->name)
+                        ->whereNull('user_id')
+                        ->first();
 
+            if ($santri) {
+                // update user_id pada data santri yang sudah ada
+                $santri->update(['user_id' => $user->id]);
+            } else {
+                // kalau belum ada data santri yang belum terhubung, buat data baru
+                \App\Models\Santri::create([
+                    'user_id'       => $user->id,
+                    'nama'          => $user->name,
+                    'jenis_kelamin' => 'Laki-Laki',
+                    'tanggal_lahir' => now(),
+                    'wali'          => '-',
+                    'alamat'        => '-',
+                    'telepon'       => '-',
+                ]);
+            }
+        }
+
+        event(new Registered($user));
         Auth::login($user);
 
         return $request->role === 'admin'
             ? redirect()->intended('/admin/dashboard')
             : redirect()->intended('/santri/dashboard');
     }
+
 }

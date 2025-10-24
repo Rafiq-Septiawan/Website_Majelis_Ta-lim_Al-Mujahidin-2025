@@ -16,7 +16,7 @@
 
                     <div>
                         <h1 class="text-3xl font-bold text-gray-800">EDIT DATA SANTRI</h1>
-                        <p class="text-sm text-gray-600 mt-1">Ubah data santri yang sudah terdaftar</p>
+                        <p class="text-sm text-gray-600 mt-1">Perbarui atau ubah informasi santri yang sudah terdaftar</p>
                     </div>
                 </div>
 

@@ -65,6 +65,12 @@
             </div>
 
             <div>
+                <label class="block mb-1 text-gray-700 text-xs font-semibold">Konfirmasi Password</label>
+                <input type="password" name="password_confirmation" placeholder="Ulangi password"
+                    class="w-full p-2 border rounded-xl text-xs focus:ring-2 focus:ring-teal-500 outline-none" required>
+            </div>
+
+            <div>
                 <label class="block mb-1 text-gray-700 text-xs font-semibold">Daftar Sebagai</label>
                 <select name="role"
                         class="w-full p-2 text-xs border rounded-xl focus:ring-2 focus:ring-teal-500 outline-none" required>

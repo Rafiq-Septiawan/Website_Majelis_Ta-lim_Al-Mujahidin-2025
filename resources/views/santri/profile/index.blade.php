@@ -1,197 +1,417 @@
-@extends('admin.layouts.admin')
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PROFIL SANTRI</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+@extends('santri.layouts.santri')
 
-</head>
-<body class="bg-primary">
-    <!-- Navbar -->
-      <div class="bg-primary px-4 py-2 flex items-center justify-between 
-              mx-14 mt-8 rounded-xl shadow-lg relative z-50 ">
+@section("title", "Profil | Majelis Ta'lim Al-Mujahidin")
 
-        <!-- Overlay -->
-        <div id="overlay" 
-            class="fixed inset-0 bg-black bg-opacity-85 hidden z-40" 
-            onclick="toggleSidebar()">
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.css">
+<style>
+    #cropModal { 
+        z-index: 999999 !important; 
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+    #cropModal img { 
+        max-height: 400px; 
+        width: auto; 
+        object-fit: contain; 
+    }
+    .cropper-view-box, 
+    .cropper-face { 
+        border-radius: 50%; 
+    }
+    #cropModal > div {
+        position: relative;
+        z-index: 1000000;
+    }
+</style>
+@endpush
+
+@section('content')
+<div class="flex justify-between items-center mb-4 mt-[75px] mx-[20px]">
+    <div class="flex items-center gap-4 mb-4">
+        <div class="bg-gradient-to-br from-teal-500 to-emerald-600 p-4 rounded-2xl shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
         </div>
-
-        <!-- Hamburger -->
-        <button onclick="toggleSidebar()" class="text-white text-3xl font-bold">&#9776;</button>
-
-        <!-- Search Bar -->
-        <div class="flex items-left bg-white px-3 py-2 rounded-lg w-1/2">
-            <input type="text" placeholder="Cari..." class="w-full outline-none text-gray-700">
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800">PROFIL</h1>
+            <p class="text-sm text-gray-600 mt-1">Atur data pribadi dan kelola akun Anda di sini</p>
         </div>
+    </div>
+    <button 
+        onclick="goBack()" 
+        class="flex items-center bg-primary hover:bg-teal-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+        </svg>
+        Kembali
+    </button>
+</div>
 
-        <!-- Right: Icons -->
-        <div class="flex items-center space-x-4 text-white">
-            <!-- Notifikasi -->
-            <button>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-9">
-                <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1 8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248A9.72 9.72 0 0 0 19.266 2.5Z" />
-                <path fill-rule="evenodd" d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0 24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205 8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1a2.25 2.25 0 1 1-4.5 0Z" clip-rule="evenodd" />
-                </svg>
+<!-- Form Informasi Profil -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="bg-white shadow-sm rounded-lg p-4 ml-[15px] border border-gray-200">
+        <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.2" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 
+                    20.118a7.5 7.5 0 0 1 14.998 0A17.933 
+                    17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+            </svg>
+            Informasi Profil
+        </h3>
 
-            </button>
-
-            <!-- User -->
-                <a href="/profile" class="hover:text-gray-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
-                        fill="currentColor" class="size-9">
-                        <path fill-rule="evenodd" 
-                            d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" 
-                            clip-rule="evenodd" />
-                    </svg>
-                </a>
+        <form id="profileForm" enctype="multipart/form-data" class="space-y-3">
+            @csrf
+            <!-- Foto Profil -->
+            <div class="flex flex-col items-center mb-4">
+                <img id="avatarPreview"
+                    src="{{ $santri->avatar ? asset('storage/' . $santri->avatar) : asset('images/default-avatar.png') }}"
+                    class="size-[120px] rounded-full border-2 border-primary shadow-sm">
+                <button type="button" onclick="document.getElementById('avatarInput').click()"
+                    class="mt-2 text-xs text-primary hover:underline">Ubah Foto Profil</button>
+                <input type="file" id="avatarInput" name="avatar" accept="image/*" class="hidden">
             </div>
-        </div>
 
-    <!-- Sidebar -->
-        <div id="sidebar" 
-            class="fixed top-0 left-0 h-full w-64 bg-[#2C3E50] text-white transform -translate-x-full transition-transform duration-300 z-50">
-                    <!-- Header -->
-                    <div class="px-6 pt-6 pb-10">
-                        <a href="#" class="flex items-center gap-3 mt-[10px]">
-                            <svg xmlns="http://www.w3.org/2000/svg" 
-                                class="size-10 text-primary" fill="none" viewBox="0 0 24 24" 
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                                <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                                <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-                            </svg>
-                            <span class="text-base font-medium">WALI SANTRI</span>
-                        </a>
-                        <hr class="mt-2 border-gray-400/50">
-                    </div>
-                    
-                    <!-- Menu -->
-                    <nav class="mt-4">
-                        <ul class="space-y-1">
-                            <!-- Dashboard -->
-                            <li>
-                                <a href="{{ url('/santri/dashboard') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/>
-                                    <rect width="7" height="9" x="14" y="12" rx="1"/>
-                                    <rect width="7" height="5" x="3" y="16" rx="1"/>
-                                    </svg>
-                                    <span>DASHBOARD</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-
-                            <!-- Profil -->
-                            <li>
-                                <a href="{{ route('santri.profile.index') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                    </svg>
-                                    <span>PROFIL</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-
-                            <!-- Pembayaran -->
-                            <li>
-                                <a href="{{ route('santri.pembayaran.input') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote-arrow-down-icon lucide-banknote-arrow-down"><path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5"/><path d="m16 19 3 3 3-3"/><path d="M18 12h.01"/>
-                                    <path d="M19 16v6"/><path d="M6 12h.01"/><circle cx="12" cy="12" r="2"/>
-                                    </svg>
-                                    <span>PEMBAYARAN</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-
-                            <!-- Laporan -->
-                            <li>
-                                <a href="{{ route('santri.laporan') }}"
-                                    class="flex items-center gap-3 px-4 py-3 hover:bg-white hover:text-[#2C3E50] transition rounded-md uppercase font-semibold text-base">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="size-10 text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-minus-icon lucide-clipboard-minus"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
-                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14h6"/>
-                                    </svg>
-                                    <span>LAPORAN</span>
-                                </a>
-                                <hr class="border-gray-400/50">
-                            </li>
-                        </ul>
-                    </nav>
-
-             <!-- Tombol Logout -->
-            <div class="absolute bottom-6 w-full px-4">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" 
-                        class="flex items-center gap-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition w-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M18 12H9m9 0-3-3m3 3-3 3" />
-                        </svg>
-                        <span class="font-semibold text-sm">KELUAR</span>
-                    </button>
-                </form>
-                    <footer class="text-center text-zinc-400 text-xs mt-10 -mb-[10px]">
-                        © 2025 | Majelis Ta’lim Al-Mujahidin
-                    </footer>
+            <div>
+                <label class="text-sm font-medium text-gray-600">Nama Lengkap</label>
+                <input type="text" name="name" value="{{ $user->name ?? $santri->nama }}"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30 mb-2">
             </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">No Telepon</label>
+                <input type="text" name="phone" value="{{ $santri->telepon }}"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30 mb-2">
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">Email</label>
+                <input type="email" name="email" value="{{ $user->email }}"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30 mb-2">
+            </div>
+            <div>
+                <label class="text-sm font-medium text-gray-600">Alamat</label>
+                <textarea name="alamat" 
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30 mb-6" 
+                    rows="3">{{ $santri->alamat ?? '' }}</textarea>
+            </div>
+            <div class="text-right mt-3">
+                <button type="submit"
+                    class="bg-primary text-white px-4 py-1.5 font-semibold text-2sm rounded-md hover:bg-teal-700/80 transition">
+                    SIMPAN
+                </button>
+            </div>
+        </form>
     </div>
 
-<!-- Container Putih Utama -->
-<div class="bg-white rounded-2xl shadow-lg p-4 mx-6 relative z-40 -mt-[70px] min-h-screen flex flex-col">
-    <!-- Konten -->
-    <div class="p-6 bg-white rounded-2xl flex-1 flex flex-col">
-        
-        <!-- Header + Search + Tombol -->
-        <div class="flex items-center justify-between mt-[65px] mb-4">
-            <h1 class="text-2xl font-bold flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
-                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
-                     class="size-9">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M18 18.72a9.094 9.094 0 0 0 3.741-.479
-                             3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0
-                             .225-.012.447-.037.666A11.944 11.944 0 0 1 
-                             12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 
-                             6.062 0 0 1 6 18.719m12 0a5.971 5.971 
-                             0 0 0-.941-3.197m0 0A5.995 5.995 
-                             0 0 0 12 12.75a5.995 5.995 0 0 
-                             0-5.058 2.772m0 0a3 3 0 0 
-                             0-4.681 2.72 8.986 8.986 0 0 
-                             0 3.74.477m.94-3.197a5.971 
-                             5.971 0 0 0-.94 3.197M15 
-                             6.75a3 3 0 1 1-6 0 3 3 
-                             0 0 1 6 0Zm6 3a2.25 2.25 
-                             0 1 1-4.5 0 2.25 2.25 
-                             0 0 1 4.5 0Zm-13.5 0a2.25 
-                             2.25 0 1 1-4.5 0 2.25 
-                             2.25 0 0 1 4.5 0Z" />
-                </svg>
-                PROFIL SANTRI
-            </h1>
+    <!-- Form Update Password -->
+    <div class="bg-white shadow-sm rounded-lg p-4 mr-[15px] border border-gray-200">
+        <h3 class="text-xl font-semibold text-gray-700 mb-8 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.2" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 
+                    1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 
+                    17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 
+                    .43-1.563A6 6 0 1 1 21.75 8.25Z"/>
+            </svg>
+            Update Password
+        </h3>
 
-<!-- Overlay -->
-<div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40" onclick="toggleSidebar()"></div>
+        <form id="passwordForm" class="space-y-3 relative">
+            @csrf
+            <div class="relative">
+                <label class="text-sm font-medium text-gray-600">Password Saat Ini</label>
+                <input type="password" id="current_password" name="current_password"
+                    placeholder="Masukkan password saat ini"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30 pr-8 mb-2">
+                <button type="button" onclick="togglePassword('current_password', this)"
+                    class="absolute right-2 top-8 text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.2"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 
+                            7.51 7.36 4.5 12 4.5c4.637 0 8.573 3.007 
+                            9.963 7.178.07.207.07.431 0 
+                            .639C20.577 16.49 16.64 19.5 
+                            12 19.5c-4.637 0-8.573-3.007-9.963-7.178z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="relative">
+                <label class="text-sm font-medium text-gray-600">Password Baru</label>
+                <input type="password" id="new_password" name="new_password"
+                    placeholder="Masukkan password baru"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30 pr-8 mb-2">
+                <button type="button" onclick="togglePassword('new_password', this)"
+                    class="absolute right-2 top-8 text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.2"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 
+                            7.51 7.36 4.5 12 4.5c4.637 0 8.573 3.007 
+                            9.963 7.178.07.207.07.431 0 
+                            .639C20.577 16.49 16.64 19.5 
+                            12 19.5c-4.637 0-8.573-3.007-9.963-7.178z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="relative">
+                <label class="text-sm font-medium text-gray-600">Konfirmasi Password Baru</label>
+                <input type="password" id="new_password_confirmation" name="new_password_confirmation"
+                    placeholder="Konfirmasi password baru"
+                    class="w-full border rounded-md px-2 py-1.5 text-sm focus:ring focus:ring-primary/30 pr-8 mb-6">
+                <button type="button" onclick="togglePassword('new_password_confirmation', this)"
+                    class="absolute right-2 top-8 text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.2"
+                        stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 
+                            7.51 7.36 4.5 12 4.5c4.637 0 8.573 3.007 
+                            9.963 7.178.07.207.07.431 0 
+                            .639C20.577 16.49 16.64 19.5 
+                            12 19.5c-4.637 0-8.573-3.007-9.963-7.178z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex justify-between mt-3">
+                <button type="reset"
+                    class="bg-gray-300 text-gray-800 text-2sm font-semibold px-4 py-1.5 rounded-md hover:bg-gray-400 transition">BATAL</button>
+                <button type="submit"
+                    class="bg-primary text-white text-2sm font-semibold px-4 py-1.5 rounded-md hover:bg-teal-700/80 transition">UBAH</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
+
+<!-- Modal Crop Foto -->
+<div id="cropModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center overflow-auto">
+    <div class="bg-white p-6 rounded-xl shadow-2xl w-[90%] max-w-[500px] relative z-[1000000]">
+        <h3 class="text-center font-bold text-lg mb-4 text-gray-800">Atur Pemotongan Foto</h3>
+        <div class="flex justify-center mb-4">
+            <div class="max-w-full max-h-[400px] overflow-hidden rounded-lg">
+                <img id="cropImage" class="max-w-full">
+            </div>
+        </div>
+        <div class="flex justify-between gap-3">
+            <button id="cancelCrop" class="flex-1 px-4 py-2.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition font-semibold">
+                Batal
+            </button>
+            <button id="saveCrop" class="flex-1 px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-teal-700 transition font-semibold">
+                Simpan
+            </button>
+        </div>
+    </div>
+</div>
 
 <script>
-    function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("overlay");
+    function goBack() {
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+    window.history.back();
+    }
 
-    sidebar.classList.toggle("-translate-x-full");
-    overlay.classList.toggle("hidden");}
+document.addEventListener("DOMContentLoaded", () => {
+
+    // Toggle Password Visibility (GLOBAL FUNCTION)
+    window.togglePassword = function(inputId, button) {
+        const input = document.getElementById(inputId);
+        
+        const eyeIcon = `
+            <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-4 h-4'>
+                <path stroke-linecap='round' stroke-linejoin='round'
+                    d='M2.036 12.322a1.012 1.012 0 010-.639
+                    C3.423 7.51 7.36 4.5 12 4.5
+                    c4.637 0 8.573 3.007 9.963 7.178
+                    .07.207.07.431 0 .639
+                    C20.577 16.49 16.64 19.5 12 19.5
+                    c-4.637 0-8.573-3.007-9.963-7.178z' />
+                <path stroke-linecap='round' stroke-linejoin='round'
+                    d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' />
+            </svg>
+        `;
+
+        const eyeSlashIcon = `
+            <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-4 h-4'>
+                <path stroke-linecap='round' stroke-linejoin='round'
+                    d='M3.98 8.223A10.477 10.477 0 001.5 12
+                    c1.676 4.257 6.03 7.5 10.5 7.5
+                    1.886 0 3.676-.435 5.25-1.207M6.228 6.228
+                    A10.45 10.45 0 0112 4.5
+                    c4.47 0 8.824 3.243 10.5 7.5
+                    a10.523 10.523 0 01-4.17 5.318M6.228 6.228
+                    L3 3m3.228 3.228l12.544 12.544
+                    M9.88 9.88a3 3 0 104.24 4.24' />
+            </svg>
+        `;
+
+        if (input.type === "password") {
+            input.type = "text";
+            button.innerHTML = eyeSlashIcon;
+        } else {
+            input.type = "password";
+            button.innerHTML = eyeIcon;
+        }
+    };
+
+    // SCRIPT CROP FOTO
+    let cropper;
+    const avatarInput = document.getElementById("avatarInput");
+    const avatarPreview = document.getElementById("avatarPreview");
+    const cropModal = document.getElementById("cropModal");
+    const cropImage = document.getElementById("cropImage");
+    let oldAvatar = avatarPreview.src;
+
+            avatarInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    cropImage.src = event.target.result;
+                    cropModal.classList.remove("hidden");
+                    cropModal.classList.add("flex");
+
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(cropImage, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        responsive: true,
+                        restore: false,
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("cancelCrop").addEventListener("click", () => {
+            cropModal.classList.add("hidden");
+            cropModal.classList.remove("flex");
+            avatarPreview.src = oldAvatar;
+            avatarInput.value = "";
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+        });
+
+        document.getElementById("saveCrop").addEventListener("click", () => {
+            if (cropper) {
+                const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+                canvas.toBlob((blob) => {
+                    const file = new File([blob], "avatar.jpg", { type: "image/jpeg" });
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    avatarInput.files = dataTransfer.files;
+                    avatarPreview.src = canvas.toDataURL();
+                    oldAvatar = avatarPreview.src;
+
+                    cropper.destroy();
+                    cropper = null;
+                    cropModal.classList.add("hidden");
+                    cropModal.classList.remove("flex");
+                });
+            }
+        });
+
+    // SCRIPT UPDATE PROFIL
+    const profileForm = document.getElementById("profileForm");
+
+    profileForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(profileForm);
+
+        fetch("{{ route('santri.profile.update') }}", {
+            method: "POST",
+            headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Profil berhasil diperbarui!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: data.message || "Terjadi kesalahan!",
+                });
+            }
+        })
+        .catch(err => {
+            console.error("Error saat update profil:", err);
+            Swal.fire({
+                icon: "error",
+                title: "Gagal mengirim data ke server!"
+            });
+        });
+    });
+
+    // SCRIPT UPDATE PASSWORD
+    const passwordForm = document.getElementById("passwordForm");
+
+    passwordForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(passwordForm);
+
+        fetch("{{ route('santri.profile.password') }}", {
+            method: "POST",
+            headers: { "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: data.message || "Password berhasil diperbarui!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                passwordForm.reset();
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: data.message || "Gagal memperbarui password!"
+                });
+            }
+        })
+        .catch(err => {
+            console.error("Error saat update password:", err);
+            Swal.fire({
+                icon: "error",
+                title: "Terjadi kesalahan koneksi!"
+            });
+        });
+    });
+
+});
 </script>
-</body>
-</html>
+@endpush

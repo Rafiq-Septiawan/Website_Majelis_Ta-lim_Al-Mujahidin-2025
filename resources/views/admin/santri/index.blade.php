@@ -16,7 +16,7 @@
 
                     <div>
                         <h1 class="text-3xl font-bold text-gray-800">DATA SANTRI</h1>
-                        <p class="text-sm text-gray-600 mt-1">Santri yang terdaftar pada website ini</p>
+                        <p class="text-sm text-gray-600 mt-1">Daftar lengkap santri yang terdaftar di sistem ini</p>
                     </div>
                 </div>
 

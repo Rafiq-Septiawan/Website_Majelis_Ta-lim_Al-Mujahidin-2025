@@ -1,0 +1,143 @@
+    .payment-method {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    background-color: #fff;
+    }
+    .payment-method::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(20, 184, 166, 0.08);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    .payment-method:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+    .payment-method:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+    .payment-method.active {
+        background-color: #e6fffa;
+        border: 1.5px solid #14b8a6;
+    }
+    .payment-method.active .method-icon {
+        background: rgba(20, 184, 166, 0.15);
+        color: #0d9488;
+        transform: scale(1.05);
+    }
+    .payment-method.active .check-mark {
+        opacity: 1;
+        transform: scale(1);
+        display: flex;
+    }
+    .check-mark {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        background: #0d9488;
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: scale(0);
+        transition: all 0.3s ease;
+    }
+    .method-icon {
+        transition: all 0.3s ease;
+        background: rgba(20, 184, 166, 0.08);
+        color: #0d9488;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    .slide-in { 
+        animation: slideIn 0.5s ease-out; 
+    }
+    .fade-in { 
+        animation: fadeIn 0.4s ease-out; 
+    }
+    .pulse-animation {
+        animation: pulse 2s infinite;
+    }
+    .tagihan-checkbox:checked + .tagihan-card {
+        border-color: #14b8a6;
+        background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);
+        box-shadow: 0 4px 15px rgba(20, 184, 166, 0.2);
+    }
+    .upload-area {
+        border: 2px dashed #cbd5e1;
+        transition: all 0.3s ease;
+    }
+    .upload-area:hover {
+        border-color: #14b8a6;
+        background: #f0fdfa;
+    }
+    .upload-area.drag-over {
+        border-color: #14b8a6;
+        background: #ccfbf1;
+    }
+    .info-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    .payment-step {
+        opacity: 0.5;
+        transition: opacity 0.3s ease;
+    }
+    .payment-step.active {
+        opacity: 1;
+    }
+    .detail-card {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border-left: 4px solid #14b8a6;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+    }
+    .copy-btn {
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    .copy-btn:hover {
+        transform: scale(1.05);
+    }
+    .qr-code-container {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .fileNameDisplay img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .fileNameDisplay img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }

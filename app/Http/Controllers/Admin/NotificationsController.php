@@ -16,9 +16,9 @@ class NotificationsController extends Controller
 
     public function fetch()
     {
-        $pembayaran = Pembayaran::where('status', 'lunas')
+        $pembayaran = Pembayaran::whereIn('status', [1, 0])
             ->orderBy('updated_at', 'desc')
-            ->get(['id', 'nama_santri', 'bulan', 'jumlah_bayar', 'updated_at']);
+            ->get(['id', 'nama_santri', 'bulan', 'jumlah_bayar', 'metode_bayar', 'status', 'updated_at']);
 
         $santriBaru = User::where('role', 'santri')
             ->orderBy('created_at', 'desc')

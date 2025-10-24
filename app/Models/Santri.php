@@ -7,15 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Santri extends Model
 {
-    public function pembayaran() {
-       return $this->hasMany(Pembayaran::class);
-    }
-
     use HasFactory;
 
     protected $table = 'santris';
 
     protected $fillable = [
+        'user_id',
         'nama',
         'jenis_kelamin',
         'tanggal_lahir',
@@ -23,4 +20,14 @@ class Santri extends Model
         'alamat',
         'telepon',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function pembayarans()
+    {
+        return $this->hasMany(Pembayaran::class, 'santri_id');
+    }
 }
