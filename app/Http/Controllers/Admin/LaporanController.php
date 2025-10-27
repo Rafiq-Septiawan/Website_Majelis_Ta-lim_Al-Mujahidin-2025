@@ -22,10 +22,8 @@ class LaporanController extends Controller
             ->whereYear('tanggal_bayar', Carbon::now()->year)
             ->sum('jumlah_bayar');
 
-        // Jumlah tunggakan untuk bulan ini
         $totalTunggakan = max(0, $expectedThisMonth - $totalBulanIni);
 
-        // Santri yang BELUM bayar bulan ini (termasuk yang belum pernah bayar)
         $santriBelumBayar = Santri::whereDoesntHave('pembayarans', function($q) {
             $q->whereMonth('tanggal_bayar', Carbon::now()->month)
             ->whereYear('tanggal_bayar', Carbon::now()->year);
@@ -43,21 +41,17 @@ class LaporanController extends Controller
 
         $jumlahBelumBayar = $santriBelumBayar->count();
 
-        // Jumlah santri yang sudah bayar bulan ini
         $jumlahLunas = $totalSantri - $jumlahBelumBayar;
 
-        // Persentase pembayaran bulan ini
         $persentasePembayaran = $totalSantri > 0
             ? round(($jumlahLunas / $totalSantri) * 100, 1)
             : 0;
 
-        // Riwayat pembayaran terbaru (untuk tampilan)
         $riwayatPembayaran = Pembayaran::with('santri')
             ->orderBy('tanggal_bayar', 'desc')
             ->limit(50)
             ->get();
 
-        // Total pendapatan kumulatif (opsional)
         $totalPendapatan = Pembayaran::sum('jumlah_bayar');
 
         return view('admin.laporan.index', compact(
@@ -75,9 +69,6 @@ class LaporanController extends Controller
         ));
     }
 
-
-    // Laporan riwayat pembayaran //
-
     public function riwayat()
     {
         $riwayat = Pembayaran::with('santri')
@@ -87,9 +78,6 @@ class LaporanController extends Controller
         return view('admin.laporan.riwayat', compact('riwayat'));
     }
 
-    /**
-     * Laporan santri yang belum bayar
-     */
     public function belumBayar()
     {
         $belumBayar = Santri::whereDoesntHave('pembayaran', function($query) {
@@ -102,35 +90,48 @@ class LaporanController extends Controller
         return view('admin.laporan.belum_bayar', compact('belumBayar'));
     }
 
-    /**
-     * Halaman cetak laporan
-     */
-    public function cetak(Request $request)
+    public function cetak()
     {
-        $query = Pembayaran::with('santri');
+        $tahunTarget = Carbon::now()->year;
+        $bulanTarget = Carbon::now()->month;
+        $namaBulanTarget = Carbon::now()->locale('id')->monthName;
+        
+        $santriSudahBayarIds = Pembayaran::where('bulan', $namaBulanTarget) 
+            ->whereYear('tanggal_bayar', $tahunTarget)
+            ->pluck('santri_id')
+            ->unique();
+        
+        $santriBelumBayar = Santri::whereNotIn('id', $santriSudahBayarIds)
+            ->get();
+        
+        $riwayatPembayaran = Pembayaran::with('santri')
+            ->latest()
+            ->limit(100)
+            ->get();
 
-        if ($request->filled('tanggal_mulai')) {
-            $query->whereDate('tanggal_bayar', '>=', $request->tanggal_mulai);
-        }
-        if ($request->filled('tanggal_akhir')) {
-            $query->whereDate('tanggal_bayar', '<=', $request->tanggal_akhir);
-        }
-
-        $riwayatPembayaran = $query->orderBy('tanggal_bayar', 'desc')->get();
-
-        $totalPendapatan = $riwayatPembayaran->sum('jumlah_bayar');
         $totalSantri = Santri::count();
+        $jumlahBelumBayar = $santriBelumBayar->count();
+        
+        $totalPendapatan = Pembayaran::sum('jumlah_bayar'); 
+        
+        $jumlahLunas = $santriSudahBayarIds->count(); 
+        
+        $persentasePembayaran = ($totalSantri > 0) 
+            ? round(($jumlahLunas / $totalSantri) * 100, 2) 
+            : 0;
 
         return view('admin.laporan.cetak', compact(
+            'totalSantri', 
+            'totalPendapatan', 
+            'jumlahLunas', 
+            'persentasePembayaran', 
+            'santriBelumBayar', 
             'riwayatPembayaran',
-            'totalPendapatan',
-            'totalSantri'
+            'jumlahBelumBayar',
+            'namaBulanTarget'
         ));
     }
 
-    /**
-     * Komponen kartu ringkasan laporan
-     */
     public function cards()
     {
         $totalSantri = Santri::count();
@@ -138,7 +139,6 @@ class LaporanController extends Controller
         $totalBelumBayar = Santri::whereDoesntHave('pembayaran')->count();
         $totalNominal = Pembayaran::sum('jumlah_bayar');
 
-        // Tambahan statistik
         $pembayaranHariIni = Pembayaran::whereDate('tanggal_bayar', today())->count();
         $nominalHariIni = Pembayaran::whereDate('tanggal_bayar', today())->sum('jumlah_bayar');
 
@@ -152,9 +152,6 @@ class LaporanController extends Controller
         ));
     }
 
-    /**
-     * Debug API
-     */
     public function debug()
     {
         return response()->json([
@@ -163,32 +160,6 @@ class LaporanController extends Controller
             'sample_santri' => Santri::limit(3)->get(),
             'sample_pembayaran' => Pembayaran::with('santri')->limit(3)->get(),
             'santri_belum_bayar' => Santri::whereDoesntHave('pembayaran')->limit(3)->get(),
-        ]);
-    }
-
-    /**
-     * Filter laporan berdasarkan tanggal
-     */
-    public function filter(Request $request)
-    {
-        $query = Pembayaran::with('santri');
-
-        if ($request->filled('bulan')) {
-            $query->whereMonth('tanggal_bayar', $request->bulan);
-        }
-        if ($request->filled('tahun')) {
-            $query->whereYear('tanggal_bayar', $request->tahun);
-        }
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $riwayatPembayaran = $query->orderBy('tanggal_bayar', 'desc')->get();
-
-        return response()->json([
-            'success' => true,
-            'data' => $riwayatPembayaran,
-            'count' => $riwayatPembayaran->count()
         ]);
     }
 }

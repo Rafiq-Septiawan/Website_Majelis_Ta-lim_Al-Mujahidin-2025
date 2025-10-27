@@ -25,7 +25,6 @@ class ProfileController extends Controller
         $user->fill($request->validated());
 
         if ($request->hasFile('avatar')) {
-            // Hapus file lama jika ada
             if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
                 Storage::delete('public/' . $user->avatar);
             }

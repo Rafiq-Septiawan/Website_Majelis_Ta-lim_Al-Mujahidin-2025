@@ -5,8 +5,6 @@
 @section('scroll', 'overflow-hidden')
 
 @section('content')
-
-    <!-- Konten -->
     <div class="p-4 bg-white rounded-2xl">
         <div class="flex items-center justify-between mt-[60px] mb-6">
             <div class="flex items-center gap-4">
@@ -21,7 +19,6 @@
                     </div>
                 </div>
 
-            <!-- Tombol kembali -->
             <button onclick="window.history.back()"
                 class="flex items-center gap-1 bg-primary hover:bg-teal-700 text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -31,27 +28,20 @@
                 Kembali
             </button>
         </div>
-        
-        <!-- Form Input Santri -->
+
         <form id="formSantri" action="{{ route('admin.santri.store') }}" method="POST" class="space-y-6">
             @csrf
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-
-                <!-- Nama Lengkap -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
                     <input type="text" name="nama" value="{{ old('nama') }}" placeholder="Nama lengkap..."
                         class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition">
                 </div>
-
-                <!-- Nama Wali -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Wali Santri</label>
                     <input type="text" name="wali" placeholder="Nama wali santri..."
                         class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition">
                 </div>
-
-                <!-- Jenis Kelamin -->
                 <div class="-mt-[10px]">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
                     <select name="jenis_kelamin"
@@ -60,15 +50,11 @@
                         <option value="Perempuan">Perempuan</option>
                     </select>
                 </div>
-
-                <!-- Nomor Telepon -->
                 <div class="-mt-[10px]">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
                     <input type="text" name="telepon" placeholder="08xxxxxxxxxx"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition">
                 </div>
-
-                <!-- Tanggal Lahir -->
                 <div class="-mt-[10px]">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
                     
@@ -84,7 +70,6 @@
                     @endphp
                     
                     <div class="grid grid-cols-3 gap-2">
-                        <!-- Tanggal -->
                         <select id="tanggal" name="tanggal" required
                             class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition">
                             <option value="">Tanggal</option>
@@ -93,8 +78,6 @@
                                 <option value="{{ $val }}" {{ $tgl == $val ? 'selected' : '' }}>{{ $i }}</option>
                             @endfor
                         </select>
-
-                        <!-- Bulan -->
                         <select id="bulan" name="bulan" required
                             class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition">
                             <option value="">Bulan</option>
@@ -106,8 +89,6 @@
                                 <option value="{{ $num }}" {{ $bln == $num ? 'selected' : '' }}>{{ $nama }}</option>
                             @endforeach
                         </select>
-
-                        <!-- Tahun -->
                         <select id="tahun" name="tahun" required
                             class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-teal-400 focus:border-teal-500 transition">
                             <option value="">Tahun</option>
@@ -121,7 +102,6 @@
                         </select>
                     </div>
 
-                    <!-- Hidden input -->
                     <input type="hidden" id="tanggal_lahir" name="tanggal_lahir" value="{{ $oldDate }}" required>
 
                     @error('tanggal_lahir')
@@ -129,7 +109,6 @@
                     @enderror
                 </div>
 
-                <!-- Tombol Simpan -->
                 <div class="flex justify-end items-end">
                     <button type="submit"
                         class="px-6 py-2 bg-primary hover:bg-teal-700 text-white text-sm font-semibold rounded-md shadow-sm transition">
@@ -137,7 +116,6 @@
                     </button>
                 </div>
 
-                <!-- Alamat -->
                 <div class="sm:col-span-2 -mt-[10px]">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Alamat</label>
                     <textarea name="alamat" rows="3" placeholder="Alamat lengkap..."
@@ -147,7 +125,6 @@
         </form>
     </div>
 
-    <!-- Script -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -157,7 +134,6 @@
         const hiddenInput = document.getElementById('tanggal_lahir');
         const form = document.getElementById('formSantri');
 
-        // Fungsi update hidden input
         function updateHiddenInput() {
             const tgl = tanggalSelect.value;
             const bln = bulanSelect.value;
@@ -169,7 +145,6 @@
             select.addEventListener('change', () => {
                 updateHiddenInput();
                 if (select === bulanSelect || select === tahunSelect) {
-                    // validasi jumlah hari
                     const bulan = parseInt(bulanSelect.value);
                     const tahun = parseInt(tahunSelect.value);
                     if (bulan && tahun) {
@@ -190,11 +165,10 @@
             });
         });
 
-        // Submit form pakai fetch
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            updateHiddenInput(); // ✅ pastikan tanggal_lahir terupdate
+            updateHiddenInput();
 
             const formData = new FormData(form);
             try {
@@ -237,5 +211,4 @@
         });
     });
     </script>
-
 @endsection

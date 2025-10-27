@@ -45,7 +45,6 @@ class PembayaranController extends Controller
 public function store(Request $request)
 {
     try {
-        // 🔹 Validasi input
         $validated = $request->validate([
             'santri_id'      => 'required|exists:santris,id',
             'nominal'        => 'required|numeric|min:50000',
@@ -59,6 +58,10 @@ public function store(Request $request)
             'bukti_transfer.image' => 'Bukti transfer harus berupa gambar',
         ]);
 
+        if ($request->hasFile('bukti_transfer')) {
+            Log::info('File terdeteksi: ' . $request->file('bukti_transfer')->getClientOriginalName());
+        }
+
         $santri = Santri::find($request->santri_id);
         if (!$santri) {
             return back()->with('error', 'Data santri tidak ditemukan!');
@@ -68,10 +71,18 @@ public function store(Request $request)
 
         // 🔹 Upload bukti transfer jika ada
         $buktiTransferPath = null;
-        if ($request->hasFile('bukti_transfer')) {
+        if ($request->hasFile('bukti_transfer') && $request->file('bukti_transfer')->isValid()) {
             $file = $request->file('bukti_transfer');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/bukti_transfer'), $filename);
+            
+            // Pastikan folder ada
+            $uploadPath = storage_path('app/public/bukti_transfer');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+            
+            // Sanitize filename untuk hindari karakter aneh
+            $filename = time() . '_' . preg_replace('/[^A-Za-z0-9\-\_\.]/', '_', $file->getClientOriginalName());
+            $file->move($uploadPath, $filename);
             $buktiTransferPath = 'uploads/bukti_transfer/' . $filename;
         }
 
@@ -165,8 +176,8 @@ public function store(Request $request)
         DB::commit();
 
         $pesanBulan = implode(', ', $bulanBerhasilDisimpan);
-        return redirect()->route('santri.pembayaran.index')
-            ->with('success', "Pembayaran berhasil dan langsung LUNAS! Bulan yang dibayar: {$pesanBulan}");
+        return redirect()->route('santri.pembayaran.input')
+            ->with('success', "Pembayaran Rp " . number_format($nominal, 0, ',', '.') . " berhasil disimpan untuk " . count($bulanBerhasilDisimpan) . " bulan ($pesanBulan). Status tagihan otomatis lunas!");
 
     } catch (\Exception $e) {
         DB::rollBack();

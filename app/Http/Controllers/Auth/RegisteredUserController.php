@@ -32,18 +32,15 @@ class RegisteredUserController extends Controller
             'role'     => $request->role,
         ]);
 
-        // Auto buat atau hubungkan data santri
         if ($request->role === 'santri') {
-            // cari data santri yang namanya sama dan BELUM punya user_id
+  
             $santri = \App\Models\Santri::where('nama', $request->name)
                         ->whereNull('user_id')
                         ->first();
 
             if ($santri) {
-                // update user_id pada data santri yang sudah ada
                 $santri->update(['user_id' => $user->id]);
             } else {
-                // kalau belum ada data santri yang belum terhubung, buat data baru
                 \App\Models\Santri::create([
                     'user_id'       => $user->id,
                     'nama'          => $user->name,

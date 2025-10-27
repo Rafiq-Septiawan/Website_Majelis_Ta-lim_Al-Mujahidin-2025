@@ -5,7 +5,6 @@
 @section('content')
 <div class="p-6 min-h-screen mt-12">
     
-    <!-- Header Section -->
     <div class="flex items-center justify-between mb-8">
         <div class="flex items-center gap-4">
             <div class="bg-gradient-to-br from-teal-500 to-emerald-600 p-4 rounded-2xl shadow-lg">
@@ -20,23 +19,25 @@
         </div>
 
         <div class="flex gap-3 no-print">
-            <button onclick="cetakPDF()" class="flex items-center gap-2 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105 font-semibold">
+            <a 
+                href="{{ route('admin.laporan_cetak') }}" 
+                target="_blank" 
+                class="flex items-center gap-2 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105 font-semibold">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
                 </svg>
-                Cetak PDF
-            </button>
+                Cetak
+            </a>
         </div>
     </div>
 
-    <!-- Statistik Card -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300">
             <div class="bg-gradient-to-br from-teal-500 to-teal-600 p-6">
                 <div class="flex items-center justify-between">
                     <div class="flex-1">
                         <p class="text-teal-100 text-sm font-medium mb-2">Total Santri</p>
-                        <p class="text-4xl font-bold text-white">{{ $totalSantri ?? 0 }}</p>
+                        <p class="text-3xl font-bold text-white">{{ $totalSantri ?? 0 }}</p>
                     </div>
                     <div class="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 text-white">
@@ -52,7 +53,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex-1">
                         <p class="text-emerald-100 text-sm font-medium mb-2">Pembayaran Bulan Ini</p>
-                        <p class="text-3xl font-bold text-white">Rp {{ number_format($totalBulanIni ?? 0, 0, ',', '.') }}</p>
+                        <p class="text-2xl font-bold text-white">Rp {{ number_format($totalBulanIni ?? 0, 0, ',', '.') }}</p>
                     </div>
                     <div class="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 text-white">
@@ -68,7 +69,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex-1">
                         <p class="text-amber-100 text-sm font-medium mb-2">Santri Belum Bayar</p>
-                        <p class="text-4xl font-bold text-white">{{ $jumlahBelumBayar ?? 0 }}</p>
+                        <p class="text-3xl font-bold text-white">{{ $jumlahBelumBayar ?? 0 }}</p>
                     </div>
                     <div class="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 text-white">
@@ -80,7 +81,6 @@
         </div>
     </div>
 
-    <!-- Ringkasan Keuangan -->
     <div class="bg-white rounded-2xl shadow-xl p-8 mb-10">
         <div class="flex items-center gap-4 mb-6 pb-4 border-b-2 border-teal-100">
             <div class="bg-gradient-to-br from-teal-500 to-emerald-500 p-3 rounded-xl">
@@ -104,7 +104,7 @@
                     </div>
                     <p class="text-sm font-semibold text-gray-700">Total Pendapatan</p>
                 </div>
-                <p class="text-2xl font-bold text-emerald-700">Rp {{ number_format($totalPendapatan ?? 0, 0, ',', '.') }}</p>
+                <p class="text-xl font-bold text-emerald-700">Rp {{ number_format($totalPendapatan ?? 0, 0, ',', '.') }}</p>
             </div>
 
             <div class="bg-gradient-to-br from-red-50 to-rose-50 p-5 rounded-xl border-2 border-red-200">
@@ -116,7 +116,7 @@
                     </div>
                     <p class="text-sm font-semibold text-gray-700">Total Tunggakan</p>
                 </div>
-                <p class="text-2xl font-bold text-red-700">Rp {{ number_format($totalTunggakan ?? 0, 0, ',', '.') }}</p>
+                <p class="text-xl font-bold text-red-700">Rp {{ number_format($totalTunggakan ?? 0, 0, ',', '.') }}</p>
             </div>
 
             <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-5 rounded-xl border-2 border-blue-200">
@@ -128,7 +128,7 @@
                     </div>
                     <p class="text-sm font-semibold text-gray-700">Jumlah Santri Lunas</p>
                 </div>
-                <p class="text-2xl font-bold text-blue-700">{{ $jumlahLunas ?? 0 }} Santri</p>
+                <p class="text-xl font-bold text-blue-700">{{ $jumlahLunas ?? 0 }} Santri</p>
             </div>
 
             <div class="bg-gradient-to-br from-purple-50 to-violet-50 p-5 rounded-xl border-2 border-purple-200">
@@ -140,12 +140,11 @@
                     </div>
                     <p class="text-sm font-semibold text-gray-700">Persentase Pembayaran</p>
                 </div>
-                <p class="text-2xl font-bold text-purple-700">{{ $persentasePembayaran ?? 0 }}%</p>
+                <p class="text-xl font-bold text-purple-700">{{ $persentasePembayaran ?? 0 }}%</p>
             </div>
         </div>
     </div>
 
-    <!-- Daftar Santri Belum Bayar -->
     <div class="bg-white rounded-2xl shadow-xl p-8 mb-10">
         <div class="flex items-center gap-4 mb-6 pb-4 border-b-2 border-amber-100">
             <div class="bg-gradient-to-br from-amber-500 to-orange-500 p-3 rounded-xl">
@@ -198,7 +197,6 @@
         </div>
     </div>
 
-    <!-- Riwayat Pembayaran -->
     <div class="bg-white rounded-2xl shadow-xl p-8">
         <div class="flex items-center gap-4 mb-6 pb-4 border-b-2 border-emerald-100">
             <div class="bg-gradient-to-br from-emerald-500 to-teal-500 p-3 rounded-xl">
@@ -277,7 +275,6 @@
             </table>
         </div>
 
-        <!-- Pagination if needed -->
         @if(isset($riwayatPembayaran) && method_exists($riwayatPembayaran, 'links'))
             <div class="mt-6">
                 {{ $riwayatPembayaran->links() }}
@@ -285,52 +282,46 @@
         @endif
     </div>
 
-<!-- Print Styles -->
 <style>
 @media print {
-    /* Sembunyikan semua tampilan web bergaya card */
-    .p-6 > * { display: none !important; }
+    .no-print,
+    .admin-sidebar,
+    .p-6 > div:first-child .no-print, 
+    nav
+    {
+        display: none !important;
+    }
 
-    /* Buat versi tabel cetak */
-    .pdf-report {
+    .p-6 {
+        margin-top: 0 !important;
+        padding: 0;
+    }
+    
+    .grid-cols-1, .md\:grid-cols-3, .lg\:grid-cols-4 {
         display: block !important;
-        padding: 20mm;
-        font-family: "Arial", sans-serif;
-        color: #000;
     }
 
-    .pdf-report h1 {
-        text-align: center;
-        font-size: 18pt;
-        margin-bottom: 5mm;
+    .bg-gradient-to-br, .bg-gradient-to-r, .bg-white, .shadow-lg, .shadow-xl {
+        box-shadow: none !important;
+        border: 1px solid #ccc;
+
+    .mb-8, .mb-10 {
+        margin-bottom: 20px;
+        page-break-inside: avoid;
     }
 
-    .pdf-report p {
-        text-align: center;
-        font-size: 10pt;
-        margin-bottom: 10mm;
+    .max-h-80 {
+        max-height: none !important;
+        overflow: visible !important;
     }
-
-    .pdf-report table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 10pt;
-        margin-bottom: 10mm;
+    
+    table, th, td {
+        border-color: #0d9488 !important;
+        background-color: transparent !important;
     }
-
-    .pdf-report th, .pdf-report td {
-        border: 1px solid #555;
-        padding: 6px 8px;
-    }
-
-    .pdf-report th {
-        background-color: #0d9488 !important;
+    .bg-gradient-to-r.from-emerald-500.to-teal-500 {
+        background: #0d9488 !important; 
         color: white !important;
-    }
-
-    .pdf-report tfoot td {
-        border-top: 2px solid #555;
-        font-weight: bold;
     }
 }
 
@@ -345,52 +336,19 @@
         background-color: #6f6f6f;
         border-radius: 35px;
     }
+}
 </style>
 
-<!-- Scripts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
-function cetakPDF() {
-    // Sembunyikan tombol cetak
-    const noPrintElements = document.querySelectorAll('.no-print');
-    noPrintElements.forEach(el => el.style.display = 'none');
-    
-    const element = document.querySelector('.p-6');
-    const opt = {
-        margin: [0.5, 0.5, 0.5, 0.5],
-        filename: 'Laporan_Keuangan_Majelis_Talim_Al-Mujahidin_' + new Date().toLocaleDateString('id-ID').replace(/\//g, '-') + '.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-            scale: 2,
-            useCORS: true,
-            letterRendering: true 
-        },
-        jsPDF: { 
-            unit: 'in', 
-            format: 'a4', 
-            orientation: 'portrait' 
-        },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    };
-    
-    html2pdf().set(opt).from(element).save().then(() => {
-        // Tampilkan kembali tombol cetak setelah PDF selesai
-        noPrintElements.forEach(el => el.style.display = '');
-    });
-}
-
-// Alternative: Print using browser print dialog
-function cetakBrowser() {
+function cetakLaporan() {
     window.print();
 }
 
-// Keyboard shortcut for print (Ctrl+P)
 document.addEventListener('keydown', function(e) {
     if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
         e.preventDefault();
-        cetakPDF();
+        cetakLaporan();
     }
 });
 </script>
-
 @endsection

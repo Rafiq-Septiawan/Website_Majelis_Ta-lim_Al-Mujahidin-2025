@@ -32,13 +32,11 @@ class DashboardController extends Controller
 
         $bulanText = $namaBulan[$bulanSekarang];
 
-        // Cek apakah tagihan untuk bulan ini sudah ada
         $tagihanAda = Tagihan::where('santri_id', $santri->id)
             ->where('bulan', $bulanText)
             ->where('tahun', $tahunSekarang)
             ->exists();
 
-        // Kalau belum ada, buat otomatis
         if (!$tagihanAda) {
             Tagihan::create([
                 'santri_id'       => $santri->id,
@@ -52,7 +50,6 @@ class DashboardController extends Controller
             ]);
         }
 
-        // Tagihan Aktif (Belum Lunas)
         $totalTagihanAktif = Tagihan::where('santri_id', $santri->id)
             ->where('status', 'Belum Lunas')
             ->sum('nominal');
@@ -61,7 +58,6 @@ class DashboardController extends Controller
             ->where('status', 'Belum Lunas')
             ->count();
 
-        // Total Pembayaran Selesai (Lunas)
         $totalDibayar = Pembayaran::where('santri_id', $santri->id)
             ->where('status', 'Lunas')
             ->sum('jumlah_bayar');
@@ -70,14 +66,12 @@ class DashboardController extends Controller
             ->where('status', 'Lunas')
             ->count();
 
-        // Tagihan Terdekat (Belum Lunas)
         $tagihanTerdekat = Tagihan::where('santri_id', $santri->id)
             ->where('status', 'Belum Lunas')
             ->whereNotNull('jatuh_tempo')
             ->orderBy('jatuh_tempo', 'asc')
             ->first();
 
-        // Riwayat Pembayaran (Tagihan yang sudah Lunas)
         $riwayatPembayaran = Pembayaran::where('santri_id', $santri->id)
             ->where('status', 'Lunas')
             ->orderByDesc('tanggal_bayar')

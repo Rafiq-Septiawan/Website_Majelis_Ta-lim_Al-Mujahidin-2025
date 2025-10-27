@@ -8,17 +8,10 @@ use Illuminate\Support\Facades\Log;
 
 class OtpController extends Controller
 {
-    /**
-     * Tampilkan form OTP
-     */
     public function showForm()
     {
         return view('auth.otp');
     }
-
-    /**
-     * Generate OTP baru dan simpan ke session
-     */
     public function generateOtp()
     {
         $otp = rand(100000, 999999); // OTP 6 digit
@@ -27,15 +20,11 @@ class OtpController extends Controller
             'otp_expire_at' => now()->addMinutes(5)
         ]);
 
-        // Untuk sementara OTP ditulis di log (bisa dicek di storage/logs/laravel.log)
         Log::info("OTP User: " . $otp);
 
         return redirect()->route('otp.form')->with('status', 'Kode OTP telah dikirim. Silakan cek email/log.');
     }
 
-    /**
-     * Verifikasi OTP
-     */
     public function verify(Request $request)
     {
         $request->validate([

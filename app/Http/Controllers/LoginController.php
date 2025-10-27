@@ -9,7 +9,7 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login'); // pastikan file resources/views/auth/login.blade.php ada
+        return view('auth.login');
     }
 
     public function login(Request $request)

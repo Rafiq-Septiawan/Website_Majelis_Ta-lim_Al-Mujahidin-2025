@@ -36,8 +36,7 @@
                     {{ Request::is('admin/dashboard*') 
                         ? 'bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-lg shadow-emerald-600/50' 
                         : 'text-gray-300 hover:bg-gradient-to-r hover:from-emerald-600/20 hover:to-teal-600/10 hover:text-emerald-300' }}">
-                    
-                    <!-- Active Indicator -->
+ 
                     @if(Request::is('admin/dashboard*'))
                         <span class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-300"></span>
                     @endif
@@ -112,7 +111,7 @@
                 </a>
             </li>
 
-            <!-- LAPORAN -->
+            <!-- LAPORAN KEUANGAN-->
             <li>
                 <a href="{{ route('admin.index') }}"
                     class="flex items-center gap-3 px-5 py-3.5 font-bold text-[15px] transition-all duration-200 group relative
@@ -129,15 +128,13 @@
                         <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
                         <path d="M9 14h6"/>
                     </svg>
-                    <span class="tracking-wide">LAPORAN</span>
+                    <span class="tracking-wide">LAPORAN KEUANGAN</span>
                 </a>
             </li>
         </ul>
     </nav>
 
-    <!-- Footer Section -->
     <div class="border-t border-slate-700 bg-slate-900/50">
-        <!-- Logout Button -->
         <div class="px-4 py-4">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

@@ -52,7 +52,7 @@
                     </button>
             </div>
 
-<!-- Form Informasi Profil -->
+
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <div class="bg-white shadow-sm rounded-lg p-4 ml-[15px] border border-gray-200">
         <h3 class="text-xl font-semibold text-gray-700 mb-3 flex items-center gap-2">
@@ -68,7 +68,6 @@
 
         <form id="profileForm" enctype="multipart/form-data" class="space-y-3">
             @csrf
-            <!-- Foto Profil -->
             <div class="flex flex-col items-center mb-4">
                 <img id="avatarPreview"
                     src="{{ $admin->avatar ? asset('storage/' . $admin->avatar) : asset('images/default-avatar.png') }}"
@@ -107,7 +106,6 @@
         </form>
     </div>
 
-    <!-- Form Update Password -->
     <div class="bg-white shadow-sm rounded-lg p-4 mr-[15px] border border-gray-200">
         <h3 class="text-xl font-semibold text-gray-700 mb-8 flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -204,7 +202,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
 
-<!-- Modal Crop Foto -->
 <div id="cropModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center overflow-auto">
     <div class="bg-white p-6 rounded-xl shadow-2xl w-[90%] max-w-[500px] relative z-[1000000]">
         <h3 class="text-center font-bold text-lg mb-4 text-gray-800">Atur Pemotongan Foto</h3>
@@ -234,7 +231,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Toggle Password Visibility (GLOBAL FUNCTION)
     window.togglePassword = function(inputId, button) {
         const input = document.getElementById(inputId);
         
@@ -275,7 +271,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // SCRIPT CROP FOTO
     let cropper;
     const avatarInput = document.getElementById("avatarInput");
     const avatarPreview = document.getElementById("avatarPreview");
@@ -289,7 +284,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const reader = new FileReader();
                 reader.onload = (event) => {
                     cropImage.src = event.target.result;
-                    // Tampilkan modal dengan flex (bukan remove hidden aja)
                     cropModal.classList.remove("hidden");
                     cropModal.classList.add("flex");
 
@@ -335,7 +329,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-    // SCRIPT UPDATE PROFIL
     const profileForm = document.getElementById("profileForm");
 
     profileForm.addEventListener("submit", (e) => {
@@ -373,7 +366,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // SCRIPT UPDATE PASSWORD
     const passwordForm = document.getElementById("passwordForm");
 
     passwordForm.addEventListener("submit", (e) => {

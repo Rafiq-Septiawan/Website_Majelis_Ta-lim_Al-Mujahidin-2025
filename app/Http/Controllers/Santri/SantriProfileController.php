@@ -44,13 +44,11 @@ class SantriProfileController extends Controller
                 return response()->json(['success' => false, 'message' => $validator->errors()->first()]);
             }
 
-            // Update tabel users
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
             ]);
 
-            // Update tabel santris
             if ($santri) {
                 $santri->update([
                     'nama' => $request->name,
@@ -59,7 +57,6 @@ class SantriProfileController extends Controller
                 ]);
             }
 
-            // Upload avatar
             if ($request->hasFile('avatar')) {
                 if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
                     Storage::delete('public/' . $user->avatar);

@@ -11,9 +11,7 @@
 @endpush
 
 @section('content')
-    <!-- Konten -->
     <div class="p-5 bg-white rounded-2xl">
-        <!-- Judul Halaman -->
         <div class="flex items-center justify-between mt-[60px] mb-6">
             <div class="flex items-center gap-4 mb-4">
                 <div class="bg-gradient-to-br from-teal-500 to-emerald-600 p-4 rounded-2xl shadow-lg">
@@ -36,9 +34,7 @@
             </button>
          </div>
 
-        <!-- Dua Kolom: Cari Santri & Form Pembayaran (Versi Compact) -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
-            <!-- Cari Data Santri -->
             <div class="bg-gray-100 rounded-lg p-5 -ml-4 shadow-inner">
                 <h2 class="text-base font-bold mb-3 text-gray-700 text-center">CARI SANTRI</h2>
                 <div class="flex flex-col gap-2">
@@ -53,7 +49,6 @@
                     </div>
                 </div>
 
-                <!-- Informasi Santri yang Dipilih -->
                 <div id="santriInfo" class="mt-4 hidden">
                     <div class="bg-white from-gray-50 to-gray-100 rounded-lg p-3 shadow-md border-l-4 border-primary text-sm">
                         <h3 class="font-semibold text-emerald-700 mb-2">Data Santri Terpilih:</h3>
@@ -69,7 +64,6 @@
                 </div>
             </div>
 
-            <!-- Form Input Pembayaran -->
             <div class="bg-gray-100 rounded-lg p-5 -mr-4 shadow-inner">
                 <h2 class="text-base font-bold mb-3 text-gray-700 text-center">FORM INPUT PEMBAYARAN</h2>
 
@@ -163,7 +157,6 @@
             });
         @endif
 
-        // Format Rupiah
         function formatRupiah(angka) {
             return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
@@ -172,18 +165,16 @@
             return parseInt(rupiah.replace(/\./g, '')) || 0;
         }
 
-        // Input Nominal dengan Format Rupiah + Validasi Minimal
         const nominalDisplay = document.getElementById('nominal_display');
         const nominalHidden = document.getElementById('nominal_hidden');
         const warningText = document.getElementById('nominal_warning');
 
         nominalDisplay.addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\D/g, ''); // hanya angka
+            let value = e.target.value.replace(/\D/g, '');
 
             if (value) {
                 const angka = parseInt(value);
 
-                // Validasi minimal Rp 50.000
                 if (angka < 50000) {
                     warningText.classList.add('opacity-100');
                     warningText.classList.remove('opacity-0');
@@ -202,7 +193,6 @@
             }
         });
 
-        // AJAX Search Santri
         const inputNamaSantri = document.getElementById('nama_santri');
         const searchResults = document.getElementById('searchResults');
         const santriInfo = document.getElementById('santriInfo');
@@ -210,16 +200,13 @@
 
         let selectedSantri = null;
 
-        // Live search saat mengetik
         inputNamaSantri.addEventListener('input', function() {
             const keyword = this.value.trim();
             
-            // Jika search bar kosong, sembunyikan semua
             if (keyword.length < 1) {
                 searchResults.classList.add('hidden');
                 santriInfo.classList.add('hidden');
                 
-                // Reset form pembayaran jika search bar dikosongkan
                 if (keyword.length === 0) {
                     document.getElementById('santri_id').value = '';
                     document.getElementById('nama_santri_display').value = '';
@@ -228,7 +215,6 @@
                 return;
             }
 
-            // Fetch data santri
             fetch(`/admin/santri/search?nama_santri=${encodeURIComponent(keyword)}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -241,12 +227,14 @@
                 }
                 return response.json();
             })
-            .then(data => {
-                console.log('Data diterima:', data); // Debug
+            .then(response => {
+                console.log('Data diterima:', response);
                 
-                if (data.length > 0) {
+                const santris = response.data;
+
+                if (santris.length > 0) {
                     let html = '<ul class="divide-y divide-gray-200">';
-                    data.forEach(santri => {
+                    santris.forEach(santri => {
                         html += `
                             <li class="p-3 hover:bg-emerald-50 cursor-pointer transition" onclick='selectSantri(${JSON.stringify(santri)})'>
                                 <div class="font-semibold text-gray-800">${santri.nama}</div>
@@ -269,16 +257,13 @@
             });
         });
 
-        // Pilih santri dari hasil pencarian (HARUS GLOBAL)
         window.selectSantri = function(santri) {
             selectedSantri = santri;
-            
-            // Isi form
+
             document.getElementById('santri_id').value = santri.id;
             document.getElementById('nama_santri_display').value = santri.nama;
             document.getElementById('nama_santri').value = santri.nama;
             
-            // Format tanggal lahir jadi "14 Oktober 2025"
                 let tglLahir = santri.tanggal_lahir;
                 const parsedDate = new Date(tglLahir + "T00:00:00");
                 const formatted = parsedDate.toLocaleDateString("id-ID", {
@@ -287,7 +272,6 @@
                     year: "numeric"
                 });
 
-            // Tampilkan info santri
             document.getElementById('infoNama').textContent = santri.nama;
             document.getElementById('infoJK').textContent = santri.jenis_kelamin;
             document.getElementById('infoTglLahir').textContent = santri.tanggal_lahir;
@@ -299,17 +283,14 @@
             searchResults.classList.add('hidden');
         };
 
-        // Sembunyikan dropdown saat klik di luar
         document.addEventListener('click', function(e) {
             if (!searchResults.contains(e.target) && e.target !== inputNamaSantri) {
                 searchResults.classList.add('hidden');
             }
         });
 
-        // Set tanggal hari ini sebagai default
         document.getElementById('tanggal').value = new Date().toISOString().split('T')[0];
 
-        // Handle form submit dengan validasi
         document.getElementById('formPembayaran').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -317,7 +298,6 @@
             const nominal = nominalHidden.value;
             const bulan = document.getElementById('bulan').value;
 
-            // Validasi
             if (!namaSantri) {
                 Swal.fire({
                     icon: 'warning',
@@ -348,7 +328,6 @@
                 return;
             }
 
-            // Konfirmasi sebelum simpan
             Swal.fire({
                 title: 'Konfirmasi Pembayaran',
                 html: `
@@ -373,7 +352,6 @@
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Tampilkan loading
                     Swal.fire({
                         title: 'Menyimpan Data...',
                         text: 'Mohon tunggu sebentar',
@@ -384,8 +362,7 @@
                             Swal.showLoading();
                         }
                     });
-                    
-                    // Submit form
+
                     e.target.submit();
                 }
             });

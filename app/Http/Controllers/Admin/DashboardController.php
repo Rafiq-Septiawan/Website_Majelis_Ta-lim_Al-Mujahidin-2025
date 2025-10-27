@@ -14,12 +14,10 @@ class DashboardController extends Controller
     {
         $totalSantri = Santri::count();
 
-        // ✅ Status pakai string 'Lunas'
         $sudahLunas = Pembayaran::where('status', 'Lunas')
             ->distinct('santri_id')
             ->count('santri_id');
 
-        // Ambil ID santri yang sudah bayar (status Lunas)
         $idSantriSudahBayar = Pembayaran::where('status', 'Lunas')
             ->pluck('santri_id')
             ->unique();

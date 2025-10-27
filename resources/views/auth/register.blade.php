@@ -3,21 +3,16 @@
 @section('title', 'Masuk Akun | Majelis Ta’lim Al-Mujahidin')
 
 @section('content')
-
 <div class="min-h-screen flex items-center justify-center px-3 py-6 relative overflow-y-hidden"
      style="background-image: url('{{ asset('images/background.png') }}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;">
 
-    <!-- Overlay -->
     <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-
-    <!-- Card -->
     <div class="relative z-10 w-full max-w-md bg-white/90 backdrop-blur-lg shadow-2xl rounded-2xl p-6 -mt-[15px]
                 transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.1)]">
 
-        <!-- Judul & Logo -->
         <div class="flex flex-col items-center mb-5">
             <img src="/images/logo.png" alt="Logo Majelis Ta'lim" class="w-[70px] h-[70px] mb-4 -mt-[15px]">
             <h2 class="text-xl font-semibold text-gray-800 text-center tracking-wide">Daftar Akun</h2>
@@ -26,7 +21,6 @@
             </p>
         </div>
 
-        <!-- Form -->
         <form method="POST" action="{{ route('register') }}" class="space-y-3">
             @csrf
 
@@ -86,7 +80,6 @@
             </button>
         </form>
 
-        <!-- Footer -->
         <div class="text-center mt-7 text-[12px] text-gray-600">
             Sudah punya akun?
             <a href="{{ route('login') }}" class="text-teal-600 font-semibold hover:underline">Masuk di sini</a>

@@ -8,22 +8,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Intervention\Image\Facades\Image; // (opsional jika nanti mau crop otomatis)
+use Intervention\Image\Facades\Image;
 
 class AdminProfileController extends Controller
 {
     public function index()
     {
-        $admin = Auth::user(); // ambil user yg lagi login
+        $admin = Auth::user();
         return view('admin.profile.index', compact('admin'));
     }
 
     public function updateProfile(Request $request)
     {
         /** @var \App\Models\User $admin */
-        $admin = Auth::user(); // ambil user login
+        $admin = Auth::user();
 
-        // 🔍 Validasi input
         $request->validate([
             'name'    => 'required|string|max:255',
             'phone'   => 'nullable|string|max:20',
@@ -36,26 +35,20 @@ class AdminProfileController extends Controller
             'avatar.mimes'      => 'Format gambar harus jpg, jpeg, png, atau gif.',
         ]);
 
-        // 🖼 Upload avatar baru jika ada file
         if ($request->hasFile('avatar')) {
 
-            // 🔥 Hapus file lama jika ada
             if ($admin->avatar && Storage::disk('public')->exists($admin->avatar)) {
                 Storage::disk('public')->delete($admin->avatar);
             }
 
-            // 🔧 Simpan file baru ke storage/app/public/avatars
             $file = $request->file('avatar');
             $filename = time() . '_' . $file->getClientOriginalName();
 
-            // Simpan file di disk 'public'
             $path = $file->storeAs('avatars', $filename, 'public');
 
-            // Simpan path ke kolom 'avatar'
             $admin->avatar = $path;
         }
 
-        //  Update data lainnya
         $admin->name    = $request->name;
         $admin->phone   = $request->phone;
         $admin->address = $request->address;

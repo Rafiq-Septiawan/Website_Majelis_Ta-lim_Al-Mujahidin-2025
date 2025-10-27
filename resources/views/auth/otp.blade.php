@@ -1,6 +1,5 @@
 <x-guest-layout>
     @section('title', "Verifikasi OTP")
- 
         <div class="flex flex-col items-center mb-6">
             <img src="{{ asset('images/logo.png') }}" alt="Logo Majelis Ta'lim"
                  class="w-[80px] h-[80px] mb-4 drop-shadow-md">
@@ -18,8 +17,6 @@
 
         <form id="otpForm" method="POST" action="{{ route('otp.verify') }}" class="space-y-4">
             @csrf
-
-            <!-- Input OTP (4 box) -->
             <div class="flex justify-center space-x-4">
                 @for($i = 1; $i <= 4; $i++)
                     <input type="text" maxlength="1"
@@ -29,7 +26,6 @@
                 @endfor
             </div>
 
-            <!-- Hidden field untuk gabungan OTP -->
             <input type="hidden" name="otp" id="otp">
 
             <button type="submit" 
@@ -42,8 +38,6 @@
             Tidak menerima kode OTP?
             <a href="{{ route('otp.generate') }}" class="text-blue-700">Kirim Ulang</a>
         </div>
-
-                <!-- Link Kembali -->
             <a href="{{ route('login') }}" 
             class="absolute top-4 left-4 flex items-center text-xs text-gray-600 hover:text-teal-600">
                 <svg xmlns="http://www.w3.org/2000/svg" 

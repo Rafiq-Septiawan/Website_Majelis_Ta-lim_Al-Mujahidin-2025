@@ -10,14 +10,10 @@
             background-position: center;
             background-repeat: no-repeat;">
 
-    <!-- Overlay -->
     <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-
-    <!-- Card -->
     <div class="relative z-10 w-full max-w-md bg-white/95 backdrop-blur-xl shadow-2xl rounded-2xl p-8
                 transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.1)]">
 
-        <!-- Logo & Judul -->
         <div class="flex flex-col items-center -mt-[20px] mb-6">
             <img src="{{ asset('images/logo.png') }}" alt="Logo Majelis Ta'lim"
                  class="w-[80px] h-[80px] mb-4 drop-shadow-md">
@@ -27,14 +23,10 @@
             </p>
         </div>
 
-        <!-- Status -->
         <x-auth-session-status class="mb-3" :status="session('status')" />
 
-        <!-- Form -->
         <form method="POST" action="{{ route('login') }}" class="space-y-4">
             @csrf
-
-            <!-- Email -->
             <div>
                 <label class="block mb-1 text-gray-700 text-xs font-semibold">Email</label>
                 <input id="email" type="email" name="email" placeholder="Masukkan email"
@@ -45,7 +37,6 @@
                 @enderror
             </div>
 
-            <!-- Password -->
             <div class="relative">
                 <label class="block mb-1 text-gray-700 text-xs font-semibold">Password</label>
                 <input id="password" type="password" name="password" placeholder="Masukkan password"
@@ -71,8 +62,7 @@
                     <p class="text-red-500 text-[11px] mt-1">{{ $message }}</p>
                 @enderror
             </div>
-
-            <!-- Remember Me dan Lupa Password -->
+            
             <div class="flex items-center justify-between">
                 <label class="flex items-center text-xs text-gray-600">
                     <input type="checkbox" name="remember"
@@ -87,7 +77,6 @@
                 @endif
             </div>
 
-            <!-- Tombol -->
             <button type="submit"
                     class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 rounded-xl 
                            text-sm shadow-md transition duration-200">
@@ -95,7 +84,6 @@
             </button>
         </form>
 
-        <!-- Footer -->
         <div class="text-center mt-7 text-[12px] text-gray-600">
             Belum punya akun?
             <a href="{{ route('register') }}" class="text-teal-600 font-semibold hover:underline">

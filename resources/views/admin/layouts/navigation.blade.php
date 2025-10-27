@@ -3,8 +3,6 @@
 <nav class="bg-primary text-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
-
-            <!-- Logo -->
             <div class="flex items-center">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -15,7 +13,6 @@
                 </a>
             </div>
 
-            <!-- Menu Desktop -->
             <div class="hidden sm:flex space-x-6">
                 <a href="{{ route('admin.dashboard') }}" class="hover:underline">Dashboard</a>
                 <a href="{{ route('santri.index') }}" class="hover:underline">Data Santri</a>
@@ -23,7 +20,6 @@
                 <a href="#" class="hover:underline">Laporan</a>
             </div>
 
-            <!-- Auth Menu -->
             <div class="hidden sm:flex space-x-4">
                 @guest
                     <a href="{{ route('login') }}" class="hover:underline">Login</a>
@@ -39,7 +35,6 @@
                 @endauth
             </div>
 
-            <!-- Hamburger (Mobile) -->
             <div class="sm:hidden">
                 <button id="menu-btn" class="focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,7 +46,6 @@
         </div>
     </div>
 
-    <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden sm:hidden bg-primary text-white px-4 pb-4 space-y-2">
         <a href="{{ route('admin.dashboard') }}" class="block">Dashboard</a>
         <a href="{{ route('santri.index') }}" class="block">Data Santri</a>

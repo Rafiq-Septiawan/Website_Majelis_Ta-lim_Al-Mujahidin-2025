@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard Admin')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     @stack('styles')
@@ -15,18 +17,15 @@
     @include('admin.layouts.navbar')
     @include('admin.layouts.sidebar')
 
-    <!-- Overlay -->
     <div id="overlay"
         class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"
         onclick="toggleSidebar()"></div>
 
-    <!-- Konten utama -->
-    <main class="bg-white rounded-2xl shadow-lg mx-6 mt-[-70px] -mb-[25px] p-6 relative z-40
-        @yield('scroll', 'overflow-y-auto')">
+    <main class="relative z-40 bg-white shadow-lg p-4 sm:p-6 mt-[-60px] sm:mt-[-70px] mb-6 sm:-mb-[25px] 
+        rounded-t-2xl sm:rounded-2xl overflow-hidden sm:overflow-y-auto mx-2 sm:mx-6 transition-all duration-300">
         @yield('content')
     </main>
 
-    <!-- Footer -->
     <footer class="bg-primary-gradient text-white py-12 mt-12 shadow-2xl relative overflow-hidden">
         <div class="absolute inset-0 opacity-10">
             <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
@@ -38,11 +37,9 @@
                 <div class="flex flex-col items-center md:items-start">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="bg-white/20 p-2.5 rounded-lg backdrop-blur-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
-                            </svg>
+                            <img src="{{ asset('images/icon footer.png') }}" alt="Logo Majelis" class="w-6 h-6 object-contain">
                         </div>
-                        <h2 class="text-xl font-bold">Majelis Ta'lim<br>Al-Mujahidin</h2>
+                        <h2 class="text-xl font-bold">Majelis Ta'lim Al-Mujahidin</h2>
                     </div>
                     <p class="text-sm text-teal-50 leading-relaxed max-w-xs">
                         Website sistem informasi administrasi dan pembayaran santri. Menghadirkan kemudahan bagi pengurus dan wali santri.
@@ -124,7 +121,6 @@
         </div>
     </footer>
 
-    <!-- Script Toggle -->
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");

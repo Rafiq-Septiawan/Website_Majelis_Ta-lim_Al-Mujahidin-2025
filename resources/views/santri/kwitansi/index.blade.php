@@ -20,7 +20,6 @@
         </div>
     </div>
 
-    <!-- Alert -->
     @if(session('error'))
     <div class="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded mb-6">
         <strong>Error:</strong> {{ session('error') }}
@@ -33,7 +32,6 @@
     </div>
     @endif
 
-    <!-- Info Santri -->
     <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border-l-4 border-emerald-500">
         <div class="flex items-center gap-4">
             <div class="bg-emerald-100 p-3 rounded-full">
@@ -53,12 +51,10 @@
         </div>
     </div>
 
-    <!-- List Kwitansi -->
     <div class="space-y-4">
         @forelse($kwitansis as $kwitansi)
         <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200">
             <div class="p-6">
-                <!-- Header Kwitansi -->
                 <div class="flex items-start justify-between mb-4 pb-4 border-b border-dashed">
                     <div>
                         <div class="flex items-center gap-2 mb-2">
@@ -84,7 +80,6 @@
                     </div>
                 </div>
 
-                <!-- Info Detail -->
                 <div class="grid grid-cols-3 gap-4 mb-4 text-sm">
                     <div>
                         <p class="text-gray-500 mb-1">Nama Santri</p>
@@ -106,7 +101,6 @@
                     </div>
                 </div>
 
-                <!-- Tombol Cetak -->
                 <div class="flex gap-3">
                     <a href="{{ route('santri.kwitansi.cetak', $kwitansi->id) }}" 
                        target="_blank"
@@ -122,7 +116,7 @@
             </div>
         </div>
         @empty
-        <!-- Empty State -->
+
         <div class="bg-white rounded-lg shadow-sm p-12 text-center">
             <div class="inline-block p-6 bg-gray-50 rounded-full mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -139,7 +133,6 @@
         @endforelse
     </div>
 
-    <!-- Summary -->
     @if($kwitansis->count() > 0)
     <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500">

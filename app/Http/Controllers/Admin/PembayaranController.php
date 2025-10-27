@@ -143,7 +143,7 @@ class PembayaranController extends Controller
                 ->with('success', "Pembayaran Rp " . number_format($nominal, 0, ',', '.') . " berhasil disimpan untuk " . count($bulanBaruDisimpan) . " bulan ($pesanBulan). Status tagihan $statusPesan!");
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error("Admin Pembayaran Error: " . $e->getMessage());
+            Log::error("admin Pembayaran Error: " . $e->getMessage());
             return back()->with('error', 'Gagal menyimpan pembayaran. ' . $e->getMessage())->withInput();
         }
     }

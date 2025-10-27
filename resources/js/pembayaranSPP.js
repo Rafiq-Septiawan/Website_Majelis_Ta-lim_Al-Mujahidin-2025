@@ -1,4 +1,3 @@
-import './pembayaranSPP';
 import Swal from "sweetalert2";
 
 let selectedMethod = '';
@@ -8,12 +7,6 @@ window.goBack = function() {
     window.history.back();
 };
 
-/**
- * Memformat angka menjadi format Rupiah (Rp X.XXX).
- * @param {number} number
- * @returns {string}
- * 
- */
 function formatRupiah(number) {
     const num = parseInt(number);
     if (isNaN(num) || num === null) {
@@ -22,11 +15,6 @@ function formatRupiah(number) {
     return 'Rp ' + num.toLocaleString('id-ID');
 }
 
-/**
- * 
- * @param {string} text
- * @param {string} name
- */
 window.copyToClipboard = function(text, name) {
     navigator.clipboard.writeText(text).then(() => {
         Swal.fire({
@@ -38,11 +26,6 @@ window.copyToClipboard = function(text, name) {
         });
     });
 };
-
-/**
- * 
- * @returns {Array<Object>}
- */
 
 function getSelectedTagihanDetails() {
     const details = [];
@@ -56,24 +39,58 @@ function getSelectedTagihanDetails() {
     return details;
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.flashMessage) {
+        const { type, message } = window.flashMessage;
+        
+        const icons = {
+            success: 'success',
+            error: 'error',
+            info: 'info'
+        };
+        
+        const titles = {
+            success: 'Berhasil!',
+            error: 'Gagal!',
+            info: 'Perhatian!'
+        };
+        
+        const colors = {
+            success: '#14b8a6',
+            error: '#dc2626',
+            info: '#f59e0b'
+        };
+        
+        Swal.fire({
+            icon: icons[type],
+            title: titles[type],
+            text: message,
+            showConfirmButton: true,
+            confirmButtonText: 'OK',
+            confirmButtonColor: colors[type],
+        }).then(() => {
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+            delete window.flashMessage;
+        });
+    }
+});
+
 window.updateTotal = function() {
-    let totalAmount = 0;
+    totalAmount = 0;
     const selectedCheckboxes = document.querySelectorAll('input[name="selected_tagihan[]"]:checked');
-    
-    // 🔹 Hitung total nominal
+
     selectedCheckboxes.forEach(cb => {
         totalAmount += parseInt(cb.dataset.nominal);
     });
 
-    // 🔹 Tampilkan total
     const totalEl = document.getElementById('totalPembayaran');
     if (totalEl) totalEl.textContent = formatRupiah(totalAmount);
 
-    // 🔹 Isi input hidden nominal agar ikut terkirim
     const nominalInput = document.getElementById('nominal');
     if (nominalInput) nominalInput.value = totalAmount;
 
-    // 🔹 Ambil bulan & tahun dari checkbox pertama yang dipilih
     const bulanInput = document.getElementById('bulan');
     if (bulanInput) {
         const firstChecked = selectedCheckboxes[0];
@@ -85,12 +102,10 @@ window.updateTotal = function() {
         }
     }
 
-    // 🔹 Update tampilan metode pembayaran (jika sudah dipilih)
     if (typeof selectedMethod !== 'undefined' && selectedMethod !== '') {
         showPaymentDetail(selectedMethod);
     }
 
-    // 🔹 Jalankan validasi tombol konfirmasi (jika fungsi-nya ada)
     if (typeof checkFormValidity === 'function') {
         checkFormValidity();
     }
@@ -104,7 +119,7 @@ function checkFormValidity() {
     const step3 = document.getElementById('step3');
     
     let isTransferProofValid = true;
-    const fileInput = document.getElementById('bukti_transfer_input'); 
+    const fileInput = document.getElementById('bukti_transfer'); 
     
     if (selectedMethod !== 'Tunai' && selectedMethod !== '' && selectedCount > 0) {
         if (!fileInput || fileInput.files.length === 0) {
@@ -146,10 +161,6 @@ function checkFormValidity() {
     }
 }
 
-/**
- * @param {HTMLElement} stepElement
- * @param {boolean} isActive
- */
 function updateStepIndicator(stepElement, isActive) {
     if (!stepElement) return;
 
@@ -171,31 +182,40 @@ function updateStepIndicator(stepElement, isActive) {
     }
 }
 
-/**
- * @param {Event} event
- * @param {string} method
- */
-
 window.selectPayment = function(event, method) {
     document.querySelectorAll('.payment-method').forEach(el => {
         el.classList.remove('active');
-        el.querySelector('.check-mark').style.display = 'none';
+        const checkMark = el.querySelector('.check-mark');
+        if (checkMark) checkMark.style.display = 'none';
     });
-    
+
     event.currentTarget.classList.add('active');
-    event.currentTarget.querySelector('.check-mark').style.display = 'flex';
+    const checkMark = event.currentTarget.querySelector('.check-mark');
+    if (checkMark) checkMark.style.display = 'flex';
 
     selectedMethod = method;
     const metodeBayar = document.getElementById('metode_bayar');
-    if (metodeBayar) metodeBayar.value = method; 
-    
+    if (metodeBayar) metodeBayar.value = method;
+
+    const uploadBox = document.getElementById('dropArea');
+    const uploadInput = document.getElementById('bukti_transfer');
+
+    if (uploadBox && uploadInput) {
+        if (method === 'QRIS' || method === 'Transfer Bank' || method === 'E-Wallet') {
+            uploadBox.classList.remove('hidden');
+            uploadInput.required = true;
+        } else {
+            uploadBox.classList.add('hidden');
+            uploadInput.required = false;
+            uploadInput.value = '';
+            document.getElementById('fileNameDisplay').textContent = '';
+        }
+    }
+
     showPaymentDetail(method);
     checkFormValidity();
 };
 
-/**
- * @param {string} method
- */
 function showPaymentDetail(method) {
     const detailDiv = document.getElementById('paymentDetail');
     if (!detailDiv) return;
@@ -241,9 +261,9 @@ function showPaymentDetail(method) {
                     </div>
                 </div>
                 <div class="mt-6">
-                    <label for="bukti_transfer_input" class="block font-semibold text-gray-800 mb-2">Upload Bukti Pembayaran (Wajib)</label>
+                    <label for="bukti_transfer" class="block font-semibold text-gray-800 mb-2">Upload Bukti Pembayaran (Wajib)</label>
                     <div class="upload-area p-6 text-center rounded-lg cursor-pointer border-2 border-dashed border-gray-300 hover:border-teal-500 transition" id="dropArea">
-                        <input type="file" name="bukti_transfer" id="bukti_transfer_input" class="hidden" accept="image/*" onchange="handleFileSelect(event); checkFormValidity();">
+                        <input type="file" name="bukti_transfer" id="bukti_transfer" class="hidden" accept="image/*" onchange="window.handleFileSelect(event);">
                         <p class="text-gray-500"><svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 mx-auto mb-2 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg> Seret & lepas gambar di sini, atau <span class="text-teal-600 font-semibold">klik untuk memilih file</span>.</p>
                         <p id="fileNameDisplay" class="mt-2 text-sm text-gray-600 italic"></p>
                     </div>
@@ -276,9 +296,9 @@ function showPaymentDetail(method) {
                 <div class="space-y-3">${bankCards}</div>
 
                 <div class="mt-6">
-                    <label for="bukti_transfer_input" class="block font-semibold text-gray-800 mb-2">Upload Bukti Pembayaran (Wajib)</label>
+                    <label for="bukti_transfer" class="block font-semibold text-gray-800 mb-2">Upload Bukti Pembayaran (Wajib)</label>
                     <div class="upload-area p-6 text-center rounded-lg cursor-pointer border-2 border-dashed border-gray-300 hover:border-teal-500 transition" id="dropArea">
-                        <input type="file" name="bukti_transfer" id="bukti_transfer_input" class="hidden" accept="image/*" onchange="handleFileSelect(event); checkFormValidity();">
+                        <input type="file" name="bukti_transfer" id="bukti_transfer" class="hidden" accept="image/*" onchange="window.handleFileSelect(event);">
                         <p class="text-gray-500">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 mx-auto mb-2 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
@@ -315,9 +335,9 @@ function showPaymentDetail(method) {
                 <div class="space-y-3">${walletCards}</div>
 
                 <div class="mt-6">
-                    <label for="bukti_transfer_input" class="block font-semibold text-gray-800 mb-2">Upload Bukti Pembayaran (Wajib)</label>
+                    <label for="bukti_transfer" class="block font-semibold text-gray-800 mb-2">Upload Bukti Pembayaran (Wajib)</label>
                     <div class="upload-area p-6 text-center rounded-lg cursor-pointer border-2 border-dashed border-gray-300 hover:border-teal-500 transition" id="dropArea">
-                        <input type="file" name="bukti_transfer" id="bukti_transfer_input" class="hidden" accept="image/*" onchange="handleFileSelect(event); checkFormValidity();">
+                        <input type="file" name="bukti_transfer" id="bukti_transfer" class="hidden" accept="image/*" onchange="window.handleFileSelect(event);">
                         <p class="text-gray-500">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 mx-auto mb-2 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
@@ -352,13 +372,11 @@ function showPaymentDetail(method) {
     initializeDropAreaListeners();
 }
 
-/**
- */
 function initializeDropAreaListeners() {
     const dropArea = document.getElementById('dropArea'); 
     if (!dropArea) return;
 
-    const fileInput = document.getElementById('bukti_transfer_input');
+    const fileInput = document.getElementById('bukti_transfer');
     const fileNameDisplay = document.getElementById('fileNameDisplay');
     dropArea.removeEventListener('click', () => fileInput && fileInput.click());
     dropArea.removeEventListener('dragover', handleDragOver);
@@ -382,17 +400,13 @@ const handleDragLeave = () => {
 const handleDrop = (e) => {
     e.preventDefault();
     document.getElementById('dropArea').classList.remove('border-teal-500', 'bg-teal-50/50');
-    const fileInput = document.getElementById('bukti_transfer_input');
+    const fileInput = document.getElementById('bukti_transfer');
     if (e.dataTransfer.files.length) {
         fileInput.files = e.dataTransfer.files;
         handleFileSelect({ target: fileInput });
         checkFormValidity();
     }
 };
-
-/**
- * @param {Event} event
- */
 
 window.handleFileSelect = function(event) {
     const fileInput = event.target;
@@ -441,9 +455,6 @@ window.handleFileSelect = function(event) {
     checkFormValidity();
 };
 
-/**
- * @param {Event} event
- */
 window.confirmPayment = function(event) {
     event.preventDefault();
 
@@ -464,12 +475,10 @@ window.confirmPayment = function(event) {
 
     const isTransferMethod = (metodeBayar !== 'Tunai');
     
-    let statusText = isTransferMethod 
-        ? '<span class="text-xs text-red-500 block mt-1">Status akan diupdate menjadi LUNAS setelah Bukti Pembayaran diverifikasi.</span>'
-        : '';
+    let statusText ='';
         
     let buktiTransferFile = '';
-    const fileInput = document.getElementById('bukti_transfer_input');
+    const fileInput = document.getElementById('bukti_transfer');
     if (isTransferMethod && fileInput && fileInput.files.length > 0) {
         buktiTransferFile = `<p class="text-sm font-medium mt-3">Bukti Transfer: <span class="text-teal-600">${fileInput.files[0].name}</span></p>`;
     } 
@@ -496,37 +505,48 @@ window.confirmPayment = function(event) {
         cancelButtonText: 'Batal',
         reverseButtons: true
     }).then((result) => {
-        if (result.isConfirmed) {
-        const form = document.getElementById('pembayaranForm');
-        const formData = new FormData(form);
+            if (result.isConfirmed) {
+                const form = document.getElementById('pembayaranForm');
+                const formData = new FormData(form);
 
-        // Kirim lewat fetch
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                Swal.fire({
+                    title: 'Memproses...',
+                    text: 'Mohon tunggu sebentar',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(text || 'Gagal mengirim pembayaran!');
+                        });
+                    }
+                    return response.text();
+                })
+                .then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Pembayaran berhasil dilakukan.',
+                        showConfirmButton: false,
+                        timer: 2000
+                    }).then(() => {
+                        window.location.href = '/santri/pembayaran';
+                    });
+                })
+                .catch(err => {
+                    console.error('Error detail:', err);
+                    Swal.fire('Gagal', err.message || 'Terjadi kesalahan saat memproses pembayaran', 'error');
+                });
             }
-        })
-        .then(response => {
-            if (!response.ok) throw new Error('Gagal mengirim pembayaran!');
-            return response.text();
-        })
-        .then(() => {
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: 'Pembayaran berhasil dikirim dan otomatis LUNAS.',
-                showConfirmButton: false,
-                timer: 2000
-            }).then(() => {
-                window.location.href = '/santri/pembayaran';
-            });
-        })
-        .catch(err => {
-            Swal.fire('Gagal', err.message, 'error');
-        });
-    }
     });
 };
 

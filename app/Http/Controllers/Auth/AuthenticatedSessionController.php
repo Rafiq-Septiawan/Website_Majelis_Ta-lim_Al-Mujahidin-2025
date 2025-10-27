@@ -11,35 +11,23 @@ use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
     public function create(): View
     {
         return view('auth.login');
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // Proses autentikasi
         $request->authenticate();
 
-        // Regenerasi session
         $request->session()->regenerate();
 
-        // Redirect sesuai role
         if (Auth::user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
         return redirect()->route('santri.dashboard');
     }
 
-    /**
-     * Destroy an authenticated session (logout).
-     */
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();

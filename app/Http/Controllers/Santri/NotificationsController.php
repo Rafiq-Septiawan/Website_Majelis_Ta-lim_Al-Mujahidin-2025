@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pembayaran; 
-use App\Models\Tagihan; // <--- PASTIKAN INI DI-IMPORT
+use App\Models\Tagihan;
 use Carbon\Carbon;
 use App\Models\User; 
 
@@ -21,17 +21,14 @@ class NotificationsController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user || !$user->santri) { // Cek user dan relasi santri
+        if (!$user || !$user->santri) {
             return response()->json([], 401);
         }
         
-        $santri = $user->santri; // Asumsi ada relasi user->santri
+        $santri = $user->santri;
         $notifications = [];
         $tanggalSekarang = Carbon::now();
         
-        // =======================================================
-        // 1. Notifikasi SELAMAT DATANG (Muncul 7 hari setelah registrasi)
-        // =======================================================
         $tanggalRegistrasi = Carbon::parse($user->created_at);
         if ($tanggalRegistrasi->diffInDays($tanggalSekarang) <= 7) { 
             $notifications[] = [
@@ -41,9 +38,6 @@ class NotificationsController extends Controller
             ];
         }
 
-        // =======================================================
-        // 2. Notifikasi Konfirmasi Berhasil (HIJAU) - Diperbarui
-        // =======================================================
         $konfirmasiBerhasil = Pembayaran::where('user_id', $user->id)
             ->where('status', 1) 
             ->orderBy('updated_at', 'desc') 
@@ -62,27 +56,22 @@ class NotificationsController extends Controller
             ];
         }
 
-        // =======================================================
-        // 3. Notifikasi Peringatan Jatuh Tempo (MERAH MUDA) - KOREKSI LOGIKA
-        // =======================================================
         $tanggalBatasJatuhTempo = Carbon::now()->addDays(7);
 
-        // Langsung query ke Tagihan dengan status 0
         $tagihanBelumLunas = Tagihan::where('user_id', $user->id) 
-            ->where('status', 0) // KOREKSI: Status Tagihan Belum Lunas = 0
+            ->where('status', 0)
             ->whereNotNull('jatuh_tempo')
             ->whereBetween('jatuh_tempo', [Carbon::today(), $tanggalBatasJatuhTempo])
             ->get();
 
         foreach ($tagihanBelumLunas as $tagihan) {
             $tanggalJatuhTempo = Carbon::parse($tagihan->jatuh_tempo); 
-            $hariSisa = $tanggalSekarang->diffInDays($tanggalJatuhTempo, false); // false untuk hitung mundur
-
+            $hariSisa = $tanggalSekarang->diffInDays($tanggalJatuhTempo, false);
             if ($hariSisa >= 0 && $hariSisa <= 7) { 
                 $notifications[] = [
                     'type' => 'JATUH_TEMPO',
                     'bulan' => $tagihan->bulan,
-                    'jumlah_bayar' => $tagihan->nominal, // Ambil nominal dari Tagihan
+                    'jumlah_bayar' => $tagihan->nominal,
                     'hari_sisa' => $hariSisa,
                     'tanggal_jatuh_tempo' => $tanggalJatuhTempo->format('d M Y'), 
                     'created_at' => $tagihan->created_at->toISOString(),
@@ -90,12 +79,8 @@ class NotificationsController extends Controller
             }
         }
         
-        // =======================================================
-        // 4. Notifikasi Tagihan Lewat Jatuh Tempo (MERAH TUA) - KOREKSI LOGIKA
-        // =======================================================
-        // Langsung query ke Tagihan dengan status 0
         $tagihanLewatJatuhTempo = Tagihan::where('user_id', $user->id)
-            ->where('status', 0) // KOREKSI: Status Tagihan Belum Lunas = 0
+            ->where('status', 0)
             ->whereNotNull('jatuh_tempo')
             ->where('jatuh_tempo', '<', Carbon::today())
             ->get();
@@ -108,7 +93,7 @@ class NotificationsController extends Controller
             $notifications[] = [
                 'type' => 'LEWAT_JATUH_TEMPO',
                 'bulan' => $tagihan->bulan,
-                'jumlah_bayar' => $tagihan->nominal, // Ambil nominal dari Tagihan
+                'jumlah_bayar' => $tagihan->nominal,
                 'hari_terlambat' => $hariTerlambat,
                 'tanggal_jatuh_tempo' => $tanggalJatuhTempo->format('d M Y'),
                 'created_at' => Carbon::now()->toISOString(), 

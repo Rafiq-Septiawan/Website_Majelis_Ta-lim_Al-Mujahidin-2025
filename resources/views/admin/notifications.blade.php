@@ -47,14 +47,12 @@ function fetchNotifications() {
             if (data.pembayaran && data.pembayaran.length > 0) {
                 total += data.pembayaran.length;
                 data.pembayaran.forEach(item => {
-                    // SEMUA PEMBAYARAN -> HIJAU (default)
                     let bgColor = 'bg-green-100';
                     let borderColor = 'border-green-500';
                     let mainColor = 'text-green-800';
                     let typeText = 'NOTIFIKASI TRANSAKSI';
                     let actionLink = '';
-                    
-                    // Semua pembayaran tampil sama aja
+                
                     typeText = 'NOTIFIKASI PEMBAYARAN';
                     actionLink = `<a href="/admin/pembayaran/${item.id}" class="text-sm text-green-700 hover:text-green-900 transition mt-2 block">Lihat Detail</a>`;
 
@@ -73,7 +71,6 @@ function fetchNotifications() {
                 });
             }
 
-            // SANTRI BARU -> BIRU
             if (data.santriBaru && data.santriBaru.length > 0) {
                 total += data.santriBaru.length;
                 data.santriBaru.forEach(s => {

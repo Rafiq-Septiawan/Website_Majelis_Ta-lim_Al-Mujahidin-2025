@@ -12,19 +12,18 @@ class SantriController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $query = Santri::query();
-
-        if ($search) {
-            $query->where(function($q) use ($search) {
-                $q->where('nama', 'like', "%{$search}%")
-                  ->orWhere('wali', 'like', "%{$search}%")
-                  ->orWhere('telepon', 'like', "%{$search}%")
-                  ->orWhere('alamat', 'like', "%{$search}%");
-            });
-        }
-
-        $santris = $query->orderBy('nama', 'asc')->paginate(10);
-        return view('admin.santri.index', compact('santris'));
+        
+        $santris = Santri::query()
+            ->when($search, function($query, $search) {
+                return $query->where('nama', 'like', "%{$search}%")
+                            ->orWhere('wali', 'like', "%{$search}%")
+                            ->orWhere('alamat', 'like', "%{$search}%")
+                            ->orWhere('telepon', 'like', "%{$search}%");
+            })
+            ->orderBy('nama', 'asc')
+            ->paginate(10)
+            ->appends(['search' => $search]);
+        return view('admin.santri.index', compact('santris', 'search'));
     }
 
     public function create()
@@ -82,7 +81,6 @@ class SantriController extends Controller
             'telepon'       => 'required',
         ]);
 
-        // Konversi nilai dari form ke format database
         $genderInput = $request->jenis_kelamin;
         if ($genderInput === 'Laki-laki' || $genderInput === 'L') {
             $gender = 'Laki-laki';
@@ -155,36 +153,36 @@ class SantriController extends Controller
         return redirect()->route('admin.santri.index')
                         ->with('success', 'Data santri berhasil dihapus.');
     }
-
     public function search(Request $request)
     {
-        $keyword = $request->input('nama_santri');
+        $keyword = $request->input('nama_santri', '');
+        $page = $request->input('page', 1);
 
-        if (!$keyword) {
-            return response()->json([]);
+        if (empty($keyword)) {
+            return response()->json([
+                'data' => [],
+                'current_page' => 1,
+                'last_page' => 1,
+                'per_page' => 10,
+                'total' => 0,
+                'from' => null,
+            ]);
         }
 
-        \Carbon\Carbon::setLocale('id');
         $santris = Santri::where('nama', 'like', "%{$keyword}%")
-            ->select('id', 'nama', 'jenis_kelamin', 'tanggal_lahir', 'wali', 'alamat', 'telepon')
+            ->orWhere('wali', 'like', "%{$keyword}%")
+            ->orWhere('alamat', 'like', "%{$keyword}%")
+            ->orWhere('telepon', 'like', "%{$keyword}%")
             ->orderBy('nama', 'asc')
-            ->limit(10)
-            ->get();
+            ->paginate(10, ['*'], 'page', $page);
 
-        $santris = $santris->map(function ($santri) {
-            if (!empty($santri->tanggal_lahir)) {
-                try {
-                    $santri->tanggal_lahir = \Carbon\Carbon::parse($santri->tanggal_lahir)
-                        ->translatedFormat('d F Y');
-                } catch (\Exception $e) {
-                    
-                }
-            } else {
-                $santri->tanggal_lahir = null;
-            }
-            return $santri;
-        })->values();
-
-        return response()->json($santris);
+        return response()->json([
+            'data' => $santris->items(),
+            'current_page' => $santris->currentPage(),
+            'last_page' => $santris->lastPage(),
+            'per_page' => $santris->perPage(),
+            'total' => $santris->total(),
+            'from' => $santris->firstItem(),
+        ]);
     }
 }

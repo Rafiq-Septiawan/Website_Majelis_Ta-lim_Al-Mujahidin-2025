@@ -301,7 +301,6 @@ $bulanIndo = [
                     </div>
 
                     <div id="paymentDetail" class="hidden mb-8 fade-in"></div>
-                    <input type="file" name="bukti_transfer" id="bukti_transfer" class="hidden">
                     <button id="btnSubmit" type="button" disabled
                         class="w-full bg-gray-400 text-white font-bold py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-not-allowed">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 20 20" fill="currentColor">
@@ -325,3 +324,40 @@ $bulanIndo = [
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    @if(session('success'))
+        window.flashMessage = {
+            type: 'success',
+            message: '{{ session('success') }}'
+        };
+    @elseif(session('error'))
+        window.flashMessage = {
+            type: 'error',
+            message: '{{ session('error') }}'
+        };
+    @elseif(session('info'))
+        window.flashMessage = {
+            type: 'info',
+            message: '{{ session('info') }}'
+        };
+    @endif
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.flashMessage) {
+        const { type, message } = window.flashMessage;
+        Swal.fire({
+            icon: type,
+            title: type === 'success' ? 'Berhasil!' : (type === 'error' ? 'Gagal!' : 'Info'),
+            html: message,
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+        });
+    }
+});
+</script>
+@endpush

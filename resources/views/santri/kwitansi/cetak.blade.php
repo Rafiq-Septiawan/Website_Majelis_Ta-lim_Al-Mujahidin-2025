@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kwitansi Pembayaran - {{ $nomorKwitansi }}</title>
     <style>
-        /* BASE STYLES */
         * {
             margin: 0;
             padding: 0;
@@ -26,7 +25,6 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
-        /* HEADER */
         .kwitansi-header {
             background: linear-gradient(135deg, #059669 0%, #10b981 100%);
             color: white;
@@ -63,7 +61,6 @@
             margin-top: 10px;
         }
 
-        /* BODY */
         .kwitansi-body {
             padding: 40px;
         }
@@ -107,7 +104,6 @@
             text-transform: uppercase;
         }
 
-        /* DATA SECTIONS */
         .data-sections {
             display: flex;
             gap: 40px;
@@ -159,7 +155,6 @@
             color: #343a40;
         }
 
-        /* AMOUNT BOX */
         .amount-box {
             background: linear-gradient(135deg, #059669 0%, #10b981 100%);
             padding: 25px;
@@ -174,7 +169,7 @@
             margin-bottom: 10px;
         }
         .amount-value {
-            font-size: 32px; /* Ukuran nominal disesuaikan */
+            font-size: 32px;
             font-weight: bold;
             letter-spacing: 1px;
         }
@@ -197,8 +192,7 @@
             color: #065f46;
             line-height: 1.6;
         }
-
-        /* FOOTER & SIGNATURE */
+/
         .kwitansi-footer {
             margin-top: 35px;
         }
@@ -241,24 +235,23 @@
             margin: 0 -40px -40px -40px;
         }
 
-        /* PRINT CONTROL STYLES */
         .print-controls {
             text-align: center;
             margin: 20px 0;
             padding: 20px;
-            display: flex; /* Tambahkan flexbox */
+            display: flex;
             justify-content: center;
             gap: 10px;
         }
         
-        .btn-controls { /* Kelas baru untuk menyamakan ukuran tombol */
-            width: 180px; /* Lebar yang disamakan */
+        .btn-controls {
+            width: 180px;
         }
 
         .btn {
             display: inline-block;
             padding: 10px 25px;
-            margin: 0; /* Margin dihilangkan karena sudah ada gap */
+            margin: 0;
             border-radius: 6px;
             font-weight: 600;
             text-decoration: none;
@@ -420,11 +413,9 @@
     
     <script>
         function goBackAndClose() {
-            // Coba kembali ke halaman sebelumnya
             if (window.history.length > 1) {
                 window.history.back();
             }
-            // Tutup tab/jendela (hanya berfungsi jika jendela dibuka oleh skrip atau merupakan tab baru)
             window.close(); 
         }
     </script>
@@ -432,7 +423,6 @@
 </html>
 
 @php
-// Helper function terbilang (Tidak diubah)
 function terbilang($angka) {
     $angka = abs($angka);
     $baca = ["", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas"];

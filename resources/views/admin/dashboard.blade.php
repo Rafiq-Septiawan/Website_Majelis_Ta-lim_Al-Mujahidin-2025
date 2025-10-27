@@ -1,16 +1,17 @@
 @extends('admin.layouts.admin')
-
 @section('title', 'Dashboard Admin | Majelis Ta’lim Al-Mujahidin')
-
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/dashboard_admin.css') }}">
+@endpush
 @section('content')
-
-    <div class="p-4 bg-white rounded-2xl p-2">
-        <h1 class="flex item-center justify-between font-bold text-2xl text-stone-950 mb-8 mt-[65px] gap-2">Selamat Datang, Admin
-            <div id="clock"d
-                class="bg-primary text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
-            </div>
-        </h1>
-    <div class="grid grid-cols-4 gap-8 mb-8">
+<div class="p-4 bg-white rounded-2xl">
+    <h1 class="flex flex-wrap items-center justify-between font-bold text-2xl text-stone-950 mb-8 mt-[65px] gap-2">
+        Selamat Datang, Admin
+        <div id="clock"
+            class="bg-primary text-white text-sm font-semibold px-3 py-1.5 rounded-lg shadow transition duration-200">
+        </div>
+    </h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
         <div class="bg-gradient-to-r from-blue-600 to-sky-300 text-white p-6 py-2 rounded-xl shadow-md flex items-center justify-between">
             <div>
                 <h4 class="text-lg font-semibold">Total Santri</h4>
@@ -115,7 +116,7 @@
         </div>
     </div>
 
-        <div class="grid grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="bg-gradient-to-br from-teal-50 to-emerald-50 border-2 border-teal-200 p-6 rounded-xl shadow-md hover:shadow-lg transition">
             <div class="flex items-center gap-3 mb-3">
             <div class="bg-teal-500 p-2.5 rounded-lg shadow-md">
@@ -143,10 +144,19 @@
                 </div>
                 <div class="text-right ml-4">
                     <p class="font-bold text-teal-600 text-lg">Rp {{ number_format($p->jumlah_bayar ?? 0, 0, ',', '.') }}</p>
-                    {{-- KOREKSI BLADE: Ganti perbandingan 'lunas' menjadi angka 1 --}}
-                    @php
-                        $statusText = $p->status == 1 ? 'Lunas' : ($p->status == 0 ? 'Menunggu Konfirmasi' : 'Status Tidak Jelas');
-                        $statusClass = $p->status == 1 ? 'bg-green-100 text-green-700' : ($p->status == 0 ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-700');
+                   @php
+                        $status = strtolower(trim($p->status));
+
+                        if ($status === 'lunas') {
+                            $statusText = 'Lunas';
+                            $statusClass = 'bg-green-100 text-green-700';
+                        } elseif ($status === 'belum lunas') {
+                            $statusText = 'Belum Lunas';
+                            $statusClass = 'bg-yellow-100 text-yellow-700';
+                        } else {
+                            $statusText = 'Status Tidak Dikenal';
+                            $statusClass = 'bg-gray-100 text-gray-700';
+                        }
                     @endphp
                     <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full mt-1 {{ $statusClass }}">
                         {{ $statusText }}
@@ -185,8 +195,8 @@
                     <p class="text-sm text-gray-600 mt-1">
                     <span class="font-medium">Wali:</span> {{ $santri->wali }}
                     </p>
-                    <p class="text-xs text-gray-500 mt-0.5">
-                    📞 {{ $santri->telepon }}
+                    <p class="text-xs font-bold text-gray-500 mt-0.5">
+                    Telepon {{ $santri->telepon }}
                     </p>
                 </div>
                 <div class="text-right ml-4">
@@ -209,15 +219,10 @@
 </div>
 </div>
 
-{{-- SCRIPT realtime AJAX polling --}}
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const url = "{{ route('admin.dashboard.data') }}";
-    // Tambahkan class di p tag untuk statistik agar bisa diupdate:
-    // <p class="text-2xl font-bold mt-1 total-santri">{{ $totalSantri ?? 0 }}</p>
-    // <p class="text-2xl font-bold mt-1 sudah-lunas">{{ $sudahLunas ?? 0 }}</p>
-    // <p class="text-2xl font-bold mt-1 belum-bayar">{{ $jumlahBelumBayar ?? 0 }}</p>
-    // <p class="text-2xl font-bold mt-1 bulan-ini">Rp {{ number_format($totalBulanIni ?? 0, 0, ',', '.') }}</p>
+
     const elTotal = document.querySelector('.total-santri');
     const elLunas = document.querySelector('.sudah-lunas');
     const elBelum = document.querySelector('.belum-bayar');
@@ -231,30 +236,35 @@ document.addEventListener("DOMContentLoaded", function() {
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const data = await res.json();
 
-            // Update Statistik
             if (elTotal) elTotal.textContent = data.totalSantri ?? 0;
             if (elLunas) elLunas.textContent = data.sudahLunas ?? 0;
             if (elBelum) elBelum.textContent = data.belumBayar ?? 0;
             if (elBulan) elBulan.textContent = "Rp " + new Intl.NumberFormat('id-ID').format(data.bulanIni ?? 0);
 
-            // Update Pembayaran Terbaru
             if (elPembayaranList) {
                 elPembayaranList.innerHTML = '';
                 if ((data.pembayaranTerbaru ?? []).length > 0) {
                     (data.pembayaranTerbaru ?? []).forEach(p => {
-                        // KOREKSI JAVASCRIPT: Mengubah angka 1/0 menjadi teks & kelas CSS
-                        const statusText = p.status == 1 ? 'Lunas' : (p.status == 0 ? 'Menunggu Konfirmasi' : 'Status Lain');
-                        const statusClass = p.status == 1 ? 'bg-green-100 text-green-700' : (p.status == 0 ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-700');
-                        
+                        let status = (p.status ?? '').toString().trim().toLowerCase();
+                        let statusText, statusClass;
+
+                        if (status === 'lunas') {
+                            statusText = 'Lunas';
+                            statusClass = 'bg-green-100 text-green-700';
+                        } else {
+                            statusText = 'Belum Lunas';
+                            statusClass = 'bg-yellow-100 text-yellow-700';
+                        }
+
                         elPembayaranList.insertAdjacentHTML('beforeend', `
                             <div class="bg-white rounded-lg p-4 flex justify-between items-center border-2 border-gray-100 hover:border-teal-400 hover:shadow-md transition">
                                 <div class="flex-1">
                                     <p class="font-bold text-gray-800 text-base">${p.nama_santri ?? 'Nama Tidak Ada'}</p>
                                     <p class="text-sm text-gray-600 mt-1">
-                                    <span class="font-medium">Bulan:</span> ${p.bulan ?? '-'}
+                                        <span class="font-medium">Bulan:</span> ${p.bulan ?? '-'}
                                     </p>
                                     <p class="text-xs text-gray-500 font-semibold mt-0.5">
-                                    Tanggal Pembayaran : ${new Date(p.tanggal_bayar).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                        Tanggal Pembayaran : ${new Date(p.tanggal_bayar).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}
                                     </p>
                                 </div>
                                 <div class="text-right ml-4">
@@ -269,8 +279,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 } else {
                     elPembayaranList.innerHTML = `
                         <div class="text-center py-12">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto text-gray-300 mb-3">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke-width="1.5" stroke="currentColor"
+                                 class="w-16 h-16 mx-auto text-gray-300 mb-3">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 
+                                      1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 
+                                      0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 
+                                      1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 
+                                      .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 
+                                      1.125.504 1.125 1.125v9.75c0 
+                                      .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 
+                                      0 0 0-.75.75v.75m0 0H3.75m0 
+                                      0h-.375a1.125 1.125 0 0 
+                                      1-1.125-1.125V15m1.5 1.5v-.75A.75.75 
+                                      0 0 0 3 15h-.75M15 10.5a3 3 0 
+                                      1 1-6 0 3 3 0 0 1 6 0Z"/>
                             </svg>
                             <p class="text-gray-400 italic">Belum ada data pembayaran</p>
                         </div>
@@ -278,8 +302,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
 
-
-            // Santri belum bayar (Tidak ada perubahan, data sudah benar)
             if (elSantriBelum) {
                 elSantriBelum.innerHTML = '';
                 if ((data.santriBelumBayar ?? []).length > 0) {
@@ -292,7 +314,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                         <span class="font-bold">Wali:</span> ${s.wali}
                                     </p>
                                     <p class="text-sm text-gray-900 mt-0.5">
-                                        <span class="font-bold">Telepon: </span>${s.telepon}
+                                        <span class="font-bold">Telepon:</span> ${s.telepon}
                                     </p>
                                 </div>
                                 <div class="text-right ml-4">
@@ -307,14 +329,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 } else {
                     elSantriBelum.innerHTML = `
                         <div class="text-center py-12">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 mx-auto text-gray-300 mb-3">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                 viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="w-16 h-16 mx-auto text-gray-300 mb-3">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M9 12.75 11.25 15 15 9.75M21 12a9 9 
+                                      0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
                             <p class="text-gray-400 italic">Semua santri sudah bayar! 🎉</p>
                         </div>
                     `;
                 }
             }
+
         } catch (err) {
             console.error('Gagal update dashboard:', err);
         }
@@ -326,29 +353,18 @@ document.addEventListener("DOMContentLoaded", function() {
     function updateClock() {
         const clock = document.getElementById("clock");
         const now = new Date();
-
         const hari = now.toLocaleDateString('id-ID', { weekday: 'long' });
         const tanggal = now.getDate();
         const bulan = now.toLocaleDateString('id-ID', { month: 'long' });
         const tahun = now.getFullYear();
-
         const jam = String(now.getHours()).padStart(2, '0');
         const menit = String(now.getMinutes()).padStart(2, '0');
         const detik = String(now.getSeconds()).padStart(2, '0');
-
-        const waktuLengkap = `${hari}, ${tanggal} ${bulan} ${tahun} • ${jam}:${menit}:${detik}`;
-        clock.textContent = waktuLengkap;
+        clock.textContent = `${hari}, ${tanggal} ${bulan} ${tahun} • ${jam}:${menit}:${detik}`;
     }
 
     updateClock();
     setInterval(updateClock, 1000);
 });
 </script>
-
-    <style>
-        .card:hover {
-        transform: translateY(-3px);
-        transition: all 0.3s ease;
-        }
-    </style>
 @endsection

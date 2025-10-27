@@ -61,6 +61,9 @@ Route::prefix('admin')
     // Notifikasi
     Route::get('/notifikasi', [AdminNotificationsController::class, 'index'])->name('notifications');
     Route::get('/notifikasi/fetch', [AdminNotificationsController::class, 'fetch'])->name('notifications.fetch');
+
+    // Cetak Laporan
+    Route::get('laporan/cetak', [LaporanController::class, 'cetak'])->name('laporan_cetak');
 });
 
 

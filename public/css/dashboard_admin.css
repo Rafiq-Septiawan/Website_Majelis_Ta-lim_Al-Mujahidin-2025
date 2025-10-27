@@ -1,0 +1,145 @@
+/* ===== Animasi Hover Card ===== */
+.card:hover { /* Added a universal .card class for all info boxes for consistency */
+    transform: translateY(-3px);
+    transition: all 0.3s ease;
+}
+
+/* ===== Scrollbar styling ===== */
+.pembayaran-terbaru,
+.santri-belum-bayar {
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+}
+.pembayaran-terbaru::-webkit-scrollbar,
+.santri-belum-bayar::-webkit-scrollbar {
+    width: 6px;
+}
+.pembayaran-terbaru::-webkit-scrollbar-thumb,
+.santri-belum-bayar::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+    border-radius: 4px;
+}
+
+/* ===== Responsiveness Fix ===== */
+
+/* Laptop - Tablet */
+@media (max-width: 1024px) {
+    /* ... kode lama ... */
+    h1 {
+        font-size: 1.4rem !important;
+    }
+    .text-2xl {
+        font-size: 1.25rem !important;
+    }
+    .text-lg {
+        font-size: 1rem !important;
+    }
+    /* Mengubah main menjadi target div konten utama */
+    .p-4.bg-white.rounded-2xl {
+        margin-top: -50px !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+/* Tablet - HP besar (≤768px) */
+@media (max-width: 768px) {
+    /* ... kode lama ... */
+    .grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .p-6 {
+        padding: 1rem !important;
+    }
+    .text-2xl {
+        font-size: 1.1rem !important;
+    }
+    .text-lg {
+        font-size: 0.95rem !important;
+    }
+    /* Target div konten utama */
+    .p-4.bg-white.rounded-2xl {
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        /* Hapus margin-top jika menggunakan fixed header */
+        margin-top: 0 !important; 
+    }
+}
+
+/* HP kecil (≤480px, termasuk Oppo F11 viewport) */
+@media (max-width: 480px) {
+    h1 {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .grid-cols-4,
+    .grid-cols-2 {
+        grid-template-columns: 1fr !important;
+    }
+    /* Ukuran font untuk HP */
+    .text-2xl {
+        font-size: 1.25rem !important; /* Dibuat sedikit lebih besar di HP agar lebih mudah dibaca */
+    }
+    .text-lg {
+        font-size: 1rem !important; /* Dibuat sedikit lebih besar di HP agar lebih mudah dibaca */
+    }
+    /* Rounded lebih kecil di HP */
+    .rounded-xl {
+        border-radius: 0.75rem !important;
+    }
+    /* Padding lebih kecil di HP */
+    .p-6 {
+        padding: 1rem !important; 
+    }
+    
+    /* Target div konten utama: Full-width, tanpa radius, padding secukupnya */
+    .p-4.bg-white.rounded-2xl {
+        margin: 0 !important;
+        border-radius: 0 !important;
+        padding: 1rem !important; /* Padding disesuaikan */
+    }
+
+    /* Asumsi footer adalah navigasi bawah */
+    footer {
+        padding-top: 2rem !important;
+    }
+    
+    /* Perbaikan untuk elemen di dalam list detail */
+    .pembayaran-terbaru > div,
+    .santri-belum-bayar > div {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .pembayaran-terbaru .text-right,
+    .santri-belum-bayar .text-right {
+        margin-top: 0.5rem;
+        margin-left: 0;
+        text-align: left;
+    }
+}
+
+/* Penyesuaian spesifik untuk viewport yang lebih kecil */
+@media (max-width: 430px) {
+    /* Target div konten utama */
+    .p-4.bg-white.rounded-2xl {
+        margin: 0 !important;
+        border-radius: 0 !important;
+        padding: 1rem !important;
+    }
+
+    .text-2xl {
+        font-size: 1.25rem !important;
+    }
+
+    .text-lg {
+        font-size: 1rem !important;
+    }
+
+    .p-6 {
+        padding: 1rem !important;
+    }
+
+    footer {
+        padding-top: 2rem !important;
+    }
+}
