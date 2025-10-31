@@ -148,7 +148,7 @@
         },
         { 
             name: "Laporan Keuangan", 
-            url: "{{ route('admin.index') }}", 
+            url: "{{ route('admin.laporan.index') }}", 
             category: "Laporan", 
             icon: `
                 <svg xmlns="http://www.w3.org/2000/svg" 

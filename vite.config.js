@@ -8,12 +8,14 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/css/pembayaranSPP.css',
+                'resources/js/pembayaranSPP.js',
             ],
             refresh: true,
         }),
         {
             name: 'browser-sync',
-            configureServer(server) {
+            configureServer() {
                 const bs = browsersync.create();
                 bs.init({
                     proxy: 'http://127.0.0.1:8000',
@@ -32,10 +34,10 @@ export default defineConfig({
         },
     ],
     server: {
-        host: '0.0.0.0',
+        host: '0.0.0.0', 
         port: 5173,
         hmr: {
-            host: '192.168.100.202',
+            host: '127.0.0.1',
         },
     },
 });

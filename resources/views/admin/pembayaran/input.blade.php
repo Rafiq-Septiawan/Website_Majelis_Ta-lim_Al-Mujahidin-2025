@@ -40,12 +40,12 @@
                 <div class="flex flex-col gap-2">
                     <label for="nama_santri" class="font-medium text-gray-700 text-sm">Nama Santri</label>
                     <div class="flex items-center bg-white rounded-md shadow-sm relative">
-                        <input type="text" id="nama_santri" name="nama_santri" placeholder="Masukkan Nama Santri" autocomplete="off"
+                        <input type="text" id="nama_santri_input" name="nama_santri" placeholder="Masukkan Nama Santri" autocomplete="off"
                             class="w-full p-1.5 rounded-l-md border border-gray-300 text-sm focus:outline-none focus:ring-emerald-400">
                         <button id="btnCari" class="bg-primary hover:bg-teal-700 text-white font-semibold px-3 py-1.5 rounded-r-md text-sm transition">
                             CARI
                         </button>
-                        <div id="searchResults" class="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 hidden z-50 max-h-52 overflow-y-auto"></div>
+                        <div id="searchResultsSantri" class="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 hidden z-50 max-h-52 overflow-y-auto"></div>
                     </div>
                 </div>
 
@@ -193,8 +193,8 @@
             }
         });
 
-        const inputNamaSantri = document.getElementById('nama_santri');
-        const searchResults = document.getElementById('searchResults');
+        const inputNamaSantri = document.getElementById('nama_santri_input');
+        const searchResultsSantri = document.getElementById('searchResultsSantri');
         const santriInfo = document.getElementById('santriInfo');
         const btnCari = document.getElementById('btnCari');
 
@@ -236,18 +236,19 @@
                     let html = '<ul class="divide-y divide-gray-200">';
                     santris.forEach(santri => {
                         html += `
-                            <li class="p-3 hover:bg-emerald-50 cursor-pointer transition" onclick='selectSantri(${JSON.stringify(santri)})'>
+                            <li class="p-3 hover:bg-emerald-50 cursor-pointer transition" 
+                                onclick='selectSantri(${JSON.stringify(santri)})'>
                                 <div class="font-semibold text-gray-800">${santri.nama}</div>
                                 <div class="text-xs text-gray-500">Wali: ${santri.wali} | ${santri.jenis_kelamin}</div>
                             </li>
                         `;
                     });
                     html += '</ul>';
-                    searchResults.innerHTML = html;
-                    searchResults.classList.remove('hidden');
+                    searchResultsSantri.innerHTML = html;
+                    searchResultsSantri.classList.remove('hidden');
                 } else {
-                    searchResults.innerHTML = '<div class="p-3 text-center text-gray-500">Tidak ada data ditemukan</div>';
-                    searchResults.classList.remove('hidden');
+                    searchResultsSantri.innerHTML = '<div class="p-3 text-center text-gray-500">Tidak ada data ditemukan</div>';
+                    searchResultsSantri.classList.remove('hidden');
                 }
             })
             .catch(error => {

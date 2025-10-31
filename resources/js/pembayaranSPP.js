@@ -536,8 +536,8 @@ window.confirmPayment = function(event) {
                         icon: 'success',
                         title: 'Berhasil!',
                         text: 'Pembayaran berhasil dilakukan.',
-                        showConfirmButton: false,
-                        timer: 2000
+                        showConfirmButton: true,
+                        allowOutsideClick: false,
                     }).then(() => {
                         window.location.href = '/santri/pembayaran';
                     });

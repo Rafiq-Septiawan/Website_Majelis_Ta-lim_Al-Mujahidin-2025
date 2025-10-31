@@ -113,7 +113,7 @@
 
             <!-- LAPORAN KEUANGAN-->
             <li>
-                <a href="{{ route('admin.index') }}"
+                <a href="{{ route('admin.laporan.index') }}"
                     class="flex items-center gap-3 px-5 py-3.5 font-bold text-[15px] transition-all duration-200 group relative
                     {{ Request::is('admin/laporan*') 
                         ? 'bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-lg shadow-emerald-600/50' 
@@ -123,7 +123,9 @@
                         <span class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-300"></span>
                     @endif
                     
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 {{ Request::is('admin/laporan*') ? 'text-white' : 'text-emerald-400' }} group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                        class="w-5 h-5 {{ Request::is('admin/laporan*') ? 'text-white' : 'text-emerald-400' }} group-hover:scale-110 transition-transform" 
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
                         <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
                         <path d="M9 14h6"/>

@@ -51,7 +51,7 @@ Route::prefix('admin')
     Route::post('/pembayaran/store', [AdminPembayaranController::class, 'store'])->name('pembayaran.store');
     Route::get('/pembayaran/{id}', [AdminPembayaranController::class, 'show'])->name('pembayaran.show');
 
-    Route::get('/', [LaporanController::class, 'index'])->name('index');
+    Route::get('/laporan/index', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/riwayat', [LaporanController::class, 'riwayat'])->name('riwayat');
     Route::get('/belum-bayar', [LaporanController::class, 'belumBayar'])->name('belum_bayar');
     Route::get('/cetak', [LaporanController::class, 'cetak'])->name('cetak');
